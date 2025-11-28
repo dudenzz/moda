@@ -1,0 +1,4 @@
+vcpkg-moda provides CMake targets:
+
+find_package(moda CONFIG REQUIRED)
+target_link_libraries(main PRIVATE moda::moda)
