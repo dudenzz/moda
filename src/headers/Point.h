@@ -19,8 +19,6 @@ namespace moda
 		Point(int NumberOfObjectives);
 		static Point ones(int NumberOfObjectives);
 		static Point zeroes(int NumberOfObjectives);
-		/** Destructor **/
-		virtual ~Point();
 		/** Copy constructor */
 		Point(const Point& Point);
 		/** Copy operator */

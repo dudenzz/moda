@@ -12,6 +12,8 @@
 #include "SubproblemParam.h"
 #include "ProcessData.h"
 
+// this is an alternative implementation of the same algorithm for QEHC 
+// this implementation is not parallelized yet
 namespace moda {
 	namespace backend {
 		void innerFunc(int contextId, int iterLimit,  int offset, bool useShuffle, bool useSort, int numberOfObjectives, QEHCParameters::SearchSubjectOption searchSubject, int maxIndexUsed, DType& maxContributionLowerBound, DType& minContributionUpperBound, int& lowerBoundProcessId, int& upperBoundProcessId);

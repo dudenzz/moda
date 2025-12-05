@@ -2,6 +2,10 @@
 #include "ExecutionContext.h"
 #include "ExecutionPool.h"
 #include "ExecutionService.h"
+#include <mutex>
+
+// this is an alternative implementation of the same algorithm for QEHC 
+// this implementation is not parallelized yet
 /*************************************************************************
 
 Quick Extreme Hypervolume Contributor
@@ -24,7 +28,7 @@ Quick Extreme Hypervolume Contributor
  [1] Andrzej Jaszkiewicz and Piotr Zielniewicz. 2021. 
      Quick extreme hypervolume contribution algorithm.
      In Proceedings of the Genetic and Evolutionary Computation Conference (GECCO '21). 
-     Association for Computing Machinery, New York, NY, USA, 412–420. 
+     Association for Computing Machinery, New York, NY, USA, 412ï¿½420. 
      https://doi.org/10.1145/3449639.3459394
 
 *************************************************************************/
@@ -39,12 +43,16 @@ Quick Extreme Hypervolume Contributor
 #endif
 namespace moda {
 	namespace backend {
+
+
+
 		bool sortByPointsCounterAsc(SubproblemParam lhs, SubproblemParam rhs) {
 			return lhs.pointsCounter < rhs.pointsCounter;
 		}
 
-		bool handleOnePoint(Point* nadir, Point* ideal, Point* current, ProcessData* process, SubproblemsPool <SubProblem> * subProblems, int iSP,  int numberOfObjectives, double &maxContributionLowerBound, int& lowerBoundProcessId, double& minContributionUpperBound, int& upperBoundProcessId, QEHCParameters::SearchSubjectOption searchSubject)
+		bool handleOnePoint(QEHCExecutionContext* context, Point* nadir, Point* ideal, Point* current, ProcessData* process, SubproblemsPool <SubProblem> * subProblems, int iSP,  QEHCParameters::SearchSubjectOption searchSubject)
 		{
+			int numberOfObjectives = context->numObjectives;
 			DType v = backend::Hypervolume(nadir, current, ideal, numberOfObjectives);
 			process->lowerBoundVolume += v;
 			process->upperBoundVolume -= (*subProblems)[iSP].volume - v;
@@ -53,24 +61,24 @@ namespace moda {
 			{
 				int s = 1;
 			}
-			if (maxContributionLowerBound < process->totalVolume - process->upperBoundVolume) {
-				maxContributionLowerBound = process->totalVolume - process->upperBoundVolume;
-				lowerBoundProcessId = process->id;
+			if (context->maxContributionLowerBound < process->totalVolume - process->upperBoundVolume) {
+				context->maxContributionLowerBound = process->totalVolume - process->upperBoundVolume;
+				context->lowerBoundProcessId = process->id;
 			}
-			if (minContributionUpperBound > process->totalVolume - process->lowerBoundVolume) {
-				minContributionUpperBound = process->totalVolume - process->lowerBoundVolume;
-				upperBoundProcessId = process->id;
+			if (context->minContributionUpperBound > process->totalVolume - process->lowerBoundVolume) {
+				context->minContributionUpperBound = process->totalVolume - process->lowerBoundVolume;
+				context->upperBoundProcessId = process->id;
 			}
 
 			//if (useDelete) {
 			bool toDelete = false;
 			if (searchSubject == QEHCParameters::SearchSubjectOption::MinimumContribution) {
-				if (process->totalVolume - process->upperBoundVolume > minContributionUpperBound) {
+				if (process->totalVolume - process->upperBoundVolume > context->minContributionUpperBound) {
 					toDelete = true;
 				}
 			}
 			else {
-				if (process->totalVolume - process->lowerBoundVolume < maxContributionLowerBound) {
+				if (process->totalVolume - process->lowerBoundVolume < context->maxContributionLowerBound) {
 					toDelete = true;
 				}
 			}
@@ -81,31 +89,32 @@ namespace moda {
 			}
 			return false;
 		}
-		bool handleTwoPoints(Point* nadir, Point* ideal, Point* p1, Point* p2, ProcessData* process, SubproblemsPool <SubProblem>* subProblems, int iSP, int numberOfObjectives, double& maxContributionLowerBound, int& lowerBoundProcessId, double& minContributionUpperBound, int& upperBoundProcessId, QEHCParameters::SearchSubjectOption searchSubject) {
-			DType v = backend::Hypervolume(nadir, p1, ideal, numberOfObjectives);
-			v += backend::Hypervolume(nadir, p2, ideal, numberOfObjectives);
+		bool handleTwoPoints(QEHCExecutionContext* context, Point* nadir, Point* ideal, Point* p1, Point* p2, ProcessData* process, SubproblemsPool <SubProblem>* subProblems, int iSP,  QEHCParameters::SearchSubjectOption searchSubject) {
+			
+			DType v = backend::Hypervolume(nadir, p1, ideal, context->numObjectives);
+			v += backend::Hypervolume(nadir, p2, ideal, context->numObjectives);
 			process->lowerBoundVolume += v;
 			process->upperBoundVolume -= (*subProblems)[iSP].volume - v;
 			(*subProblems).free(iSP);
 
-			if (maxContributionLowerBound < process->totalVolume - process->upperBoundVolume) {
-				maxContributionLowerBound = process->totalVolume - process->upperBoundVolume;
-				lowerBoundProcessId = process->id;
+			if (context->maxContributionLowerBound < process->totalVolume - process->upperBoundVolume) {
+				context->maxContributionLowerBound = process->totalVolume - process->upperBoundVolume;
+				context->lowerBoundProcessId = process->id;
 			}
-			if (minContributionUpperBound > process->totalVolume - process->lowerBoundVolume) {
-				minContributionUpperBound = process->totalVolume - process->lowerBoundVolume;
-				upperBoundProcessId = process->id;
+			if (context->minContributionUpperBound > process->totalVolume - process->lowerBoundVolume) {
+				context->minContributionUpperBound = process->totalVolume - process->lowerBoundVolume;
+				context->upperBoundProcessId = process->id;
 			}
 
 			//if (useDelete) {
 			bool toDelete = false;
 			if (searchSubject == QEHCParameters::SearchSubjectOption::MinimumContribution) {
-				if (process->totalVolume - process->upperBoundVolume > minContributionUpperBound) {
+				if (process->totalVolume - process->upperBoundVolume > context->minContributionUpperBound) {
 					toDelete = true;
 				}
 			}
 			else {
-				if (process->totalVolume - process->lowerBoundVolume < maxContributionLowerBound) {
+				if (process->totalVolume - process->lowerBoundVolume < context->maxContributionLowerBound) {
 					toDelete = true;
 				}
 			}
@@ -116,18 +125,18 @@ namespace moda {
 			}
 			return false;
 		}
-		bool handlePivot(Point* nadir, Point* ideal, Point* pivot, ProcessData* process, SubproblemsPool <SubProblem>* subProblems, int iSP, int numberOfObjectives, double& maxContributionLowerBound, int& lowerBoundProcessId, double& minContributionUpperBound, int& upperBoundProcessId, QEHCParameters::SearchSubjectOption searchSubject) {
-			DType v = backend::Hypervolume(nadir, pivot, ideal, numberOfObjectives);
+		bool handlePivot(QEHCExecutionContext* context, Point* nadir, Point* ideal, Point* pivot, ProcessData* process, SubproblemsPool <SubProblem>* subProblems, int iSP,  QEHCParameters::SearchSubjectOption searchSubject) {
+			DType v = backend::Hypervolume(nadir, pivot, ideal, context->numObjectives);
 			process->lowerBoundVolume += v;
 
-			if (minContributionUpperBound > process->totalVolume - process->lowerBoundVolume) {
-				minContributionUpperBound = process->totalVolume - process->lowerBoundVolume;
-				upperBoundProcessId = process->id;
+			if (context->minContributionUpperBound > process->totalVolume - process->lowerBoundVolume) {
+				context->minContributionUpperBound = process->totalVolume - process->lowerBoundVolume;
+				context->upperBoundProcessId = process->id;
 			}
 			//if (useDelete) {
 			bool toDelete = false;
 			if (searchSubject == QEHCParameters::SearchSubjectOption::MaximumContribution) {
-				if (process->totalVolume - process->lowerBoundVolume < maxContributionLowerBound) {
+				if (process->totalVolume - process->lowerBoundVolume < context->maxContributionLowerBound) {
 					toDelete = true;
 				}
 			}
@@ -140,40 +149,35 @@ namespace moda {
 			process->upperBoundVolume += v;
 			return false;
 		}
-		SubproblemParam* buildSubProblemParams(SubproblemsPool <SubProblem>* subProblems, UType indexSet, int offset, int iPivot, int iSP, int iPos, int numberOfObjectives, int& maxIndexUsed)
+		SubproblemParam* buildSubProblemParams(QEHCExecutionContext* context,  int iPivot, int iSP, int& iPos, int numberOfObjectives)
 		{
 			SubproblemParam* subproblemParams = new SubproblemParam[numberOfObjectives];
-
+			
 			for (int j = 0; j < numberOfObjectives; j++) {
 				subproblemParams[j].objectiveIndex = j;
 				subproblemParams[j].pointsCounter = 0;
 				subproblemParams[j].partStart = iPos;
 
-				DType lValB = (*subProblems)[iSP].IdealPoint.ObjectiveValues[j];
-				DType rValB = (*indexSet)[iPivot]->ObjectiveValues[j];
+				DType lValB = (*context->subProblemsPool)[iSP].IdealPoint.ObjectiveValues[j];
+				DType rValB = (*context->points)[iPivot]->ObjectiveValues[j];
 				DType valB = lValB > rValB ? rValB : lValB;
 
-				for (int i = (*subProblems)[iSP].start; i <= (*subProblems)[iSP].end; i++) {
+				for (int i = (*context->subProblemsPool)[iSP].start; i <= (*context->subProblemsPool)[iSP].end; i++) {
 					if (i == iPivot)
 						continue;
-					DType lValA = (*subProblems)[iSP].IdealPoint.ObjectiveValues[j];
-					auto ptmp = (*indexSet)[i];
-					DType rValA = (*indexSet)[i]->ObjectiveValues[j];
+					DType lValA = (*context->subProblemsPool)[iSP].IdealPoint.ObjectiveValues[j];
+					auto ptmp = (*context->points)[i];
+					DType rValA = (*context->points)[i]->ObjectiveValues[j];
 					DType valA = lValA > rValA ? rValA : lValA;
 					if (valA > valB) {
-						(*indexSet)[iPos++] = (*indexSet)[i];
+						(*context->points)[iPos++] = (*context->points)[i];
 						subproblemParams[j].pointsCounter++;
 					}
 				}
 
 				subproblemParams[j].partEnd = iPos - 1;
-				maxIndexUsed = iPos - 1;
+				context->maxIndexUsed = iPos - 1;
 			}
-			//std::sort(subproblemParams, subproblemParams + numberOfObjectives, sortByPointsCounterAsc);
-			//std::random_device randomDevice;
-			//std::mt19937 randomNumberGenerator(randomDevice());
-			//std::shuffle(subproblemParams, subproblemParams + numberOfObjectives, randomNumberGenerator);
-			//std::rotate(subproblemParams, subproblemParams + offset, subproblemParams + numberOfObjectives);
 			return subproblemParams;
 		}		
 		int findPivot(SubproblemsPool <SubProblem>* subProblems, UType indexSet, int iSP, int numberOfObjectives)
@@ -195,8 +199,10 @@ namespace moda {
 			return iPivot;
 
 		}
-		void buildSubProblems(SubproblemsPool <SubProblem>* subProblems, UType indexSet, SubproblemParam* subproblemParams, Point* partIdealPoint, Point* partNadirPoint, ProcessData* process, int iPivot, int iSP, int numberOfObjectives)
+		void buildSubProblems(QEHCExecutionContext* context,  SubproblemParam* subproblemParams, Point* partIdealPoint, Point* partNadirPoint, ProcessData* process, int iPivot, int iSP, int numberOfObjectives)
 		{
+			UType indexSet = context->points;
+			SubproblemsPool <SubProblem>* subProblems = context->subProblemsPool;
 			int j, partStart, partEnd;
 			for (int jj = 0; jj < numberOfObjectives; jj++) {
 				j = subproblemParams[jj].objectiveIndex;
@@ -227,9 +233,19 @@ namespace moda {
 				}
 			}
 		}
-		bool singleQEHCIteration(ProcessData* process, SubproblemsPool <SubProblem>* subProblems, UType indexSet,  int& offset, int numberOfObjectives, double& maxContributionLowerBound, int& lowerBoundProcessId, double& minContributionUpperBound, int& upperBoundProcessId, int &maxIndexUsed, QEHCParameters::SearchSubjectOption searchSubject)
+		bool singleQEHCIteration(QEHCExecutionContext* context, ProcessData* process, QEHCParameters::SearchSubjectOption searchSubject)
 		{
-			//std::cout << minContributionUpperBound << "\n";
+			//backend::ExecutionService* poolService = &(backend::ExecutionService::getInstance());
+			//backend::ExecutionPool* pool = &(poolService->getPool());
+			//int newContextId = pool->reserveContext(0, 0, 0, ExecutionContext::QEHCContext, true);
+			//backend::QEHCExecutionContext* newContext = (backend::QEHCExecutionContext*)pool->getContext(newContextId);
+			SubproblemsPool <SubProblem>* subProblems = context->subProblemsPool;
+			UType indexSet = context->points;
+			DType maxContributionLowerBound = context->maxContributionLowerBound;
+			int lowerBoundProcessId = context->lowerBoundProcessId;
+			DType minContributionUpperBound = context->minContributionUpperBound;
+			int upperBoundProcessId = context->maxContributionLowerBound;
+			int numberOfObjectives = context->numObjectives;
 			if (process->subProblemsStack.size() == 0) {
 				
 				return true;
@@ -238,26 +254,18 @@ namespace moda {
 			{
 				process->subProblemsStack.pop_back();
 			}
-			//std::cout << iSP << "\n";
-			offset++;
-			offset = offset % numberOfObjectives;
-			
 			int start = (*subProblems)[iSP].start;
 			int end = (*subProblems)[iSP].end;
 			// If there is just one point
 			if ((*subProblems)[iSP].start == (*subProblems)[iSP].end) {
 				if (handleOnePoint(
+					context,
 					&(*subProblems)[iSP].NadirPoint,
 					&(*subProblems)[iSP].IdealPoint,
 					((*indexSet)[(*subProblems)[iSP].start]),
 					process,
 					subProblems,
 					iSP,
-					numberOfObjectives,
-					maxContributionLowerBound,
-					lowerBoundProcessId,
-					minContributionUpperBound,
-					upperBoundProcessId,
 					searchSubject)
 					)
 				{
@@ -272,6 +280,7 @@ namespace moda {
 			// If there are just two points
 			if ((*subProblems)[iSP].end - (*subProblems)[iSP].start == 1) {
 				if (handleTwoPoints(
+					context,
 					&(*subProblems)[iSP].NadirPoint,
 					&(*subProblems)[iSP].IdealPoint,
 					((*indexSet)[(*subProblems)[iSP].start]),
@@ -279,11 +288,6 @@ namespace moda {
 					process,
 					subProblems,
 					iSP,
-					numberOfObjectives,
-					maxContributionLowerBound,
-					lowerBoundProcessId,
-					minContributionUpperBound,
-					upperBoundProcessId,
 					searchSubject)
 					)
 				{
@@ -299,60 +303,44 @@ namespace moda {
 
 
 			int iPivot = findPivot(subProblems, &(*indexSet), iSP, numberOfObjectives);
-			if (handlePivot(&(*subProblems)[iSP].NadirPoint,
+			if (handlePivot(
+				context,
+				&(*subProblems)[iSP].NadirPoint,
 				&(*subProblems)[iSP].IdealPoint,
 				((*indexSet)[iPivot]),
 				process,
 				subProblems,
 				iSP,
-				numberOfObjectives,
-				maxContributionLowerBound,
-				lowerBoundProcessId,
-				minContributionUpperBound,
-				upperBoundProcessId,
 				searchSubject)
 				)
 			{
 				
 				return true;
 			}
-
-
-
-			int iPos = maxIndexUsed + 1;
+			
+			//context->minContributionUpperBound = maxContributionLowerBound;
+			//context->minContributionUpperBound = lowerBoundProcessId;
+			//context->minContributionUpperBound = minContributionUpperBound;
+			//context->upperBoundProcessId = upperBoundProcessId;
+			int iPos = context->maxIndexUsed + 1;
 
 			Point partNadirPoint = (*subProblems)[iSP].NadirPoint;
 			Point partIdealPoint = (*subProblems)[iSP].IdealPoint;
-			Point* pPivotPoint = ((*indexSet))[iPivot];
+
 
 			//------------------------------------------------------------------------------------------------
-			SubproblemParam* subproblemParams = buildSubProblemParams(subProblems, &(*indexSet), offset, iPivot, iSP, iPos, numberOfObjectives, maxIndexUsed);
-			buildSubProblems(subProblems, &(*indexSet), subproblemParams, &partIdealPoint, &partNadirPoint, process, iPivot, iSP, numberOfObjectives);
+			SubproblemParam* subproblemParams = buildSubProblemParams(context, iPivot, iSP, iPos, numberOfObjectives);
+			buildSubProblems(context, subproblemParams, &partIdealPoint, &partNadirPoint, process, iPivot, iSP, numberOfObjectives);
 			delete[] subproblemParams;
 			(*subProblems).free(iSP);
 			return false;
-			/*if (maxIndexUsed > indexSet.size() - 10000000) {
-				indexSet.resize(indexSet.size() + 10000000);
-			}*/
 
-
-			/// temporary result
-			//tmpResult.MaximumContribution = maxContributionLowerBound;
-			//tmpResult.MinimumContribution = minContributionUpperBound;
-			//tmpResult.MinimumContributionIndex = upperBoundProcessId;
-			//tmpResult.MaximumContributionIndex = lowerBoundProcessId;
-
-
-			//tmpResult.type = Result::Contribution;
-			//IterationCallback(ii, iterationLimit, &tmpResult);
-			//}
 		}
 		QEHCResult QEHC_parallel_2(int contextId, int numberOfSolutions, int maxlevel, QEHCParameters::SearchSubjectOption searchSubject, bool useSort, bool useShuffle, int offset, unsigned long int iterationLimit, int numberOfObjectives)
 		{
 			QEHCResult tmpResult;
 			std::random_device randomDevice;
 			std::mt19937 randomNumberGenerator(randomDevice());
-			SubproblemsPool <SubProblem> subProblems;
 			#if UNDERLYING_TYPE == 1
 				myvector<Point*>* indexSet;
 			#elif UNDERLYING_TYPE == 2
@@ -367,7 +355,7 @@ namespace moda {
 			backend::ExecutionPool* pool = &(poolService->getPool());
 						
 			backend::QEHCExecutionContext* context = (backend::QEHCExecutionContext*)pool->getContext(contextId);
-
+			context->subProblemsPool = new SubproblemsPool <SubProblem>();
 			indexSet = context->points;
 			int maxIndexUsed = context->maxIndexUsed;
 			//if (!useDelete) {
@@ -385,10 +373,7 @@ namespace moda {
 				newNadirPoint.ObjectiveValues[j] = 0;
 			}
 
-			DType maxContributionLowerBound = 0;
-			DType minContributionUpperBound = 1;
-			int lowerBoundProcessId = -1;
-			int upperBoundProcessId = -1;
+
 
 			int pos = context->initialSize;
 			unsigned long int iterLimit = iterationLimit;
@@ -401,107 +386,57 @@ namespace moda {
 			std::vector<QEHCExecutionContext*> contexts;
 			for (ip = 0; ip < numberOfSolutions; ip++) {
 				processes[ip] = new ProcessData(maxlevel);
-				int iSP = subProblems.getNew();
-				subProblems[iSP].IdealPoint = *((*indexSet)[ip]);
-				subProblems[iSP].NadirPoint = newNadirPoint;
-				subProblems[iSP].start = pos;
-				subProblems[iSP].end = pos + numberOfSolutions - 2;
-				subProblems[iSP].volume = Hypervolume(&subProblems[iSP].NadirPoint, &subProblems[iSP].IdealPoint, numberOfObjectives);
+				int iSP = context->subProblemsPool->getNew();
+				(*context->subProblemsPool)[iSP].IdealPoint = *((*indexSet)[ip]);
+				(*context->subProblemsPool)[iSP].NadirPoint = newNadirPoint;
+				(*context->subProblemsPool)[iSP].start = pos;
+				(*context->subProblemsPool)[iSP].end = pos + numberOfSolutions - 2;
+				(*context->subProblemsPool)[iSP].volume = Hypervolume(&(*context->subProblemsPool)[iSP].NadirPoint, &(*context->subProblemsPool)[iSP].IdealPoint, numberOfObjectives);
 				processes[ip]->lowerBoundVolume = 0;
-				processes[ip]->upperBoundVolume = subProblems[iSP].volume;
-				processes[ip]->totalVolume = subProblems[iSP].volume;
-				processes[ip]->subProblemsStack.subProblems = &subProblems;
+				processes[ip]->upperBoundVolume = (*context->subProblemsPool)[iSP].volume;
+				processes[ip]->totalVolume = (*context->subProblemsPool)[iSP].volume;
+				processes[ip]->subProblemsStack.subProblems = &(*context->subProblemsPool);
 				processes[ip]->subProblemsStack.push_back(iSP);
 				processes[ip]->id = ip;
-				int contextId = pool->reserveContext(numberOfSolutions * 100, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::QEHCContext, true);
-				QEHCExecutionContext* context = (QEHCExecutionContext*)pool->getContext(contextId);
-				context->subProblemsPool = new SubproblemsPool<SubProblem>();
-				int contextSubProblemId = context->subProblemsPool->getNew();
-				context->subProblemsPool->operator[](contextSubProblemId).IdealPoint = *((*indexSet)[ip]);
-				context->subProblemsPool->operator[](contextSubProblemId).NadirPoint = *((*indexSet)[ip]);
-				context->subProblemsPool->operator[](contextSubProblemId).start = 0;
-				context->subProblemsPool->operator[](contextSubProblemId).end = numberOfSolutions - 2;
-				context->subProblemsPool->operator[](contextSubProblemId).volume = Hypervolume(&subProblems[iSP].NadirPoint, &subProblems[iSP].IdealPoint, numberOfObjectives);
-				context->process = new ProcessData(maxlevel);
-				context->process->lowerBoundVolume = 0;
-				context->process->upperBoundVolume = subProblems[contextSubProblemId].volume;
-				context->process->totalVolume = subProblems[contextSubProblemId].volume;
-				context->process->subProblemsStack.subProblems = (context->subProblemsPool);
-				context->process->subProblemsStack.push_back(contextSubProblemId);
-				context->process->id = ip;
 				
 
 
 				int i3 = 0;
 				int i2; for (i2 = 0; i2 < numberOfSolutions; i2++) {
 					if (i2 != ip) {
-						//if ((set)[i2] == NULL) {
-						//	continue;
-						//}
-						(*context->points)[i3] = (*indexSet)[i2];
 						(*indexSet)[pos + i3++] = (*indexSet)[i2];
 					}
 				}
-				context->maxIndexUsed = i3;
-				contexts.push_back(context);
+
 				pos += numberOfSolutions - 1;
 			}
-			maxIndexUsed = pos - 1;
+			context->maxIndexUsed = pos - 1;
 			int oldmaxIndexUsed = maxIndexUsed;
-
-			//if (processId > 0) {
-			//	swap(processes[0], processes[processId]);
-			//	iterLimit = ULONG_MAX;
-			//}
-			//else
-			//{
-			//	iterLimit = iterationLimit;
-			//}
-
-			// use line below together with rotate function (instead of sort function on subproblemParams)
-			//int offset = 0;
-
 			long nIterations = 0;
 			bool runningPhase1 = true;
-			while (contexts.size() > 0) {
-				for (ip = 0; ip < contexts.size(); ip++) {
+			while (processes.size() > 0) {
+				for (ip = 0; ip < processes.size(); ip++) {
 					for (ii = 0; ii < iterLimit; ii++) {
-						if (singleQEHCIteration(contexts[ip]->process, contexts[ip]->subProblemsPool, contexts[ip]->points, offset, numberOfObjectives, maxContributionLowerBound, lowerBoundProcessId, minContributionUpperBound, upperBoundProcessId, contexts[ip]->maxIndexUsed, searchSubject))
+						if (singleQEHCIteration(context, processes[ip], searchSubject))
 						{
-							(contexts).erase((contexts).begin() + ip);
+							(processes).erase((processes).begin() + ip);
 							ip--;
 							break;
 						}
 					}
 					if (iterLimit == ULONG_MAX) {
-						maxIndexUsed = oldmaxIndexUsed;
+						context->maxIndexUsed = oldmaxIndexUsed;
 					}
 					iterLimit = iterationLimit;
 				}
 			}
 
-			//while (processes.size() > 0) {
 
-			//	for (ip = 0; ip < processes.size(); ip++) {
-			//		for (ii = 0; ii < iterLimit; ii++) {
-			//			if (singleQEHCIteration(processes[ip], &subProblems, indexSet, offset, numberOfObjectives, maxContributionLowerBound, lowerBoundProcessId, minContributionUpperBound, upperBoundProcessId, maxIndexUsed, searchSubject))
-			//			{
-			//				(processes).erase((processes).begin() + ip);
-			//				ip--;
-			//				break;
-			//			}
-			//		}
+			DType maxContributionLowerBound = context->maxContributionLowerBound;
+			DType minContributionUpperBound = context->minContributionUpperBound;
 
-			//		if (iterLimit == ULONG_MAX) {
-			//			maxIndexUsed = oldmaxIndexUsed;
-			//		}
-			//		iterLimit = iterationLimit;
-
-			//	}
-			//}
-
-
-
+			int lowerBoundProcessId = context->lowerBoundProcessId;
+			int upperBoundProcessId = context->upperBoundProcessId;
 			QEHCResult ctrResult;
 			if (searchSubject == QEHCParameters::SearchSubjectOption::MinimumContribution)
 			{

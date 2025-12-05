@@ -9,7 +9,7 @@
 #include "ObjectivesTransformer.h"
 // 0 = switched off
 // 1 = switched on
-#define PARALLEL 0
+#define PARALLEL 1
 
 /*************************************************************************
 
@@ -190,13 +190,13 @@ namespace moda {
                         partNadirPoint.ObjectiveValues[j] = (*points)[iPivot]->ObjectiveValues[j];
                     else
                         partNadirPoint.ObjectiveValues[j] = IdealPoint.ObjectiveValues[j];
-                    if (PARALLEL == 0 || (partEnd - partStart) < fullSize*0.1)
+                    if (PARALLEL == 0 || (partEnd - partStart) < fullSize*0.25)
                     {
                         totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize);
                     }
                     else {
                         int points_to_reserve = 4 * (partEnd - partStart) * pow(2, numberOfObjectives / 2) + 1;
-                        int newSlot = service->getPool().reserveContext(points_to_reserve, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::IQHVContext);
+                        int newSlot = service->getPool().reserveContext(points_to_reserve, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::IQHVContext, true);
                         if (newSlot == -1)
                         {
                             totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize);

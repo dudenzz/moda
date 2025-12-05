@@ -29,11 +29,7 @@ namespace moda {
         return zeroesPoint;
     }
 
-    // Destructor
-    Point::~Point()
-    {
 
-    }
      //Copy Constructor
 
     Point::Point(const Point& Point)
@@ -91,23 +87,23 @@ namespace moda {
     /** getter */
     Point& Point::operator-(DType value)
     {
-        Point* newPoint = new Point(*this);
+        Point newPoint = Point(*this);
 
         for (int i = 0; i < NumberOfObjectives; i++)
         {
-            (*newPoint)[i] = ObjectiveValues[i] - value;
+            (newPoint)[i] = ObjectiveValues[i] - value;
         }
-        return *newPoint;
+        return newPoint;
     }
     Point& Point::operator+(DType value)
     {
-        Point* newPoint = new Point(*this);
+        Point newPoint = Point(*this);
 
         for (int i = 0; i < NumberOfObjectives; i++)
         {
-            (*newPoint)[i] = ObjectiveValues[i] + value;
+            (newPoint)[i] = ObjectiveValues[i] + value;
         }
-        return *newPoint;
+        return newPoint;
     }
 
 

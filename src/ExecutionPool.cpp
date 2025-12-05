@@ -39,44 +39,8 @@ namespace moda {
 		void ExecutionPool::releaseContext(int slot) {
 			ExecutionPool::mutex.lock();
 			auto context = contexts[slot];
-
-
-			if (auto iqhv = dynamic_cast<IQHVExecutionContext*>(contexts[slot])) {
-				delete iqhv->nadirPoint;
-				delete iqhv->idealPoint;
-				for (int i = 0; i < context->initialSize; i++)
-				{
-					
-#if UNDERLYING_TYPE == 1
-						Point* point = context->points->at(i);
-#elif UNDERLYING_TYPE == 2
-
-						Point* point = context->points->at(i);
-#elif UNDERLYING_TYPE == 3
-						Point* point = context->points->at(i);
-#else
-						Point* point = context->points->at(i);
-#endif
-					delete point;
-					context->points->at(i) = nullptr;
-				}
-
-				context->objectivesOrder.clear();
-
-				if (context->initialSize != 0)
-					delete context->points;
-			}
-
-			if (auto qehc = dynamic_cast<QEHCExecutionContext*>(contexts[slot])) //poly/inheritance
-			//if(contexts[slot]->type == ExecutionContext::ExecutionContextType::QEHCContext) //typing
-			{
-				QEHCExecutionContext* masked = (QEHCExecutionContext*)contexts[slot];
-				delete masked->process;
-				delete context->points;
-				
-			}
+			delete context;
 			reservedIds.erase(std::remove(reservedIds.begin(), reservedIds.end(), slot), reservedIds.end());
-			delete contexts[slot];
 			ExecutionPool::mutex.unlock();
 		}
 		bool ExecutionPool::full()

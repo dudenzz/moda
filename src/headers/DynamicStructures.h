@@ -48,30 +48,58 @@ namespace moda {
             }
 
             ~SemiDynamicArray() {
-                for (int i = 0; i < maxCall; i++)
-                {
-                    auto k = data[i];
-                    if (k != nullptr)
-                    {
-                        //delete k;
-                    }
-                }
-                //delete []data;
 
+            }
+
+            /**
+             * @brief Deletes the objects pointed to by the pointers in the array
+             * and sets the array element to nullptr.
+             * @note This should ONLY be called by the owning context.
+             */
+            void deleteContainedPoints(int initialSize) {
+
+                // Iterate up to the deep memory total size, or maxCall if it is smaller.
+                int max = maxCall + 1 < initialSize ? maxCall + 1 : initialSize;
+                for (int i = 0; i < max; i++) 
+                {
+                    delete data[i];
+                }
+                //Reset maxCall/size
+                maxCall = 0; 
+                size = 0;
             }
             SemiDynamicArray(const SemiDynamicArray&) = delete;
             SemiDynamicArray& operator=(const SemiDynamicArray&) = delete;
             void reserve(size_t newCapacity) {
                 if (newCapacity <= capacity)
                     return;
-                std::unique_ptr<T[]> newData = std::make_unique<T[]>(newCapacity);
+
+                // 1. Allocate the new, larger array
+                // We get a raw pointer to the new memory block.
+                T* newDataRaw = new T[newCapacity](); // Use () for zero-initialization of pointers
+
+                // 2. Get the raw pointer to the old memory block
+                T* oldDataRaw = data.release(); // unique_ptr gives up ownership and returns the raw pointer. 
+                // 'data' is now null. This is crucial.
+
+                // 3. Transfer the contents (Point* addresses)
                 for (size_t i = 0; i < size; ++i)
                 {
-                    newData[i] = std::move(data[i]);
-                    //delete data[i];
+                    // Transfer the pointer value
+                    newDataRaw[i] = oldDataRaw[i];
+
+                    // Since oldDataRaw is about to be deleted[], we don't need to null the pointers
+                    // within the array unless T has a custom destructor/deleter, 
+                    // which Point* does not.
                 }
-                //delete[] data;
-                data = std::move(newData);
+
+                // 4. Delete the old contiguous array block (the correct way for a dynamic array)
+                if (oldDataRaw != nullptr) {
+                    delete[] oldDataRaw; // *** GUARANTEED DELETION OF THE OLD BLOCK ***
+                }
+
+                // 5. Update the main data pointer (and capacity)
+                data.reset(newDataRaw); // unique_ptr takes ownership of the new block
                 capacity = newCapacity;
             }
 
@@ -106,12 +134,12 @@ namespace moda {
             inline T& operator[](size_t index) {
                 if (index > maxCall) maxCall = index;
                 if (index >= capacity)
-                    resize(index + 1);
+                    resize(index * 2);
                 return data[index];
             }
             inline T& at(size_t index) {
                 if (index >= capacity)
-                    resize(index + 1);
+                    resize(index * 2);
 
                 return data[index];
             }

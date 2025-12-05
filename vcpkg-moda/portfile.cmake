@@ -2,9 +2,9 @@ vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
-    REPO https://github.com/dudenzz/moda
+    REPO dudenzz/moda
     REF "${VERSION}"
-    SHA512 0 # This is a temporary value. We will modify this value in the next section.
+    SHA512 0 #
     HEAD_REF cmake-sample-lib
 )
 

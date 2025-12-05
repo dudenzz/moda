@@ -49,11 +49,11 @@ namespace moda {
 	QEHCResult QEHCSolver::solveQEHC(std::vector <Point*>& set, int numberOfSolutions, QEHCParameters::SearchSubjectOption searchSubject, bool useSort, bool useShuffle, int offset, int maxlevel, unsigned long int iterationLimit)
 	{
 		//int reserve_size = 4*numberOfSolutions * numberOfSolutions * currentSettings->NumberOfObjectives;
-		int reserve_size = 20000000;
-		//int reserve_size = 5000;
+		//int reserve_size = 20000000;
+		int reserve_size = 5000;
 		backend::ExecutionService* poolService = &(backend::ExecutionService::getInstance());
 		backend::ExecutionPool* pool = &(poolService->getPool());
-		int contextId = pool->reserveContext(reserve_size, currentSettings->nPoints, currentSettings->NumberOfObjectives, backend::ExecutionContext::ExecutionContextType::QEHCContext);
+		int contextId = pool->reserveContext(reserve_size, currentSettings->nPoints, currentSettings->NumberOfObjectives, backend::ExecutionContext::ExecutionContextType::QEHCContext, false);
 		backend::QEHCExecutionContext* context = (backend::QEHCExecutionContext*)pool->getContext(contextId);
 		unsigned int i; for (i = 0; i < numberOfSolutions; i++) {
 			if ((currentlySolvedProblem->points)[i] == NULL) {

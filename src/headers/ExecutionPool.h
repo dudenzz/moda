@@ -4,7 +4,7 @@
 #include <mutex>
 #include "ExecutionContext.h"
 
-#define MEMORY_POOL_SIZE 100000
+#define MEMORY_POOL_SIZE 1000
 
 namespace moda {
     namespace backend {

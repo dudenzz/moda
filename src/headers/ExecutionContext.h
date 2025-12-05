@@ -34,18 +34,31 @@ namespace moda {
 
 
             std::vector<int> objectivesOrder;
-            virtual ~ExecutionContext() = default; //polymorphic
+            virtual ~ExecutionContext() {
+                
+                    // Check if we own the data before cleaning up the contents
+                    if (points != nullptr && !shallow) {
+                        // We need a way to clean up the Point* objects managed by the array.
+                        // Assuming you add a function like `deleteContainedObjects` to SemiDynamicArray:
+                        points->deleteContainedPoints(initialSize); // <-- Cleans up Point objects AND NULLED THEM
+                    }
+                    delete points;
+                    // Always delete the SemiDynamicArray object itself, as the Context owns the container pointer.
+                    //delete points;
+                
+            }
+
         };
 
         class IQHVExecutionContext : public ExecutionContext
         {
         public:
-          /*  ~IQHVExecutionContext() {
+            ~IQHVExecutionContext() {
                 delete idealPoint;
                 delete nadirPoint;
-                delete points;
+                //delete points;
                 objectivesOrder.clear();
-            }*/
+            }
             explicit IQHVExecutionContext(int reserveSize, int initialSize, int numberOfObjectives, bool shallow = false);
             int maxIndexUsed = 0;
             int maxIndexUsedOverall = 0;
@@ -55,16 +68,21 @@ namespace moda {
         class QEHCExecutionContext : public ExecutionContext
         {
         public:
-            //~QEHCExecutionContext() {
-            //    delete points;
-            //    delete process;
-            //    delete subProblemsPool;
-            //    objectivesOrder.clear();
-            //}
+            ~QEHCExecutionContext() {
+                delete process;
+                delete subProblemsPool;
+                objectivesOrder.clear();
+            }
             explicit QEHCExecutionContext(int reserveSize, int initialSize, int numberOfObjectives, bool shallow = false);
             int maxIndexUsed = 0;
             ProcessData* process;
             SubproblemsPool<SubProblem> *subProblemsPool;
+            DType maxContributionLowerBound = 0;
+            int lowerBoundProcessId = -1;
+            DType minContributionUpperBound = 1;
+            int upperBoundProcessId = -1;
+
+            int iPos = 0;
         };
     }
 }
