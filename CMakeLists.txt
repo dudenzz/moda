@@ -13,7 +13,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # include(cmake/dependencies.cmake)
 
 # Includes the source code logic (likely where the add_library or add_executable is)
-include(src/sources.cmake) 
+include(moda/sources.cmake) 
 
 # Sets up the target (executable)
 add_library(moda STATIC ${ALL_SOURCES})
@@ -33,6 +33,6 @@ install(TARGETS moda
     RUNTIME DESTINATION bin
 )
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/src
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/moda
     DESTINATION include
 )
