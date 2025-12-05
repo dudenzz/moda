@@ -20,9 +20,9 @@ namespace moda {
 		callbackViewer = 0;
 
 		result = initAndSolveBRHV(currentlySolvedProblem->points, *betterPoint, *worsePoint, currentSettings->nPoints, settings.MaxEstimationTime, results, settings.callbacks);
-		r->HyperVolumeEstimation = get<1>(result);
-		r->LowerBound = get<0>(result);
-		r->UpperBound = get<2>(result);
+		r->HyperVolumeEstimation = std::get<1>(result);
+		r->LowerBound = std::get<0>(result);
+		r->UpperBound = std::get<2>(result);
 		r->ElapsedTime = clock() - this->it0;
 		r->FinalResult = true;
 		//call the closing callback

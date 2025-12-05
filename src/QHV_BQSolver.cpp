@@ -31,9 +31,9 @@ namespace moda {
 		it0 = clock();
 		callbackViewer = 0;
 		result = solveQHV_BQ(currentlySolvedProblem->points, *betterPoint, *worsePoint, currentSettings->nPoints, settings.MaxEstimationTime, settings.MonteCarlo, results, settings.SwitchToMCSettings);
-		r->HyperVolumeEstimation = get<1>(result);
-		r->LowerBound = get<0>(result);
-		r->UpperBound = get<2>(result);
+		r->HyperVolumeEstimation = std::get<1>(result);
+		r->LowerBound = std::get<0>(result);
+		r->UpperBound = std::get<2>(result);
 		r->ElapsedTime = clock() - it0;
 		r->FinalResult = true;
 		//call the closing callback
