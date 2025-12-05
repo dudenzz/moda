@@ -37,7 +37,7 @@ namespace moda {
         float Hypervolume;
     };
 
-    //TODO: wywo³ywanie z callbackami/bez to nie to samo co liczenie qhv w ka¿dym stepie
+    //TODO: wywoï¿½ywanie z callbackami/bez to nie to samo co liczenie qhv w kaï¿½dym stepie
     class HSSResult : public Result {
     public:
         /// <summary>
@@ -53,7 +53,7 @@ namespace moda {
     class BoundedResult : public Result {
     public:
         /// <summary>
-        /// Ta flaga oznacza, ¿e lower i upper bound s¹ dok³adne. Mamy pewnoœæ, ¿e dok³adna wartoœc jest pomiêdzy lower i upper bound
+        /// Ta flaga oznacza, ï¿½e lower i upper bound sï¿½ dokï¿½adne. Mamy pewnoï¿½ï¿½, ï¿½e dokï¿½adna wartoï¿½c jest pomiï¿½dzy lower i upper bound
         /// Przy metodze Monte Carlo, tak nie jest.
         /// </summary>
         bool Guaranteed;
