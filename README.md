@@ -14,40 +14,62 @@ Currently the library is under pull request review for VCPKG, hence we provide a
 5. Direct to main vcpkg directory and install moda library with the `.\vcpkg.exe install moda` command (by default it installs for x64 architecture, if you wish to use any other architecture, use additional triplet, such as `.\vcpkg.exe install moda:x86-windows-static`)
 6. Run the `.\vcpkg.exe integrate install`
 
-The package is now installed. If you are using a CMake based project, you are good to go. If however you are using a Visual Studio project, there is one more thing to do. Find the desired comiplation of moda library in `packages` directory in VCPKG. Within that directory navigate to `share` and copy the path of `moda.lib` file in that directory. In Visual Studio open the Project Properties. Navigate to Linker and append the copied path at the end of Additional Dependencies.
+## Consuming the library
+
+ #####  A. CMake Projects
+If your project uses CMake, integration is automatic and preferred. Simply include the Vcpkg toolchain file in your configuration step and use find_package in your CMakeLists.txt
+
+##### B. Visual Studio (MSBuild) Projects
+For Visual Studio projects, while Vcpkg handles include paths, you may need to manually specify the library file to resolve LNK2001/LNK2019 errors.
+
+1. Locate the Library: Find the compiled library in your Vcpkg installation path, typically: vcpkg\packages\moda_<triplet>\lib\moda.lib
+
+2. Add to Linker: In Visual Studio, go to Project Properties -> Linker -> Input. Append the full path to moda.lib to the Additional Dependencies property.
 
 ### Minimal program
 
 After the installation, you should be able to include the library files in any project. 
 
-In the following example, I am loading the dataset from file (sample included in repository). Then I'm displaying the data points one by one. In this library, the algorithmic functionalities are provided via `Solvers`. Here I'm using the `IQHVSolver`. This solver is dedicated for calculating the Hypervolume of a given dataset. The solvers are parametrized with the parameters object, each solver has its own Parameters class - in this case I make use of `IQHVParameters`. This is the simpliest parameters class and it is limitted to calculation formulas for reference points. I run the Solve function, which returns a result, which is comprised of the elapsed time and calculated hypervolume. I display the calculated hypervolume.
+The MODA library follows a Data-Solver-Result pattern. DataSets hold the objective function values, Solvers encapsulate the algorithms (like Hypervolume calculation), and Results return the metrics.
+
+This example demonstrates loading a sample dataset, configuring the IQHVSolver (Improved Quick Hypervolume), and calculating the resulting hypervolume.
 ```cpp
 
-#include <iostream>
-#include "moda\DataSet.h"
-#include "moda\IQHVSolver.h"
-#include "moda\Result.h"
-int main()
-{
-    //load data
+// 1. Load Data
+    // Loads sample data from file (file must be accessible in execution directory)
     moda::DataSet* ds = moda::DataSet::LoadFromFilename("data_6_500_convex_triangular_1"); 
-    //display data
+    
+    // Display data points one by one
+    std::cout << "Loaded Data Points:\n";
     for (auto p : ds->points)
     {
-        for(int i = 0; i<6;i++) std::cout << p->ObjectiveValues[i] << " ";
-        std::cout << std::endl;
+        for(int i = 0; i < p->ObjectiveValues.size(); i++) 
+            std::cout << p->ObjectiveValues[i] << " ";
+        std::cout << "\n";
     }
+    std::cout << "---------------------------------\n";
     
-    ds->typeOfOptimization = moda::DataSet::minimization; //parametrize data
-    ds->normalize(); //manipulate data
-    moda::IQHVSolver solver; //create solver
-    moda::IQHVParameters params; //create solver parameters
-    //set up parameters
-    params.BetterReferencePointCalculationStyle = moda::IQHVParameters::ReferencePointCalculationStyle::zeroone;
-    params.WorseReferencePointCalculationStyle = moda::IQHVParameters::ReferencePointCalculationStyle::zeroone;
-    //calculate hypervolume
+    // 2. Prepare Data and Solver
+    ds->typeOfOptimization = moda::DataSet::minimization; // Set optimization type
+    ds->normalize();                                      // Apply normalization
+    
+    moda::IQHVSolver solver; 
+    moda::IQHVParameters params;
+    
+    // 3. Set Solver Parameters
+    // Sets calculation formulas for the reference points (zeroone substitues zeroes and ones vectors for reference points)
+    using RefStyle = moda::IQHVParameters::ReferencePointCalculationStyle;
+    params.BetterReferencePointCalculationStyle = RefStyle::zeroone;
+    params.WorseReferencePointCalculationStyle = RefStyle::zeroone;
+    
+    // 4. Run Solve and Display Result
+    // Solve returns a pointer to a HypervolumeResult
     moda::HypervolumeResult * result = solver.Solve(ds, params);
-    //display result
-    std::cout << result->HyperVolume;
-}
+    
+    std::cout << "Calculated Hypervolume: " << result->HyperVolume << std::endl;
+    std::cout << "Elapsed Time (ms): " << result->ElapsedTime << std::endl;
+    
+    // Cleanup (optional but recommended)
+    delete ds;
+    delete result;
 ```
