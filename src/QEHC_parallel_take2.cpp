@@ -46,10 +46,6 @@ namespace moda {
 
 
 
-		bool sortByPointsCounterAsc(SubproblemParam lhs, SubproblemParam rhs) {
-			return lhs.pointsCounter < rhs.pointsCounter;
-		}
-
 		bool handleOnePoint(QEHCExecutionContext* context, Point* nadir, Point* ideal, Point* current, ProcessData* process, SubproblemsPool <SubProblem> * subProblems, int iSP,  QEHCParameters::SearchSubjectOption searchSubject)
 		{
 			int numberOfObjectives = context->numObjectives;

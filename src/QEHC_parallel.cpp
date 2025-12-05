@@ -33,9 +33,7 @@ Quick Extreme Hypervolume Contributor
 *************************************************************************/
 namespace moda {
 	namespace backend {
-		bool sortByPointsCounterAsc(SubproblemParam lhs, SubproblemParam rhs) {
-			return lhs.pointsCounter < rhs.pointsCounter;
-		}
+
 
 
 		void handleOnePoint(int contextId, int iterLimit, int offset, bool useShuffle, bool useSort, int numberOfObjectives, QEHCParameters::SearchSubjectOption searchSubject, int maxIndexUsed)
@@ -272,11 +270,7 @@ namespace moda {
 				}
 
 				//------------------------------------------------------------------------------------------------
-				if (true) {
-					std::sort(subproblemParams, subproblemParams + numberOfObjectives, sortByPointsCounterAsc);
-				}
-				else
-				{
+
 					if (useShuffle)
 					{
 						std::shuffle(subproblemParams, subproblemParams + numberOfObjectives, randomNumberGenerator);
@@ -285,7 +279,7 @@ namespace moda {
 					{
 						std::rotate(subproblemParams, subproblemParams + offset, subproblemParams + numberOfObjectives);
 					}
-				}
+				
 				//rotate(subproblemParams, subproblemParams + offset, subproblemParams + NumberOfObjectives);
 
 				for (jj = 0; jj < numberOfObjectives; jj++) {
