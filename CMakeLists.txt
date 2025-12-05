@@ -16,7 +16,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(src/sources.cmake) 
 
 # Sets up the target (executable)
-add_executable(moda ${ALL_SOURCES})
+add_library(moda ${ALL_SOURCES})
 # ... (Target settings for include directories, linking dependencies like Boost, fmt, and GMP)
 # ...
 
