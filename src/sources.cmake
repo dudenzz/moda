@@ -1,5 +1,5 @@
 
-set(MODA_SRC_DIR ${CMAKE_SOURCE_DIR})
+set(MODA_SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 file(GLOB ALL_SOURCES
     "${MODA_SRC_DIR}/DataSet.cpp"
     "${MODA_SRC_DIR}/DataSetParameters.cpp"
