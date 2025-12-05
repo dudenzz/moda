@@ -22,9 +22,9 @@ namespace moda {
 		it0 = clock();
 
 		result = backend::solveMCHV(currentlySolvedProblem->points,  *betterPoint,*worsePoint, settings.MaxEstimationTime, results, currentSettings->NumberOfObjectives);
-		r->HyperVolumeEstimation = get<0>(result);
-		r->LowerBound = get<1>(result);
-		r->UpperBound = get<2>(result);
+		r->HyperVolumeEstimation = std::get<0>(result);
+		r->LowerBound = std::get<1>(result);
+		r->UpperBound = std::get<2>(result);
 		r->ElapsedTime = clock() - it0;
 		r->FinalResult = true;
 		//call the closing callback
