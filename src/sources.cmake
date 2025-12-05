@@ -1,0 +1,50 @@
+
+set(MODA_SRC_DIR ${CMAKE_SOURCE_DIR})
+file(GLOB ALL_SOURCES
+    "${MODA_SRC_DIR}/DataSet.cpp"
+    "${MODA_SRC_DIR}/DataSetParameters.cpp"
+    "${MODA_SRC_DIR}/DBHVE.cpp"
+    "${MODA_SRC_DIR}/DBHVESolver.cpp"
+    "${MODA_SRC_DIR}/DynamicStructures.cpp"
+    "${MODA_SRC_DIR}/ExecutionContext.cpp"
+    "${MODA_SRC_DIR}/ExecutionPool.cpp"
+    "${MODA_SRC_DIR}/ExecutionService.cpp"
+    "${MODA_SRC_DIR}/Helpers.cpp"
+    "${MODA_SRC_DIR}/HSS.cpp"
+    "${MODA_SRC_DIR}/HSSSolver.cpp"
+    "${MODA_SRC_DIR}/Hypervolume.cpp"
+    "${MODA_SRC_DIR}/IQHV.cpp"
+    "${MODA_SRC_DIR}/IQHVSolver.cpp"
+    "${MODA_SRC_DIR}/IQHV_Contribution.cpp"
+    "${MODA_SRC_DIR}/ListSet.cpp"
+    "${MODA_SRC_DIR}/MCHV.cpp"
+    "${MODA_SRC_DIR}/MCHVESolver.cpp"
+    "${MODA_SRC_DIR}/MemoryManager.cpp"
+    "${MODA_SRC_DIR}/myvector.cpp"
+    "${MODA_SRC_DIR}/NDTree.cpp"
+    "${MODA_SRC_DIR}/ObjectivesTransformer.cpp"
+    "${MODA_SRC_DIR}/Point.cpp"
+    "${MODA_SRC_DIR}/PointTests.cpp"
+    "${MODA_SRC_DIR}/QEHC.cpp"
+    "${MODA_SRC_DIR}/QEHCSolver.cpp"
+    "${MODA_SRC_DIR}/QEHC_parallel.cpp"
+    "${MODA_SRC_DIR}/QEHC_parallel_take2.cpp"
+    "${MODA_SRC_DIR}/QHV_BQ.cpp"
+    "${MODA_SRC_DIR}/QHV_BQSolver.cpp"
+    "${MODA_SRC_DIR}/QHV_BR.cpp"
+    "${MODA_SRC_DIR}/QR2.cpp"
+    "${MODA_SRC_DIR}/Result.cpp"
+    "${MODA_SRC_DIR}/Solver.cpp"
+    "${MODA_SRC_DIR}/SolverParameters.cpp"
+    "${MODA_SRC_DIR}/SolverSettings.cpp"
+    "${MODA_SRC_DIR}/SubProblem.cpp"
+    "${MODA_SRC_DIR}/SubproblemsPool.cpp"
+    "${MODA_SRC_DIR}/SubProblemsStackLevel.cpp"
+    "${MODA_SRC_DIR}/SubProblemsStackPriorityQueue.cpp"
+    "${MODA_SRC_DIR}/TreeNode.cpp"
+)
+
+# ----------------------------------------------------
+# Alternative
+# ----------------------------------------------------
+# file(GLOB ALL_SOURCES "${MODA_SRC_DIR}/*.cpp")
