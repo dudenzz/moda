@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Project definition
-project(moda VERSION 1.0.2 LANGUAGES CXX)
+project(moda VERSION 1.0.13 LANGUAGES CXX)
 
 # Standard vcpkg settings for modern CMake
 set(CMAKE_CXX_STANDARD 17)
@@ -17,6 +17,9 @@ include(moda/sources.cmake)
 
 # Sets up the target (executable)
 add_library(moda STATIC ${ALL_SOURCES})
+set_target_properties(moda PROPERTIES
+    DEBUG_POSTFIX d
+)
 # ... (Target settings for include directories, linking dependencies like Boost, fmt, and GMP)
 # ...
 
