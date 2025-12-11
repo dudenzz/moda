@@ -43,7 +43,11 @@ namespace moda {
 
 		std::tuple<bool, QEHCResult> QEHCAsyncEndpoint(int contextId, int iterLimit, int offset, bool useShuffle, bool useSort, int numberOfObjectives, QEHCParameters::SearchSubjectOption searchSubject, int maxIndexUsed) {
 			DType maxContributionLowerBound = 0;
+			#ifdef DBL_MAX
 			DType minContributionUpperBound = DBL_MAX;
+			#else
+			DType minContributionUpperBound = DBL_LARGE;
+			#endif
 			int lowerBoundProcessId = -1;
 			int upperBoundProcessId = -1;
 			int ii;
