@@ -1,6 +1,6 @@
 
 #include "Solver.h"
-#include <immintrin.h>
+
 namespace moda {
     void Solver::EmptyCallback(int currentIteration, int totalIterations, Result *stepResult) {}
     void Solver::EmptyCallback(DataSetParameters problemSettings, Result*stepResult) {}
