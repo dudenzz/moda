@@ -12,6 +12,7 @@
 #include "SubproblemParam.h"
 #include "ProcessData.h"
 #include <climits>
+#include <cfloat>
 // this is an alternative implementation of the same algorithm for QEHC 
 // this implementation is not parallelized yet
 namespace moda {

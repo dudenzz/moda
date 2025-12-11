@@ -2,6 +2,7 @@
 #include "ExecutionContext.h"
 #include "ExecutionPool.h"
 #include "ExecutionService.h"
+
 /*************************************************************************
 
 Quick Extreme Hypervolume Contributor
@@ -24,7 +25,7 @@ Quick Extreme Hypervolume Contributor
  [1] Andrzej Jaszkiewicz and Piotr Zielniewicz. 2021. 
      Quick extreme hypervolume contribution algorithm.
      In Proceedings of the Genetic and Evolutionary Computation Conference (GECCO '21). 
-     Association for Computing Machinery, New York, NY, USA, 412–420. 
+     Association for Computing Machinery, New York, NY, USA, 412ï¿½420. 
      https://doi.org/10.1145/3449639.3459394
 
 *************************************************************************/
@@ -262,7 +263,7 @@ namespace moda {
 
 						int iPivot = subProblems[iSP].start;
 						DType maxVolume;
-						maxVolume = backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[iPivot], &subProblems[iSP].IdealPoint, numberOfObjectives); //niepotrzebnie w pêtli ??
+						maxVolume = backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[iPivot], &subProblems[iSP].IdealPoint, numberOfObjectives); //niepotrzebnie w pï¿½tli ??
 
 						// Find the pivot point
 						unsigned i;
