@@ -46,7 +46,7 @@ namespace moda {
 			#ifdef DBL_MAX
 			DType minContributionUpperBound = DBL_MAX;
 			#else
-			DType minContributionUpperBound = DBL_LARGE;
+			DType minContributionUpperBound = 1.0e+307;
 			#endif
 			int lowerBoundProcessId = -1;
 			int upperBoundProcessId = -1;

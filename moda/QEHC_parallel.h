@@ -16,7 +16,7 @@
 // this is an alternative implementation of the same algorithm for QEHC 
 // this implementation is not parallelized yet
 
-#define DBL_LARGE 1.0e+307
+
 
 namespace moda {
 	namespace backend {
