@@ -1,41 +1,57 @@
-# Minimum CMake version requirement
 cmake_minimum_required(VERSION 3.16)
 
-# Project definition
 project(moda VERSION 1.0.13 LANGUAGES CXX)
 
-# Standard vcpkg settings for modern CMake
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Includes a separate file for finding and configuring Boost and GMP dependencies
-# include(cmake/dependencies.cmake)
+include(moda/sources.cmake)
 
-# Includes the source code logic (likely where the add_library or add_executable is)
-include(moda/sources.cmake) 
-
-# Sets up the target (executable)
 add_library(moda STATIC ${ALL_SOURCES})
+
 set_target_properties(moda PROPERTIES
     DEBUG_POSTFIX d
 )
-# ... (Target settings for include directories, linking dependencies like Boost, fmt, and GMP)
-# ...
 
-# ----------------------------------------------------
-# VCPKG SUPPORT
-# ----------------------------------------------------
-# Includes a sample file intended for vcpkg use. This is often where
-# vcpkg_install_cmake is called in an official vcpkg port, but here
-# it looks like a sample for users.
-# include(vcpkg-sample.cmake)
+# Public include folder
+target_include_directories(moda
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include>
+)
 
-# Installs the executable and headers
+# Install the library
 install(TARGETS moda
+    EXPORT modaTargets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
 )
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/moda
-    DESTINATION include
+# Install headers only
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/moda/
+    DESTINATION include/moda
+    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+)
+
+# --- PACKAGE CONFIGURATION ---
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modaConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/modaConfig.cmake
+    INSTALL_DESTINATION lib/cmake/moda
+)
+
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/modaConfig.cmake
+    DESTINATION lib/cmake/moda
+)
+
+install(
+    EXPORT modaTargets
+    FILE modaTargets.cmake
+    NAMESPACE moda::
+    DESTINATION lib/cmake/moda
 )
