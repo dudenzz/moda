@@ -30,7 +30,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n100_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -60,7 +60,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n200_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n200_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -89,7 +89,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n300_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n300_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -118,7 +118,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n400_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n400_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -147,7 +147,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n500_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n500_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -176,7 +176,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -206,7 +206,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -235,7 +235,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -264,7 +264,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -293,7 +293,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -322,7 +322,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -351,7 +351,7 @@ namespace FunctionalTests
 			QEHCParameters* ehcparams = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			IQHVParameters* iqhparams = new IQHVParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 
-			DataSet* ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			DataSet* ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			hssparams->StoppingCriteria = HSSParameters::StoppingCriteriaType::SubsetSize;
@@ -377,7 +377,7 @@ namespace FunctionalTests
 	public:
 		TEST_METHOD(FunctionalMCHV1)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -392,7 +392,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV2)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -407,7 +407,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV3)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -422,7 +422,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV4)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -437,7 +437,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV5)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -452,7 +452,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV6)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -467,7 +467,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV7)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -482,7 +482,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV8)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -497,7 +497,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV9)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -512,7 +512,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV10)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -527,7 +527,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV11)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -542,7 +542,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV12)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n600_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -557,7 +557,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV13)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -572,7 +572,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV14)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -587,7 +587,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV15)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -602,7 +602,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalMCHV16)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -620,7 +620,7 @@ namespace FunctionalTests
 	{
 		TEST_METHOD(FunctionalQHV_BQ1)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -635,7 +635,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ2)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -650,7 +650,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ3)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -665,7 +665,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ4)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -680,7 +680,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ5)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -695,7 +695,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ6)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -710,7 +710,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ7)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -725,7 +725,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ8)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -740,7 +740,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ9)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -755,7 +755,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ10)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -770,7 +770,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ11)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -785,7 +785,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ12)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n600_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -800,7 +800,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ13)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -815,7 +815,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ14)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -830,7 +830,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ15)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -845,7 +845,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BQ16)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -863,7 +863,7 @@ namespace FunctionalTests
 	{
 		TEST_METHOD(FunctionalQHV_BR1)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -879,7 +879,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR2)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -895,7 +895,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR3)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -911,7 +911,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR4)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -927,7 +927,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR5)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -943,7 +943,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR6)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -959,7 +959,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR7)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -975,7 +975,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR8)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -991,7 +991,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR9)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -1007,7 +1007,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR10)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -1023,7 +1023,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR11)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -1039,7 +1039,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR12)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n600_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -1055,7 +1055,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR13)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -1071,7 +1071,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR14)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -1087,7 +1087,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR15)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -1103,7 +1103,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQHV_BR16)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			//ds->setNormalize(true);
@@ -1123,7 +1123,7 @@ namespace FunctionalTests
 	public:
 		TEST_METHOD(FunctionalIQHV1)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 			//ds->setNormalize(true);
@@ -1137,7 +1137,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalIQHV2)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1150,7 +1150,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalIQHV3)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1164,7 +1164,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalIQHV4)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1180,7 +1180,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalIQHV5)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1194,7 +1194,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalIQHV6)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1206,7 +1206,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV7)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1218,7 +1218,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV8)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1230,7 +1230,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV9)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1242,7 +1242,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV10)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1254,7 +1254,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV11)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1266,7 +1266,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV12)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n600_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1278,7 +1278,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV13)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1290,7 +1290,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV14)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n300_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1302,7 +1302,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV15)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1314,7 +1314,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalIQHV16)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 
@@ -1329,7 +1329,7 @@ namespace FunctionalTests
 	{
 		TEST_METHOD(FunctionalQEHCmin1)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n100_10");
 			//ds->normalize();
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
@@ -1341,7 +1341,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalQEHCmin2)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n200_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1352,7 +1352,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalQEHCmin3)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n300_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1363,7 +1363,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalQEHCmin4)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n400_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1374,7 +1374,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalQEHCmin5)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n500_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1385,7 +1385,7 @@ namespace FunctionalTests
 
 		TEST_METHOD(FunctionalQEHCmin6)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1397,7 +1397,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin7)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n100_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1409,7 +1409,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin8)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n200_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1421,7 +1421,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin9)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n300_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1433,7 +1433,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin10)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n400_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1445,7 +1445,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin11)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n500_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1457,7 +1457,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin12)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n600_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1469,7 +1469,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin13)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n200_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1481,7 +1481,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin14)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n300_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1493,7 +1493,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin15)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n400_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1505,7 +1505,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalQEHCmin16)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n500_10");
 			QEHCSolver solver;
 			QEHCParameters* params = new QEHCParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->SearchSubject = QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -1520,7 +1520,7 @@ namespace FunctionalTests
 	{
 		TEST_METHOD(FunctionalHVEmin1)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n100_10");
 			//ds->normalize();
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
@@ -1531,7 +1531,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin2)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n200_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1541,7 +1541,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin3)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n300_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1552,7 +1552,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin4)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n400_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1563,7 +1563,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin5)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n500_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1574,7 +1574,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin6)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d4n600_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1585,7 +1585,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin7)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n100_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n100_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1596,7 +1596,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin8)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n200_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1607,7 +1607,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin9)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n300_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1618,7 +1618,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin10)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n400_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1629,7 +1629,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin11)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n500_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1640,7 +1640,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin12)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d6n600_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d6n600_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1651,7 +1651,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin13)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n200_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n200_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1662,7 +1662,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin14)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n300_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n300_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1673,7 +1673,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin15)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n400_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n400_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
@@ -1684,7 +1684,7 @@ namespace FunctionalTests
 		}
 		TEST_METHOD(FunctionalHVEmin16)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n500_10");
+			auto ds = DataSet::LoadFromFilename("../../UnitTests/Datasets/unit_tests_d7n500_10");
 			DBHVESolver solver;
 			DBHVEParameters* params = new DBHVEParameters(SolverParameters::zeroone, SolverParameters::zeroone);
 			params->MCiterations = 100000;
