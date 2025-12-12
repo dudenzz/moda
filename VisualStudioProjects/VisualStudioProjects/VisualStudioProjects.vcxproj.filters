@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Backend">
+      <UniqueIdentifier>{01b9dd84-cf8c-4d41-89fb-026ed927d3a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data Structures">
+      <UniqueIdentifier>{adedef36-dc87-4580-812b-0d65e1beda98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{8530aa34-e856-4fca-ab1e-403a0e210165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Results">
+      <UniqueIdentifier>{7ff1b90f-fc46-4824-839a-f2abb220b1c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data Structures\headers">
+      <UniqueIdentifier>{dd6f7c5f-29d6-46eb-9a11-f5cd4f21b681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data Structures\source">
+      <UniqueIdentifier>{f2ef8ceb-8f19-4af6-bb3b-742703a061e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parameters">
+      <UniqueIdentifier>{d4937756-6731-4e69-a41c-869011bf48ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parameters\headers">
+      <UniqueIdentifier>{e04028be-374f-47da-b10b-bd9a1ce83d47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parameters\source">
+      <UniqueIdentifier>{cda52fd5-6bd6-46cd-b32b-84e473bb7383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Solvers">
+      <UniqueIdentifier>{dc8298c7-41d3-4b89-b18f-9c3cfd116e0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Solvers\source">
+      <UniqueIdentifier>{edbaca71-edf0-464e-b27d-2d00c64c9156}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Solvers\headers">
+      <UniqueIdentifier>{59471812-d9f1-44d8-97b8-8a43e8667dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\headers">
+      <UniqueIdentifier>{fabada43-63ab-41b7-8a21-8de15038ef70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\source">
+      <UniqueIdentifier>{a82d31f6-6418-45f4-a88b-791193675b3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Results\headers">
+      <UniqueIdentifier>{b167ca95-d86f-44f4-88c8-93580686e6b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Results\source">
+      <UniqueIdentifier>{b0d442ee-c1e6-431f-aec2-5681a6739a57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc\source">
+      <UniqueIdentifier>{1fbc45a7-6a9e-4be6-aca0-6b7cfd65f3ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc\headers">
+      <UniqueIdentifier>{8325888c-02fb-487f-96a2-4e8661318e98}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\moda\BestSolution.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\DataSet.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\DataSetParameters.h">
+      <Filter>Parameters\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\DynamicStructures.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\IQHV.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\DBHVE.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\ExecutionContext.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\ExecutionPool.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\ExecutionService.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\Helpers.h">
+      <Filter>Misc\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\HSS.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\DBHVESolver.h">
+      <Filter>Solvers\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\HSSSolver.h">
+      <Filter>Solvers\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\Hypervolume.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\include.h">
+      <Filter>Misc\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\MCHVESolver.h">
+      <Filter>Solvers\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\IQHVSolver.h">
+      <Filter>Solvers\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\QEHC_parallel.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\QEHC_parallel_take2.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\MCHV.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\ListSet.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\MemoryManager.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\myvector.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\Point.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\NDTree.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\ObjectivesTransformer.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\ProcessData.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\QEHC.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\QEHCSolver.h">
+      <Filter>Solvers\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\QHV_BQSolver.h">
+      <Filter>Solvers\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\Solver.h">
+      <Filter>Solvers\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\QHV_BR.h">
+      <Filter>Solvers\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\QHV_BQ.h">
+      <Filter>Backend\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\QR2.h">
+      <Filter>Solvers\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\Result.h">
+      <Filter>Results\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\SolutionContainer.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\SolverParameters.h">
+      <Filter>Parameters\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\SPData.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\SubProblem.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\SubproblemParam.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\SubproblemsPool.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\SubProblemsStackLevel.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\SubProblemsStackPriorityQueue.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\moda\TreeNode.h">
+      <Filter>Data Structures\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\moda\DataSet.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\DataSetParameters.cpp">
+      <Filter>Parameters\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\DynamicStructures.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\DBHVE.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\IQHV.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\Hypervolume.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\HSS.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\ExecutionContext.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\ExecutionPool.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\ExecutionService.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\Helpers.cpp">
+      <Filter>Misc\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\HSSSolver.cpp">
+      <Filter>Solvers\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\DBHVESolver.cpp">
+      <Filter>Solvers\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\MCHVESolver.cpp">
+      <Filter>Solvers\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\QEHC_parallel.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\QEHC_parallel_take2.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\IQHVSolver.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\MCHV.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\ListSet.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\MemoryManager.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\myvector.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\Point.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\NDTree.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\ObjectivesTransformer.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\QEHC.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\QEHCSolver.cpp">
+      <Filter>Solvers\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\QHV_BQSolver.cpp">
+      <Filter>Solvers\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\Solver.cpp">
+      <Filter>Solvers\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\QHV_BR.cpp">
+      <Filter>Solvers\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\QHV_BQ.cpp">
+      <Filter>Backend\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\QR2.cpp">
+      <Filter>Solvers\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\Result.cpp">
+      <Filter>Results\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\SolverParameters.cpp">
+      <Filter>Parameters\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\SubProblem.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\SubproblemsPool.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\SubProblemsStackLevel.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\SubProblemsStackPriorityQueue.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\TreeNode.cpp">
+      <Filter>Data Structures\source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\moda\sources.cmake" />
+  </ItemGroup>
+</Project>
