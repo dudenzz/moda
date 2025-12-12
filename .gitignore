@@ -1,5 +1,5 @@
 .vs
-VisualStudioProjects
+VisualStudioProjects/*
 vcpkg-moda/vcpkg_installed
 
 # Prerequisites
