@@ -423,7 +423,7 @@ namespace moda {
         }
         return ss.str();
     }
-    //ta metoda powinna mieć wersje z rzoszerzeniem pliku (maską)
+    //ta metoda powinna mieć wersje z rozszerzeniem pliku (maską)
     std::vector<DataSet*> DataSet::LoadBulk(const std::string directory)
     {
 

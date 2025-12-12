@@ -41,3 +41,29 @@ VisualStudioProjects/
 
 # debug information files
 *.dwo
+VisualStudioProjects/.vs/VisualStudioProjects/FileContentIndex/4c0187e1-eded-4b1f-af48-b52d8703f22c.vsidx
+VisualStudioProjects/.vs/VisualStudioProjects/FileContentIndex/19b62115-91d6-4aad-8951-39b33508e33f.vsidx
+VisualStudioProjects/.vs/VisualStudioProjects/FileContentIndex/202f43f9-1074-42cf-aaa3-bfd3d0b68446.vsidx
+VisualStudioProjects/.vs/VisualStudioProjects/FileContentIndex/cf6afc42-f5a4-47c4-aa7a-f7df8b4e69c8.vsidx
+VisualStudioProjects/.vs/VisualStudioProjects/FileContentIndex/f4cf412e-2e80-44a8-b345-19b6082a062a.vsidx
+VisualStudioProjects/.vs/VisualStudioProjects/v17/.suo
+VisualStudioProjects/.vs/VisualStudioProjects/v17/Browse.VC.db
+VisualStudioProjects/.vs/VisualStudioProjects/v17/Browse.VC.db-shm
+VisualStudioProjects/.vs/VisualStudioProjects/v17/Browse.VC.db-wal
+VisualStudioProjects/.vs/VisualStudioProjects/v17/Browse.VC.opendb
+VisualStudioProjects/.vs/VisualStudioProjects/v17/ipch/1c63623dfef5926f.ipch
+VisualStudioProjects/.vs/VisualStudioProjects/v17/ipch/9981d90af94564d4.ipch
+VisualStudioProjects/.vs/VisualStudioProjects/v17/ipch/f6f7fdab1918be42.ipch
+VisualStudioProjects/.vs/VisualStudioProjects/v17/ipch/f07a805ead2635fe.ipch
+VisualStudioProjects/.vs/VisualStudioProjects/v17/ipch/AutoPCH/32d6406ef94cc18/DATASET.ipch
+VisualStudioProjects/.vs/VisualStudioProjects/v17/ipch/AutoPCH/71d131a1377f1c7/MODATESTAPPLICATION.ipch
+VisualStudioProjects/.vs/VisualStudioProjects/v17/ipch/AutoPCH/c77b198624a2b0d6/TIMETESTS.ipch
+VisualStudioProjects/.vs/VisualStudioProjects/v17/ipch/AutoPCH/dfe4299d7940ceee/FUNCTIONALTESTS.ipch
+VisualStudioProjects/.vs/VisualStudioProjects/v17/ipch/AutoPCH/ee7fc289861e9ad7/UNITTESTS.ipch
+VisualStudioProjects/.vs/VisualStudioProjects/v17/TestStore/0/000.testlog
+VisualStudioProjects/.vs/VisualStudioProjects/v17/TestStore/0/testlog.manifest
+VisualStudioProjects/ModaTestApplication/x64/Debug/ModaTestApplication.exe.recipe
+*.log
+*.tlog
+*.idb
+*.vsidx
