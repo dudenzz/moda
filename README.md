@@ -22,7 +22,7 @@ If your project uses CMake, integration is automatic and preferred. Simply inclu
 ##### B. Visual Studio (MSBuild) Projects
 For Visual Studio projects, while Vcpkg handles include paths, you may need to manually specify the library file to resolve LNK2001/LNK2019 errors.
 
-1. Locate the Library: Find the compiled library in your Vcpkg installation path, typically: vcpkg\packages\moda_<triplet>\lib\moda.lib
+1. Locate the Library: Find the compiled library in your Vcpkg installation path, typically: vcpkg\packages\moda_<triplet>\lib\moda.lib for Release type projects or vcpkg\packages\moda_<triplet>\debug\lib\modad.lib for Debug type projects.
 
 2. Add to Linker: In Visual Studio, go to Project Properties -> Linker -> Input. Append the full path to moda.lib to the Additional Dependencies property.
 
