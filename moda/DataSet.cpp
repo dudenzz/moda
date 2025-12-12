@@ -458,6 +458,7 @@ namespace moda {
     bool DataSet::add(Point* newPoint)
     {
         parameters.nPoints += 1;
+        parameters.NumberOfObjectives = newPoint->NumberOfObjectives;
         points.push_back(newPoint);
         calculateIdeal();
         calculateNadir();

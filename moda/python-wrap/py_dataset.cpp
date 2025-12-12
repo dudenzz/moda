@@ -1,0 +1,378 @@
+#pragma once
+#include "../DataSet.h"
+#include "../Point.h"
+#include "py_point.cpp"
+#include <Python.h>
+
+#if DTypeN == 2
+#define NPY_DTYPEN NPY_DOUBLE
+#else
+#define NPY_DTYPEN NPY_FLOAT
+#endif
+
+// Structure for the Python DataSet object
+typedef struct {
+    PyObject_HEAD               // Required boilerplate for Python objects
+    moda::DataSet *data_set;    // Pointer to the actual C++ DataSet object
+} DataSetObject;
+
+static void DataSet_dealloc(DataSetObject *self) {
+    if (self->data_set) {
+        // Calling the C++ destructor ensures all contained Point* are deleted, 
+        // nadir and ideal are deleted, and vectors are cleared.
+        delete self->data_set; 
+    }
+    Py_TYPE(self)->tp_free((PyObject *)self);
+}
+
+static int DataSet_init(DataSetObject *self, PyObject *args, PyObject *kwds) {
+    PyObject *first_arg = NULL;
+    
+    // Obsługujemy 0 lub 1 argument
+    if (!PyArg_ParseTuple(args, "|O", &first_arg)) {
+        return -1; // Błąd parsowania
+    }
+
+    try {
+        if (first_arg == NULL) {
+            // SCENARIUSZ 1: DataSet() - Konstruktor domyślny
+            self->data_set = new moda::DataSet();
+            
+        } else if (PyUnicode_Check(first_arg)) {
+            // SCENARIUSZ 2: DataSet(filename: str) - Plik
+            const char *filename_c = PyUnicode_AsUTF8(first_arg);
+            if (!filename_c) return -1; // Błąd konwersji
+            
+            self->data_set = moda::DataSet::LoadFromFilename(std::string(filename_c));
+            
+        } else if (PyArray_Check(first_arg)) {
+            // SCENARIUSZ 3: DataSet(data: numpy.ndarray) - Tablica NumPy
+            
+            PyArrayObject *data_array = (PyArrayObject *)first_arg;
+            
+            // Walidacja 1: Wymiary (musi być tablica 2D)
+            if (PyArray_NDIM(data_array) != 2) {
+                PyErr_SetString(PyExc_ValueError, "Input data must be a 2D NumPy array (N_points x N_objectives).");
+                return -1;
+            }
+
+            // Walidacja 2: Typ danych (musi pasować do DType)
+            // if (PyArray_TYPE(data_array) != NPY_DTYPEN) {
+            //     PyErr_SetString(PyExc_TypeError, "NumPy array dtype must match the C++ DType (float64 or float32).");
+            //     return -1;
+            // }
+            
+            Py_ssize_t n_points = PyArray_DIM(data_array, 0);
+            Py_ssize_t n_objectives = PyArray_DIM(data_array, 1);
+
+            if (n_objectives > MAXOBJECTIVES) {
+                PyErr_Format(PyExc_ValueError, 
+                             "Number of objectives (%zd) exceeds the static MAXOBJECTIVES (%d).", 
+                             n_objectives, MAXOBJECTIVES);
+                return -1;
+            }
+            
+            // 3. Utworzenie obiektu DataSet i załadowanie danych
+            self->data_set = new moda::DataSet((int)n_objectives);
+
+            DType *row_ptr = (DType *)PyArray_DATA(data_array);
+
+            for (Py_ssize_t i = 0; i < n_points; ++i) {
+                // Utworzenie nowego obiektu Point dla każdego wiersza
+                moda::Point *p = new moda::Point();
+                
+                // Kopiowanie danych: row_ptr wskazuje na początek bieżącego wiersza
+                std::copy(row_ptr, 
+                          row_ptr + n_objectives, 
+                          p->ObjectiveValues);
+                
+                // for(int j = 0;j<(int)n_objectives; j++)
+                // {
+                //     std::cout << row_ptr[i*(int)n_objectives + j] << std::endl;
+                //     p->ObjectiveValues[j] = (double)row_ptr[i*(int)n_objectives + j];
+                // }
+                // Ustawienie faktycznej liczby celów
+                p->NumberOfObjectives = (int)n_objectives;
+                // Dodanie punktu do DataSet (DataSet::add dba o resztę)
+                self->data_set->add(p); 
+                
+                // Przejście do następnego wiersza (zakładamy C-ordering)
+                row_ptr += n_objectives; 
+            }
+            
+            // Sprawdzenie i aktualizacja parametrów DataSet po załadowaniu
+            self->data_set->setNumberOfPoints((int)n_points);
+            self->data_set->setDimensionality((int)n_objectives);
+
+
+        } else {
+            // Nieznany typ argumentu
+            PyErr_SetString(PyExc_TypeError, 
+                            "DataSet constructor accepts no arguments, a filename (str), or a 2D numpy.ndarray.");
+            return -1;
+        }
+
+    } catch (const std::runtime_error &e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return -1;
+    } catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "Unknown error during C++ DataSet initialization.");
+        return -1;
+    }
+    
+    return 0; // Sukces
+}
+
+static Py_ssize_t DataSet_len(DataSetObject *self) {
+    return self->data_set->points.size(); 
+}
+
+extern PyTypeObject PointType; // Must be declared globally
+
+static PyObject *DataSet_subscript(DataSetObject *self, PyObject *key) {
+    Py_ssize_t index;
+    // ... (Index validation and normalization logic, similar to Point_ass_item) ...
+    
+    // 1. Retrieve the C++ Point*
+    moda::Point *cpp_point = self->data_set->points.at(index);
+    if (!cpp_point) {
+        // Should not happen if C++ code is stable
+        PyErr_SetString(PyExc_ValueError, "Internal Point pointer is NULL.");
+        return NULL;
+    }
+    
+    // 2. Create a new Python PointObject
+    PointObject *py_point = (PointObject *)PyObject_CallObject((PyObject *)&PointType, NULL);
+    if (!py_point) return NULL;
+    
+    // 3. Set the C++ pointer inside the Python wrapper.
+    // NOTE: Because the Point* is MANAGED by DataSet, we must copy it 
+    // to give the Python object ownership, or decide that the Python object
+    // is just a temporary *reference* (more complex memory model).
+    // For simplicity, we create a copy:
+    delete py_point->point; // Delete the default Point created by PointType init
+    py_point->point = new moda::Point(*cpp_point); // Copy the C++ Point data
+    
+    // 4. Return the new Python wrapper
+    return (PyObject *)py_point;
+}
+static PyObject* DataSet_add(DataSetObject *self, PyObject *args) {
+    PyObject *py_point_obj = NULL;
+    PointObject *point_wrapper;
+    moda::Point *point_to_add;
+
+    // --- 1. Parsowanie argumentów: oczekujemy JEDEN argument typu obiektowego ---
+    if (!PyArg_ParseTuple(args, "O", &py_point_obj)) {
+        return NULL; // PyArg_ParseTuple ustawi błąd
+    }
+
+    // --- 2. Walidacja typu: Sprawdzenie, czy to jest obiekt moda.Point ---
+    // Używamy PyObject_TypeCheck, aby upewnić się, że to jest dokładnie PointType
+    if (!PyObject_TypeCheck(py_point_obj, &PointType)) {
+        PyErr_SetString(PyExc_TypeError, 
+                        "Argument must be an instance of moda.Point.");
+        return NULL;
+    }
+    
+    // Rzutowanie PyObject na PointObject
+    point_wrapper = (PointObject *)py_point_obj;
+
+    // --- 3. Przekazanie własności (Ownership Transfer) ---
+    
+    // Kluczowy krok: C++ DataSet przejmuje wskaźnik. 
+    // Musimy "wyjąć" wskaźnik z obiektu Pythona, aby uniknąć podwójnego zwalniania pamięci.
+
+    // A) Pobieramy wskaźnik C++
+    point_to_add = point_wrapper->point;
+    
+    // B) Zerujemy wskaźnik w obiekcie Pythona (PointObject), aby jego destruktor (dealloc)
+    //    nie próbował zwolnić tego samego miejsca w pamięci.
+    point_wrapper->point = NULL;
+    
+    // C) Py_DECREF (obniżamy licznik referencji) na obiekcie PointObject.
+    //    Jeśli to była ostatnia referencja (co jest pożądane), obiekt Pythona zostanie zniszczony,
+    //    ale jego dealloc nie usunie pamięci C++ Point*, ponieważ ustawiliśmy ją na NULL.
+    Py_DECREF(point_wrapper); 
+    
+    // --- 4. Wywołanie metody C++ ---
+    if (!point_to_add) {
+         PyErr_SetString(PyExc_ValueError, "Internal C++ Point pointer was NULL.");
+         return NULL;
+    }
+    
+    try {
+        bool success = self->data_set->add(point_to_add);
+        
+        // Zwracamy bool Pythona odpowiadający wartości zwracanej przez C++
+        if (success) {
+            Py_RETURN_TRUE;
+        } else {
+            Py_RETURN_FALSE;
+        }
+    } catch (const std::exception &e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return NULL;
+    } catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "Unknown error during DataSet::add.");
+        return NULL;
+    }
+}
+static PyObject* DataSet_normalize(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
+    // Py_UNUSED(ignored) to konwencja dla funkcji C-API, która jest wywoływana
+    // bez argumentów Pythona (METH_NOARGS).
+
+    try {
+        // Wywołanie metody C++
+        self->data_set->normalize();
+
+    } catch (const std::exception &e) {
+        // Obsługa wyjątków C++
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return NULL;
+    } catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "Unknown error during DataSet::normalize.");
+        return NULL;
+    }
+
+    // Metoda C++ zwraca void, więc w Pythonie zwracamy None
+    Py_RETURN_NONE;
+}
+
+static PyObject* DataSet_get_ideal(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
+    moda::Point *cpp_ideal_point;
+    PointObject *py_point_wrapper = NULL;
+
+    try {
+        // --- 1. Wywołanie metody C++ ---
+        // DataSet::getIdeal() zwraca wskaźnik do wewnętrznego punktu.
+        cpp_ideal_point = self->data_set->getIdeal();
+        
+        if (!cpp_ideal_point) {
+            // Jeżeli punkt jest NULL (np. DataSet nie został zainicjowany lub jest pusty)
+            Py_RETURN_NONE; 
+        }
+
+        // --- 2. Utworzenie nowego obiektu Python (Kopia) ---
+        
+        // Alokacja pamięci dla nowego obiektu PointObject
+        py_point_wrapper = (PointObject *)PyObject_CallObject((PyObject *)&PointType, NULL);
+        if (!py_point_wrapper) {
+            // W przypadku błędu alokacji
+            return NULL; 
+        }
+
+        // 3. Skopiowanie danych z wewnętrznego C++ Point* do nowego Python PointObject
+        
+        // Sprawdzamy, czy konstruktor PointType nie utworzył już defaultowego punktu.
+        // Jeśli tak, musimy go usunąć, aby zrobić miejsce na kopię.
+        if (py_point_wrapper->point) {
+            delete py_point_wrapper->point;
+        }
+
+        // Kopiowanie danych: NOWY Point* jest tworzony na stercie (heap) C++.
+        // Ten nowy obiekt C++ jest teraz zarządzany przez Python (przez py_point_wrapper's dealloc).
+        py_point_wrapper->point = new moda::Point(*cpp_ideal_point);
+
+        // --- 4. Zwrot obiektu Pythona ---
+        return (PyObject *)py_point_wrapper;
+
+    } catch (const std::exception &e) {
+        // Upewnij się, że jeśli alokacja py_point_wrapper się powiodła, ale dalszy kod rzucił
+        // wyjątek, musimy zwolnić wrapper. W tym przypadku, PyObject_CallObject
+        // zwraca obiekt z licznikiem referencji 1, więc wystarczy DECREF.
+        if (py_point_wrapper) {
+            Py_DECREF(py_point_wrapper);
+        }
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return NULL;
+    } catch (...) {
+        if (py_point_wrapper) {
+            Py_DECREF(py_point_wrapper);
+        }
+        PyErr_SetString(PyExc_RuntimeError, "Unknown error during DataSet::getIdeal.");
+        return NULL;
+    }
+}
+static PyObject* DataSet_str(DataSetObject *self) {
+    std::string cpp_string;
+    
+    // Sprawdzenie, czy obiekt C++ w ogóle istnieje
+    if (!self->data_set) {
+        return PyUnicode_FromString("<moda.DataSet object (uninitialized C++ pointer)>");
+    }
+
+    try {
+        // --- 1. Wywołanie metody C++ ---
+        cpp_string = self->data_set->to_string();
+
+        // --- 2. Konwersja std::string na PyUnicode (Python string) ---
+        
+        // Używamy PyUnicode_FromStringAndSize, która jest bezpieczna i efektywna
+        // dla konwersji std::string zawierającego dane tekstowe (char*).
+        return PyUnicode_FromStringAndSize(cpp_string.c_str(), cpp_string.length());
+
+    } catch (const std::exception &e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return NULL;
+    } catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "Unknown error during DataSet::to_string().");
+        return NULL;
+    }
+}
+// --- Protocols ---
+static PyMappingMethods DataSet_as_mapping = {
+    (lenfunc)DataSet_len,          // mp_length
+    (binaryfunc)DataSet_subscript, // mp_subscript (ds[i])
+    (objobjargproc)NULL            // We will use a dedicated method for set (ds[i] = p)
+};
+
+static PyMethodDef DataSet_methods[] = {
+    // Expose all public methods here, e.g.:
+    {"add", (PyCFunction)DataSet_add, METH_VARARGS, "Adds a Point to the DataSet."},
+    {"normalize", (PyCFunction)DataSet_normalize, METH_NOARGS, "Normalizes the DataSet."},
+    {"get_ideal", (PyCFunction)DataSet_get_ideal, METH_NOARGS, "Returns the calculated ideal point."},
+    // ... many more methods ...
+    {NULL}  // Sentinel
+};
+
+static PyTypeObject DataSetType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "moda.Dataset",              /* tp_name: Name of the type (module.class) */
+    sizeof(DataSetObject),       /* tp_basicsize: Size of the structure that holds the C++ object */
+    0,                         /* tp_itemsize */
+    (destructor)DataSet_dealloc, /* tp_dealloc: Called when object is garbage collected */
+    0,                         /* tp_print (Deprecated) */
+    0,                         /* tp_getattr (Deprecated) */
+    0,                         /* tp_setattr (Deprecated) */
+    0,                         /* tp_compare (Deprecated) */
+    0,                         /* tp_repr (Optional: string representation) */
+    0,                         /* tp_as_number: Used for arithmetic operators (+, -, *, etc.) */
+    0,                         /* tp_as_sequence: Used for sequence protocols (tuple, list) */
+    &DataSet_as_mapping,         /* tp_as_mapping: Used for indexing (p[i]) */
+    0,                         /* tp_hash */
+    0,                         /* tp_call */
+    (reprfunc)DataSet_str,                         /* tp_str: Used for str(p) */
+    0,                         /* tp_getattro */
+    0,                         /* tp_setattro */
+    0,                         /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT | 
+    Py_TPFLAGS_BASETYPE,       /* tp_flags: Standard flags */
+    "C++ moda::DataSet for storing multiple points.", /* tp_doc: Class documentation */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
+    0,                         /* tp_richcompare: For comparisons (<, >, ==) */
+    0,                         /* tp_weaklistoffset */
+    0,                         /* tp_iter */
+    0,                         /* tp_iternext */
+    DataSet_methods,             /* tp_methods: The static/instance methods table */
+    0,                         /* tp_members */
+    0,                         /* tp_getset */
+    0,                         /* tp_base */
+    0,                         /* tp_dict */
+    0,                         /* tp_descr_get */
+    0,                         /* tp_descr_set */
+    0,                         /* tp_dictoffset */
+    (initproc)DataSet_init,      /* tp_init: Called after allocation (initializes C++ object) */
+    0,                         /* tp_alloc */
+    (newfunc)PyType_GenericNew, /* tp_new: Called to allocate the memory structure */
+};
