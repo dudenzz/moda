@@ -35,7 +35,7 @@ The MODA library follows a Data-Solver-Result pattern. DataSets hold the objecti
 This example demonstrates loading a sample dataset, configuring the IQHVSolver (Improved Quick Hypervolume), and calculating the resulting hypervolume.
 ```cpp
 
-// 1. Load Data
+    // 1. Load Data
     // Loads sample data from file (file must be accessible in execution directory)
     moda::DataSet* ds = moda::DataSet::LoadFromFilename("data_6_500_convex_triangular_1"); 
     
@@ -77,7 +77,8 @@ This example demonstrates loading a sample dataset, configuring the IQHVSolver (
 ## Branching Strategy & Development Lifecycle
 
 This project follows a structured branching model designed to support active development, feature expansion, and Python API integration while keeping the main branch stable for releases and packaging.
-![](docs/images/BranchManagement.drawio.png)
+| ![](docs/images/BranchManagement.drawio.png) | 
+|:----------------------------------------:|
  ### Main Branch (main)
 
 *Purpose:*
