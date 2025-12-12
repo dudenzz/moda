@@ -4,7 +4,7 @@ vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO dudenzz/moda
     REF "${VERSION}"
-    SHA512 dabe10d5ba4e9e5bfcd1b291b16743d3639908fe961f097c89fdb99e71468442bc88d804bead86be572e2469fb28ef1fb86950d6d5201f8c844ad3ac233ea667
+    SHA512 65a8260ef5d24a1e9c105eacac8f0ee68a46f085aefb326d42459229e67f8a53faf3da5fd2d8c2372f124dec2e0df77942c55e40fefde560c98723534d9913d2
     HEAD_REF cmake-sample-lib
 )
 
@@ -25,5 +25,5 @@ vcpkg_cmake_config_fixup(
 vcpkg_install_copyright(
     FILE_LIST "${SOURCE_PATH}/LICENSE"
 )
-
+file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/usage" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
