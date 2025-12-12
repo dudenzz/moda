@@ -1,5 +1,4 @@
 .vs
-VisualStudioProjects/*
 vcpkg-moda/vcpkg_installed
 VisualStudioProjects/
 # Prerequisites
@@ -69,3 +68,10 @@ VisualStudioProjects/ModaTestApplication/x64/Debug/ModaTestApplication.exe.recip
 *.tlog
 *.idb
 *.vsidx
+VisualStudioProjects/ModaTestApplication/x64/Debug/ModaTestApplication.vcxproj.FileListAbsolute.txt
+.gitignore
+VisualStudioProjects/OriginalSolutions/x64/Debug/OriginalSolutions.vcxproj.FileListAbsolute.txt
+VisualStudioProjects/UnitTests/x64/Debug/UnitTests.vcxproj.FileListAbsolute.txt
+VisualStudioProjects/VisualStudioProjects/x64/Debug/VisualStudioProjects.vcxproj.FileListAbsolute.txt
+VisualStudioProjects/UnitTests/x64/Debug/UnitTests.dll.recipe
+VisualStudioProjects/x64/Debug/UnitTests.exp

@@ -22,7 +22,7 @@ If your project uses CMake, integration is automatic and preferred. Simply inclu
 ##### B. Visual Studio (MSBuild) Projects
 For Visual Studio projects, while Vcpkg handles include paths, you may need to manually specify the library file to resolve LNK2001/LNK2019 errors.
 
-1. Locate the Library: Find the compiled library in your Vcpkg installation path, typically: vcpkg\packages\moda_<triplet>\lib\moda.lib
+1. Locate the Library: Find the compiled library in your Vcpkg installation path, typically: vcpkg\packages\moda_<triplet>\lib\moda.lib for Release type projects or vcpkg\packages\moda_<triplet>\debug\lib\modad.lib for Debug type projects.
 
 2. Add to Linker: In Visual Studio, go to Project Properties -> Linker -> Input. Append the full path to moda.lib to the Additional Dependencies property.
 
@@ -35,7 +35,7 @@ The MODA library follows a Data-Solver-Result pattern. DataSets hold the objecti
 This example demonstrates loading a sample dataset, configuring the IQHVSolver (Improved Quick Hypervolume), and calculating the resulting hypervolume.
 ```cpp
 
-// 1. Load Data
+    // 1. Load Data
     // Loads sample data from file (file must be accessible in execution directory)
     moda::DataSet* ds = moda::DataSet::LoadFromFilename("data_6_500_convex_triangular_1"); 
     
@@ -77,7 +77,8 @@ This example demonstrates loading a sample dataset, configuring the IQHVSolver (
 ## Branching Strategy & Development Lifecycle
 
 This project follows a structured branching model designed to support active development, feature expansion, and Python API integration while keeping the main branch stable for releases and packaging.
-![](docs/images/BranchManagement.drawio.png)
+| ![](docs/images/BranchManagement.drawio.png) | 
+|:----------------------------------------:|
  ### Main Branch (main)
 
 *Purpose:*
