@@ -73,3 +73,66 @@ This example demonstrates loading a sample dataset, configuring the IQHVSolver (
     delete ds;
     delete result;
 ```
+
+## Branching Strategy & Development Lifecycle
+
+This project follows a structured branching model designed to support active development, feature expansion, and Python API integration while keeping the main branch stable for releases and packaging.
+![](docs/images/BranchManagement.drawio.png)
+ ### Main Branch (main)
+
+*Purpose:*
+The main branch serves as the source of truth for stable library releases.
+
+It contains code intended for:
+
+    - Versioning
+    - Packaging
+    - Distribution (e.g., vcpkg, PyPI, internal deployment)
+
+*Characteristics*:
+    - Always stable
+    - Updated through pull requests from dev or python-wrap
+    - Tagged for official releases
+
+### Development Branch (dev)
+
+*Purpose*:
+The dev branch is the central hub for active development of the C++ library.
+
+*Characteristics*:
+
+    - Contains ongoing improvements
+    - Integrates completed feature branches
+    - Eventually merged into main once stable
+    - All standard development flows into dev before being prepared for release.
+
+### Feature Branches (feature/*)
+
+*Purpose:*
+Feature branches are used for isolated, focused development of new features or fixes.
+
+*Characteristics:*
+
+Named based on their feature
+
+e.g., 1-matrix-ops, 2-simd-optimizations
+
+Branched from dev
+
+Merged back into dev after completion via pull request
+
+### Python Wrapper Branch (python-wrap)
+
+*Purpose*:
+The python-wrap branch is dedicated solely to the Python C-API wrapper of the C++ library.
+
+*Characteristics*:
+
+Used for independent development of Python bindings
+
+Branched from main
+
+Merged back into main when new wrapper features are complete
+
+
+
