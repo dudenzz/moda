@@ -14,6 +14,15 @@ Currently the library is under pull request review for VCPKG, hence we provide a
 5. Direct to main vcpkg directory and install moda library with the `.\vcpkg.exe install moda` command (by default it installs for x64 architecture, if you wish to use any other architecture, use additional triplet, such as `.\vcpkg.exe install moda:x86-windows-static`)
 6. Run the `.\vcpkg.exe integrate install`
 
+### Installing the python package
+
+Make sure that you have numpy installed (tested for >=1.18.0, preferred >=2.2.6).
+
+0. Set up the Python 3 kernel (at this stage it is preferred to use the library in a controlled virtual environment - `python -m venv .venv` + `source .venv/bin/activate`) 
+1. Clone the repository
+2. Navigate to moda/python-wrap
+3. Install the library with `pip install .`
+
 ## Consuming the library
 
  #####  A. CMake Projects
