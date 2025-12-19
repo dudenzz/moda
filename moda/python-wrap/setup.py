@@ -23,9 +23,14 @@ modamodule = Extension(
               '../DataSetParameters.cpp',
               '../ListSet.cpp',
               '../Helpers.cpp',
+              '../myvector.cpp',
+              '../Result.cpp',
+              '../ExecutionPool.cpp', '../ExecutionContext.cpp', '../ExecutionService.cpp', '../DynamicStructures.cpp',
+              '../SubProblemsStackLevel.cpp', '../SubproblemsPool.cpp', '../SubproblemsStackPriorityQueue.cpp',
               'py_solver_parameters.cpp','../SolverParameters.cpp',
               'py_solver.cpp', '../Solver.cpp',
-              'py_qehc_solver.cpp', '../QEHCSolver.cpp'
+              'py_qehc_solver.cpp', '../QEHCSolver.cpp',
+              '../QEHC.cpp', '../Hypervolume.cpp'
              
             ], 
     include_dirs=[np.get_include(), '.'], # Include numpy headers and local headers

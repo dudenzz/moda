@@ -1,25 +1,19 @@
 // qehc_solver_wrap.h
-#include "py_solver.cpp" // Zawiera definicję SolverObject i SolverType
-#include "../QEHCSolver.cpp"        // Zawiera definicję moda::QEHCSolver
+#include "../QEHCSolver.h"        // Zawiera definicję moda::QEHCSolver
 #include "../Result.h"
-#include "py_dataset.cpp"
-#include "py_solver_parameters.cpp"
-// Struktura dla QEHC Solver (dziedziczy z SolverObject)
-typedef struct {
-    // Odziedziczone pola z SolverObject (PyObject_HEAD i moda::Solver *solver)
-    SolverObject super; 
-    // Brak dodatkowych pól C++ do opakowania w tej klasie pochodnej
-} QEHCSolverObject;
+#include "moda_types.h"
 
-extern PyTypeObject QEHCSolverType;
+
+
+
 
 // Konstruktor/Alokator dla QEHCSolver
-static PyObject *QEHCSolver_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+PyObject *QEHCSolver_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+
     QEHCSolverObject *self;
     
     // Używamy tp_alloc typu bazowego SolverObject, ponieważ QEHCSolverObject to rozszerzenie
     self = (QEHCSolverObject *)SolverType.tp_new(type, args, kwds);
-
     if (self != NULL) {
         // Alokacja obiektu C++ QEHCSolver
         try {
@@ -38,50 +32,45 @@ static PyObject *QEHCSolver_new(PyTypeObject *type, PyObject *args, PyObject *kw
     return (PyObject *)self;
 }
 
-// Inicjalizator
-static int QEHCSolver_init(QEHCSolverObject *self, PyObject *args, PyObject *kwds) {
-    // Jeśli potrzebna jest inicjalizacja z argumentami (np. ustawienia domyślne),
-    // tutaj jest miejsce na parsowanie args/kwds
+// initializer
+int QEHCSolver_init(QEHCSolverObject *self, PyObject *args, PyObject *kwds) {
+    self->super.solver = new moda::QEHCSolver();
     return 0;
 }
 
-// Dealokator
-static void QEHCSolver_dealloc(QEHCSolverObject *self) {
-    // Dealokacja obiektu C++
-    if (self->super.solver != NULL) {
-        // Bezpieczne rzutowanie i usunięcie obiektu
-        delete self->super.solver;
-        self->super.solver = NULL;
+// deallocator
+void QEHCSolver_dealloc(QEHCSolverObject *self) {
+    if (self->super.solver) {
+        delete self->super.solver; // This triggers the chain of destructors
+        self->super.solver = nullptr;
     }
-    
-    // Wywołanie dealokatora typu bazowego (aby zwolnić pola callbacks itd.)
-    SolverType.tp_dealloc((PyObject *)self);
+
+    Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
-// --- Metoda Solve ---
-static PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
+// --- Solve method ---
+PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
     PyObject *py_dataset_obj;
     PyObject *py_params_obj;
-    
-    // Parsowanie argumentów: Oczekujemy DataSet i QEHCParameters
+
+    // Argument parsing
     if (!PyArg_ParseTuple(args, "OO", &py_dataset_obj, &py_params_obj)) {
         return NULL;
     }
 
-    // Walidacja typów (tutaj zakładamy, że mamy ich PyTypeObject)
-    /*
-    if (!PyObject_IsInstance(py_dataset_obj, (PyObject *)&DatasetType) || 
-        !PyObject_IsInstance(py_params_obj, (PyObject *)&QEHCParametersType)) {
-        PyErr_SetString(PyExc_TypeError, "Solve requires a DataSet and QEHCParameters object.");
+
+    // wrapping the python object in the API object type
+    DataSetObject *dataset_wrapper = (DataSetObject *)py_dataset_obj;
+    if (!dataset_wrapper->data_set) {
+        fprintf(stderr, "CRITICAL: DataSet C++ pointer is NULL!\n");
+        fflush(stderr);
         return NULL;
     }
-    */
 
-    // Rzutowanie na obiekty wrapperów
-    DataSetObject *dataset_wrapper = (DataSetObject *)py_dataset_obj;
-    QEHCParametersObject *params_wrapper = (QEHCParametersObject *)py_params_obj;
+    
+    QEHCParametersObject *params_wrapper = (QEHCParametersObject *)py_params_obj;   
 
-    // Walidacja wewnętrznych wskaźników C++
+    // pointers validation
     if (!self->super.solver || !dataset_wrapper->data_set || !params_wrapper->base.params) {
         PyErr_SetString(PyExc_RuntimeError, "Internal C++ object or parameters were not initialized.");
         return NULL;
@@ -90,36 +79,47 @@ static PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
     moda::QEHCResult* result_ptr = NULL;
     moda::QEHCParameters* params =  new moda::QEHCParameters(moda::QEHCParameters::ReferencePointCalculationStyle::exact, moda::QEHCParameters::ReferencePointCalculationStyle::exact);
     try {
-        // Wywołanie metody C++
-        // Uwaga: Funkcja Solve przyjmuje QEHCParameters przez wartość, więc musimy przekazać kopię
-        result_ptr = ((moda::QEHCSolver*)self->super.solver)->Solve(
+
+
+        //static cast
+        moda::QEHCSolver* qehc_ptr = static_cast<moda::QEHCSolver*>(self->super.solver);
+        // calling the method
+        result_ptr = qehc_ptr->Solve(
             dataset_wrapper->data_set, 
-            *params // Dereferencja, aby przekazać przez wartość
+            *params
         );
+
+        delete params;
+
+
     } catch (const std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         return NULL;
     }
 
-    // Tworzenie obiektu Pythona z wyniku (wymaga funkcji fabrycznej QEHCResult_create_from_pointer)
-    // return QEHCResult_create_from_pointer(result_ptr);
+
     
-    // Tymczasowo zwracamy None
-    // if (result_ptr) {
-    //     // UWAGA: Potrzebna dealokacja result_ptr jeśli to Solve alokuje pamięć!
-    //     // delete result_ptr; 
-    // }
-    Py_RETURN_NONE;
+
+    // Create a tuple of size 5
+    PyObject* pyTuple = PyTuple_New(5);
+
+    PyTuple_SetItem(pyTuple, 0, PyFloat_FromDouble(result_ptr->MinimumContribution));
+    PyTuple_SetItem(pyTuple, 1, PyFloat_FromDouble(result_ptr->MaximumContribution));
+    PyTuple_SetItem(pyTuple, 2, PyLong_FromLong(result_ptr->MinimumContributionIndex));
+    PyTuple_SetItem(pyTuple, 3, PyLong_FromLong(result_ptr->MaximumContributionIndex));
+    PyTuple_SetItem(pyTuple, 4, PyLong_FromLong(result_ptr->ElapsedTime));
+    delete result_ptr;
+    return pyTuple;
 }
 
-// Tabela metod
-static PyMethodDef QEHCSolver_methods[] = {
+// methods
+PyMethodDef QEHCSolver_methods[] = {
     {"Solve", (PyCFunction)QEHCSolver_Solve, METH_VARARGS,
      "Solves the optimization problem using QEHC algorithm."},
     {NULL}  /* Sentinel */
 };
 
-static PyTypeObject QEHCSolverType = {
+PyTypeObject QEHCSolverType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "moda.QEHCSolver",             /* tp_name */
     sizeof(QEHCSolverObject),      /* tp_basicsize */

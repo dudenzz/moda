@@ -28,6 +28,8 @@ namespace moda {
 
         QEHCExecutionContext::QEHCExecutionContext(int reserveSize, int initialSize, int numberOfObjectives, bool shallow) : ExecutionContext(reserveSize, initialSize, numberOfObjectives, shallow)
         {
+            process = std::make_shared<moda::ProcessData>(10);
+            subProblemsPool = std::make_shared<moda::SubproblemsPool<moda::SubProblem>>();
             type = ExecutionContext::ExecutionContextType::QEHCContext;
             
         }

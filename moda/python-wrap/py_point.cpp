@@ -6,16 +6,11 @@
 #include <stdexcept>
 #include <cassert>
 #include <algorithm> // For std::copy
+#include "moda_types.h"
 
 
 
-// Structure for the Python Point object
-typedef struct {
-    PyObject_HEAD             // Required boilerplate for Python objects
-    moda::Point *point;       // Pointer to the actual C++ Point object
-} PointObject;
-
-static void Point_dealloc(PointObject *self) {
+void Point_dealloc(PointObject *self) {
     if (self->point) {
         // Clean up the dynamically allocated C++ object
         delete self->point;
@@ -23,7 +18,7 @@ static void Point_dealloc(PointObject *self) {
     Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
-static int Point_init(PointObject *self, PyObject *args, PyObject *kwds) {
+int Point_init(PointObject *self, PyObject *args, PyObject *kwds) {
     PyObject *input_array = NULL;
     
     // --- 1. Allocate C++ object ---
@@ -109,12 +104,12 @@ static int Point_init(PointObject *self, PyObject *args, PyObject *kwds) {
     return 0; // Success
 }
 
-static Py_ssize_t Point_len(PointObject *self) {
+Py_ssize_t Point_len(PointObject *self) {
     // Return the statically defined size (MAXOBJECTIVES, which we aliased to NUM_OBJECTIVES)
     return self->point->NumberOfObjectives; 
 }
 
-static PyObject *Point_subscript(PointObject *self, PyObject *key) {
+PyObject *Point_subscript(PointObject *self, PyObject *key) {
     Py_ssize_t index;
 
     // 1. Get the integer index from the Python key
@@ -134,7 +129,7 @@ static PyObject *Point_subscript(PointObject *self, PyObject *key) {
 }
 // You'll also need Point_ass_item for setting values (p[i] = x)
 
-static PyObject *Point_zeroes(PyTypeObject *type, PyObject *args) {
+PyObject *Point_zeroes(PyTypeObject *type, PyObject *args) {
     // 1. Create a new Python PointObject instance
     PointObject *new_py_point = (PointObject *)PyObject_CallObject((PyObject *)type, NULL);
     if (!new_py_point) return NULL;
@@ -146,7 +141,7 @@ static PyObject *Point_zeroes(PyTypeObject *type, PyObject *args) {
     return (PyObject *)new_py_point;
 }
 
-static PyObject* Point_str(PointObject *self) {
+PyObject* Point_str(PointObject *self) {
     // We will use a fixed-size buffer for efficiency, assuming MAXOBJECTIVES * 20 characters is enough.
     // 20 characters allows for the number + comma + space.
     const size_t MAX_STR_LEN = (size_t)MAXOBJECTIVES * 20 + 32; // +32 for "Point([])" and safety
@@ -188,7 +183,7 @@ static PyObject* Point_str(PointObject *self) {
     return PyUnicode_FromString(buffer);
 }
 
-static int Point_ass_item(PointObject *self, PyObject *key, PyObject *value) {
+int Point_ass_item(PointObject *self, PyObject *key, PyObject *value) {
     Py_ssize_t index;
     DType new_value; // Typ docelowy w C++
 
@@ -252,13 +247,13 @@ static int Point_ass_item(PointObject *self, PyObject *key, PyObject *value) {
 }
 
 // --- C-API Getter Function (for PyGetSetDef) ---
-static PyObject* Point_get_num_objectives(PointObject *self, void *closure) {
+PyObject* Point_get_num_objectives(PointObject *self, void *closure) {
     // Call the C++ getter
     return PyLong_FromLong(self->point->NumberOfObjectives);
 }
 
 // --- C-API Setter Function (for PyGetSetDef) ---
-static int Point_set_num_objectives(PointObject *self, PyObject *value, void *closure) {
+int Point_set_num_objectives(PointObject *self, PyObject *value, void *closure) {
     if (value == NULL) {
         PyErr_SetString(PyExc_TypeError, "Cannot delete the number of objectives attribute");
         return -1;
@@ -281,19 +276,19 @@ static int Point_set_num_objectives(PointObject *self, PyObject *value, void *cl
     
     return 0; // Success
 }
-static PyMappingMethods Point_as_mapping = {
+PyMappingMethods Point_as_mapping = {
     (lenfunc)Point_len,          // mp_length
     (binaryfunc)Point_subscript, // mp_subscript (p[i])
     (objobjargproc)Point_ass_item // mp_ass_subscript (p[i] = x)
 };
 
-static PyMethodDef Point_methods[] = {
+PyMethodDef Point_methods[] = {
     {"zeroes", (PyCFunction)Point_zeroes, METH_STATIC | METH_VARARGS, "Returns a Point initialized to zero."},
     // Add other methods (Distance, Compare, etc.) here
     {NULL}  // Sentinel
 };
 
-static PyGetSetDef Point_getsetters[] = {
+PyGetSetDef Point_getsetters[] = {
     {"NumberOfObjectives", 
      (getter)Point_get_num_objectives, 
      (setter)Point_set_num_objectives,
@@ -302,7 +297,7 @@ static PyGetSetDef Point_getsetters[] = {
     {NULL}  // Sentinel
 };
 
-static PyTypeObject PointType = {
+PyTypeObject PointType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "moda.Point",              /* tp_name: Name of the type (module.class) */
     sizeof(PointObject),       /* tp_basicsize: Size of the structure that holds the C++ object */
@@ -344,7 +339,7 @@ static PyTypeObject PointType = {
     (newfunc)PyType_GenericNew, /* tp_new: Called to allocate the memory structure */
 };
 
-static PyObject* Point_create_copy(moda::Point* cpp_point) {
+PyObject* Point_create_copy(moda::Point* cpp_point) {
     // 1. Walidacja wskaźnika
     if (!cpp_point) {
         Py_RETURN_NONE;

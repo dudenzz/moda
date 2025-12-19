@@ -5,14 +5,13 @@ namespace moda {
 	class ProcessData {
 	public:
 
-		SubProblemsStackLevel subProblemsStack;
+
 		
-		ProcessData(int maxlevel) {
-			subProblemsStack = SubProblemsStackLevel(maxlevel);
-		}
+		ProcessData(int maxlevel): subProblemsStack(maxlevel) { }
 		DType upperBoundVolume;
 		DType lowerBoundVolume;
 		DType totalVolume;
 		int id;
+		SubProblemsStackLevel subProblemsStack;
 	};
 }

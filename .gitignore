@@ -1,6 +1,7 @@
 .vs
 vcpkg-moda/vcpkg_installed
 VisualStudioProjects/
+moda/python-wrap/.venv/*
 # Prerequisites
 *.d
 
@@ -75,3 +76,7 @@ VisualStudioProjects/UnitTests/x64/Debug/UnitTests.vcxproj.FileListAbsolute.txt
 VisualStudioProjects/VisualStudioProjects/x64/Debug/VisualStudioProjects.vcxproj.FileListAbsolute.txt
 VisualStudioProjects/UnitTests/x64/Debug/UnitTests.dll.recipe
 VisualStudioProjects/x64/Debug/UnitTests.exp
+moda/python-wrap/build/temp.win-amd64-cpython-312/moda.cp312-win_amd64.exp
+moda/python-wrap/build/lib.win-amd64-cpython-312/moda.cp312-win_amd64.pyd
+moda/python-wrap/moda.egg-info/*
+*.mp4

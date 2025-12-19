@@ -7,12 +7,7 @@ namespace moda {
 		levels.resize(maxlevel);
 	}
 
-	SubProblemsStackLevel::~SubProblemsStackLevel() {
-		levels[currentLevel].clear();
-		for (auto l : usedLevels) {
-			levels[l].clear();
-		}
-	}
+
 
 	void SubProblemsStackLevel::startIterating() {
 		iteratorLevel = currentLevel;

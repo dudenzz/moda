@@ -27,7 +27,7 @@ namespace moda {
 		}
 		SubProblemsStackLevel(int maxlevel);
 
-		~SubProblemsStackLevel();
+
 
 		void startIterating();
 		int next();
@@ -35,5 +35,8 @@ namespace moda {
 		int back();
 		void pop_back();
 		int size();
+
+		SubProblemsStackLevel(const SubProblemsStackLevel&) = delete;
+		SubProblemsStackLevel& operator=(const SubProblemsStackLevel&) = delete;
 	};
 }

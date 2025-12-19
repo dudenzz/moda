@@ -1,22 +1,15 @@
+#pragma once
+
 #include <Python.h>
 #include "../Solver.h" // Zawiera definicję moda::Solver
-#include "py_point.cpp" // Potrzebne, jeśli będziemy przekazywać Pointy
+#include "moda_types.h"
 
 
-// Struktura dla Solver
-typedef struct {
-    PyObject_HEAD
-    moda::Solver *solver;
-    // Potrzebujemy też miejsca na przechowywanie referencji do obiektów Callbacks
-    PyObject *start_callback; 
-    PyObject *iteration_callback;
-    PyObject *end_callback;
-} SolverObject;
 
 extern PyTypeObject SolverType;
 
 // Dealokator
-static void Solver_dealloc(SolverObject *self) {
+void Solver_dealloc(SolverObject *self) {
     // Ponieważ Solver jest klasą abstrakcyjną, usuwamy tylko, jeśli wskaźnik
     // nie jest NULL i NIE JESTEŚMY w konstruktorze klasy pochodnej
     if (self->solver != NULL) {
@@ -38,7 +31,7 @@ static void Solver_dealloc(SolverObject *self) {
 }
 
 // Konstruktor/Alokator (Blokowanie bezpośredniej instancjacji)
-static PyObject *Solver_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+PyObject *Solver_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
     // Blokujemy instancjację klasy bazowej Solver, jeśli nie jest to klasa pochodna
     if (type == &SolverType) {
         PyErr_SetString(PyExc_TypeError, "Cannot instantiate abstract base class 'Solver'.");
@@ -58,7 +51,7 @@ static PyObject *Solver_new(PyTypeObject *type, PyObject *args, PyObject *kwds) 
 
 // --- Gettery i Settery dla pól ---
 
-static PyObject *Solver_get_currentlySolvedProblem(SolverObject *self, void *closure) {
+PyObject *Solver_get_currentlySolvedProblem(SolverObject *self, void *closure) {
     if (self->solver == NULL || self->solver->currentlySolvedProblem == NULL) {
         Py_RETURN_NONE;
     }
@@ -68,7 +61,7 @@ static PyObject *Solver_get_currentlySolvedProblem(SolverObject *self, void *clo
     Py_RETURN_NONE; 
 }
 
-static PyObject *Solver_get_currentSettings(SolverObject *self, void *closure) {
+PyObject *Solver_get_currentSettings(SolverObject *self, void *closure) {
     if (self->solver == NULL || self->solver->currentSettings == NULL) {
         Py_RETURN_NONE;
     }
@@ -76,7 +69,7 @@ static PyObject *Solver_get_currentSettings(SolverObject *self, void *closure) {
     Py_RETURN_NONE; 
 }
 
-static PyGetSetDef Solver_getsetters[] = {
+PyGetSetDef Solver_getsetters[] = {
     {"currentlySolvedProblem", 
      (getter)Solver_get_currentlySolvedProblem, NULL,
      "The current problem being solved (DataSet*).", NULL},
@@ -98,7 +91,7 @@ static PyGetSetDef Solver_getsetters[] = {
     {NULL}  /* Sentinel */
 };
 
-static PyTypeObject SolverType = {
+PyTypeObject SolverType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "moda.Solver",                 /* tp_name */
     sizeof(SolverObject),          /* tp_basicsize */

@@ -1,9 +1,9 @@
+#pragma once
 #include <Python.h>
+#define PY_ARRAY_UNIQUE_SYMBOL moda_ARRAY_API
 #include <numpy/arrayobject.h> 
-#include "py_point.cpp"      
-#include "py_dataset.cpp" 
-#include "py_solver_parameters.cpp"
-#include "py_solver.cpp"
+#include "moda_types.h"
+
 
 // Forward declarations
 extern PyTypeObject PointType; 
@@ -102,5 +102,6 @@ PyInit_moda(void)
     }
     if (init_ReferencePointCalculationStyle(m) < 0) return NULL;
     if (init_SearchSubjectOption(m) < 0) return NULL;
+    if (init_OptimizationType(m) < 0) return NULL;
     return m;
 }

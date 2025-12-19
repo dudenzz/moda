@@ -1,8 +1,15 @@
 #pragma once
+
+#define PY_ARRAY_UNIQUE_SYMBOL moda_ARRAY_API
+#define NO_IMPORT_ARRAY // Use this in all files EXCEPT the one where you call import_array()
+#include <numpy/arrayobject.h>
+#include "moda_types.h"
+
+
 #include "../DataSet.h"
 #include "../Point.h"
-#include "py_point.cpp"
 #include <Python.h>
+#include "moda_types.h"
 
 #if DTypeN == 2
 #define NPY_DTYPEN NPY_DOUBLE
@@ -10,13 +17,57 @@
 #define NPY_DTYPEN NPY_FLOAT
 #endif
 
-// Structure for the Python DataSet object
-typedef struct {
-    PyObject_HEAD               // Required boilerplate for Python objects
-    moda::DataSet *data_set;    // Pointer to the actual C++ DataSet object
-} DataSetObject;
+//Enum type definition for optimization type
+PyTypeObject OptimizationTypeType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "moda.OptimizationType",
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 17 zer dla tp_basicsize do tp_iternext
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                                   // tp_flags
+    "Optimization type - minimization, maximization"
+};
 
-static void DataSet_dealloc(DataSetObject *self) {
+
+//Enum initializations
+int init_OptimizationType(PyObject *m) {
+    PyObject *enum_type_obj = (PyObject *)&OptimizationTypeType;
+    if (PyType_Ready(&OptimizationTypeType) < 0) {
+            return -1;
+        }
+    // 1. We put the enum into the module
+    Py_INCREF(enum_type_obj);
+    if (PyModule_AddObject(m, "OptimizationType", enum_type_obj) < 0) {
+        Py_DECREF(enum_type_obj);
+        return -1;
+    }
+    
+    // 2. Dictionary acquisition
+    PyObject *dict = ((PyTypeObject *)enum_type_obj)->tp_dict;
+    if (!dict) {
+        PyErr_SetString(PyExc_RuntimeError, "Type dictionary is NULL.");
+        return -1;
+    }
+
+    // Macro for filling the dictionary
+    #define ADD_ENUM_CONST_TO_DICT(name, val) \
+        do { \
+            PyObject *v = PyLong_FromLong(val); \
+            if (!v) return -1; \
+            int result = PyDict_SetItemString(dict, name, v); \
+            Py_DECREF(v); \
+            if (result < 0) return -1; \
+        } while (0)
+
+    // Adding literals to the dictionary
+    ADD_ENUM_CONST_TO_DICT("minimization", moda::DataSet::OptimizationType::minimization);
+    ADD_ENUM_CONST_TO_DICT("maximization", moda::DataSet::OptimizationType::maximization);
+
+
+    #undef ADD_ENUM_CONST_TO_DICT
+    
+    return 0;
+}
+
+void DataSet_dealloc(DataSetObject *self) {
     if (self->data_set) {
         // Calling the C++ destructor ensures all contained Point* are deleted, 
         // nadir and ideal are deleted, and vectors are cleared.
@@ -25,7 +76,7 @@ static void DataSet_dealloc(DataSetObject *self) {
     Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
-static int DataSet_init(DataSetObject *self, PyObject *args, PyObject *kwds) {
+int DataSet_init(DataSetObject *self, PyObject *args, PyObject *kwds) {
     PyObject *first_arg = NULL;
     
     // Obsługujemy 0 lub 1 argument
@@ -123,13 +174,13 @@ static int DataSet_init(DataSetObject *self, PyObject *args, PyObject *kwds) {
     return 0; // Sukces
 }
 
-static Py_ssize_t DataSet_len(DataSetObject *self) {
+Py_ssize_t DataSet_len(DataSetObject *self) {
     return self->data_set->points.size(); 
 }
 
 extern PyTypeObject PointType; // Must be declared globally
 
-static PyObject *DataSet_subscript(DataSetObject *self, PyObject *key) {
+PyObject *DataSet_subscript(DataSetObject *self, PyObject *key) {
     Py_ssize_t index;
     // ... (Index validation and normalization logic, similar to Point_ass_item) ...
     
@@ -156,7 +207,7 @@ static PyObject *DataSet_subscript(DataSetObject *self, PyObject *key) {
     // 4. Return the new Python wrapper
     return (PyObject *)py_point;
 }
-static PyObject* DataSet_add(DataSetObject *self, PyObject *args) {
+PyObject* DataSet_add(DataSetObject *self, PyObject *args) {
     PyObject *py_point_obj = NULL;
     PointObject *point_wrapper;
     moda::Point *point_to_add;
@@ -187,12 +238,12 @@ static PyObject* DataSet_add(DataSetObject *self, PyObject *args) {
     
     // B) Zerujemy wskaźnik w obiekcie Pythona (PointObject), aby jego destruktor (dealloc)
     //    nie próbował zwolnić tego samego miejsca w pamięci.
-    point_wrapper->point = NULL;
+    //point_wrapper->point = NULL;
     
     // C) Py_DECREF (obniżamy licznik referencji) na obiekcie PointObject.
     //    Jeśli to była ostatnia referencja (co jest pożądane), obiekt Pythona zostanie zniszczony,
     //    ale jego dealloc nie usunie pamięci C++ Point*, ponieważ ustawiliśmy ją na NULL.
-    Py_DECREF(point_wrapper); 
+    //Py_DECREF(point_wrapper); 
     
     // --- 4. Wywołanie metody C++ ---
     if (!point_to_add) {
@@ -217,7 +268,7 @@ static PyObject* DataSet_add(DataSetObject *self, PyObject *args) {
         return NULL;
     }
 }
-static PyObject* DataSet_normalize(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
+PyObject* DataSet_normalize(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
     // Py_UNUSED(ignored) to konwencja dla funkcji C-API, która jest wywoływana
     // bez argumentów Pythona (METH_NOARGS).
 
@@ -238,7 +289,7 @@ static PyObject* DataSet_normalize(DataSetObject *self, PyObject *Py_UNUSED(igno
     Py_RETURN_NONE;
 }
 
-static PyObject* DataSet_get_ideal(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
+PyObject* DataSet_get_ideal(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
     moda::Point *cpp_ideal_point;
     PointObject *py_point_wrapper = NULL;
 
@@ -293,7 +344,7 @@ static PyObject* DataSet_get_ideal(DataSetObject *self, PyObject *Py_UNUSED(igno
         return NULL;
     }
 }
-static PyObject* DataSet_str(DataSetObject *self) {
+PyObject* DataSet_str(DataSetObject *self) {
     std::string cpp_string;
     
     // Sprawdzenie, czy obiekt C++ w ogóle istnieje
@@ -320,22 +371,64 @@ static PyObject* DataSet_str(DataSetObject *self) {
     }
 }
 // --- Protocols ---
-static PyMappingMethods DataSet_as_mapping = {
+PyMappingMethods DataSet_as_mapping = {
     (lenfunc)DataSet_len,          // mp_length
     (binaryfunc)DataSet_subscript, // mp_subscript (ds[i])
     (objobjargproc)NULL            // We will use a dedicated method for set (ds[i] = p)
 };
 
-static PyMethodDef DataSet_methods[] = {
+PyMethodDef DataSet_methods[] = {
     // Expose all public methods here, e.g.:
     {"add", (PyCFunction)DataSet_add, METH_VARARGS, "Adds a Point to the DataSet."},
     {"normalize", (PyCFunction)DataSet_normalize, METH_NOARGS, "Normalizes the DataSet."},
     {"get_ideal", (PyCFunction)DataSet_get_ideal, METH_NOARGS, "Returns the calculated ideal point."},
-    // ... many more methods ...
     {NULL}  // Sentinel
 };
 
-static PyTypeObject DataSetType = {
+// GETTER
+PyObject* DataSet_get_typeOfOptimization(DataSetObject *self, void *closure) {
+    if (!self->data_set) {
+        PyErr_SetString(PyExc_RuntimeError, "DataSet pointer is NULL");
+        return NULL;
+    }
+    // Convert C++ Enum to Python Integer
+    return PyLong_FromLong((long)self->data_set->typeOfOptimization);
+}
+
+// SETTER
+int DataSet_set_typeOfOptimization(DataSetObject *self, PyObject *value, void *closure) {
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete typeOfOptimization attribute");
+        return -1;
+    }
+
+    if (!PyLong_Check(value)) {
+        PyErr_SetString(PyExc_TypeError, "typeOfOptimization must be an integer (OptimizationType)");
+        return -1;
+    }
+
+    long val = PyLong_AsLong(value);
+    
+    // Validation: Ensure the value is within the Enum range (0 or 1)
+    if (val < 0 || val > 1) {
+        PyErr_SetString(PyExc_ValueError, "Invalid OptimizationType value");
+        return -1;
+    }
+
+    if (self->data_set) {
+        self->data_set->typeOfOptimization = (moda::DataSet::OptimizationType)val;
+    }
+    return 0;
+}
+static PyGetSetDef DataSet_getseters[] = {
+    {"typeOfOptimization", 
+     (getter)DataSet_get_typeOfOptimization, 
+     (setter)DataSet_set_typeOfOptimization, 
+     "Optimization type (0: minimization, 1: maximization)", 
+     NULL},
+    {NULL}  /* Sentinel */
+};
+PyTypeObject DataSetType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "moda.Dataset",              /* tp_name: Name of the type (module.class) */
     sizeof(DataSetObject),       /* tp_basicsize: Size of the structure that holds the C++ object */
@@ -366,7 +459,7 @@ static PyTypeObject DataSetType = {
     0,                         /* tp_iternext */
     DataSet_methods,             /* tp_methods: The static/instance methods table */
     0,                         /* tp_members */
-    0,                         /* tp_getset */
+    DataSet_getseters,          /* tp_getset */
     0,                         /* tp_base */
     0,                         /* tp_dict */
     0,                         /* tp_descr_get */

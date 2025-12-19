@@ -1,19 +1,18 @@
-import moda
-import numpy as np
-ds1 = moda.DataSet()
-p1 = moda.Point([1,2,3,4])
-p2 = moda.Point([3,4,5,6])
+from pymoo.algorithms.moo.sms import SMSEMOA
+from pymoo.optimize import minimize
+from pymoo.problems import get_problem
+from pymoo.visualization.scatter import Scatter
 
-ds1.add(p1)
-ds1.add(p2)
+problem = get_problem("wfg1", n_var=20, n_obj=3)
+algorithm = SMSEMOA()
 
-print(ds1)
-data = np.array([[1,2,3],[3,4,5]])
-data = data.astype(np.float64)
-ds2 = moda.DataSet(data)
+res = minimize(problem,
+               algorithm,
+               ('n_gen', 100),
+               seed=1,
+               verbose=False)
 
-print(ds2)
-
-ds3 = moda.DataSet('linear_d4n100_1')
-
-print(ds3)
+plot = Scatter()
+plot.add(problem.pareto_front(), plot_type="line", color="black", alpha=0.7)
+plot.add(res.F, color="red")
+plot.show()

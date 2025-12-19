@@ -69,14 +69,13 @@ namespace moda {
         {
         public:
             ~QEHCExecutionContext() {
-                delete process;
-                delete subProblemsPool;
+                //ownership problems
                 objectivesOrder.clear();
             }
             explicit QEHCExecutionContext(int reserveSize, int initialSize, int numberOfObjectives, bool shallow = false);
             int maxIndexUsed = 0;
-            ProcessData* process;
-            SubproblemsPool<SubProblem> *subProblemsPool;
+            std::shared_ptr<ProcessData> process;
+            std::shared_ptr<SubproblemsPool<SubProblem>> subProblemsPool;
             DType maxContributionLowerBound = 0;
             int lowerBoundProcessId = -1;
             DType minContributionUpperBound = 1;

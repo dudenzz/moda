@@ -1,58 +1,50 @@
 #pragma once
+#include <Python.h>
 #include "../SolverParameters.h"
 #include <structmember.h>
-#include <Python.h>
 #include <numpy/arrayobject.h>
-#include "py_point.cpp"
-typedef struct {
-    PyObject_HEAD
-    moda::SolverParameters *params;
-} SolverParametersObject;
+#include "moda_types.h"
 
-typedef struct {
-    SolverParametersObject base; // Musi być PIERWSZE dla dziedziczenia w Pythonie!
-    moda::QEHCParameters *innerParams;
-} QEHCParametersObject;
 
-// Definicja typu (który jest faktycznie tylko przestrzenią nazw dla stałych)
-static PyTypeObject ReferencePointCalculationStyleType = {
+//Enum type definition for reference points calculation style
+PyTypeObject ReferencePointCalculationStyleType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "moda.ReferencePointCalculationStyle",
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 17 zer dla tp_basicsize do tp_iternext
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                                   // tp_flags
-    "Styl kalkulacji punktu referencyjnego (lepszego/gorszego)."
+    "Reference points calculation style"
 };
 
 
 
-// Definicja typu dla enuma dla qehc
-static PyTypeObject SearchSubjectOptionType = {
+// Enum type definition for search subject options
+PyTypeObject SearchSubjectOptionType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "moda.QEHCParameters.SearchSubjectOption",
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, 
-    "Typ problemu dla wkładu QEHCSolver (minimalny, maksymalny lub oba).",
+    "Search Subject (minimum contribution, maximum contribution).",
 };
 
-// Funkcja pomocnicza do inicjalizacji enuma 
-static int init_ReferencePointCalculationStyle(PyObject *m) {
+//Enum initializations
+int init_ReferencePointCalculationStyle(PyObject *m) {
     PyObject *enum_type_obj = (PyObject *)&ReferencePointCalculationStyleType;
 
-    // 1. Zapewniamy, że typ jest w module (to jest OK)
+    // 1. We put the enum into the module
     Py_INCREF(enum_type_obj);
     if (PyModule_AddObject(m, "ReferencePointCalculationStyle", enum_type_obj) < 0) {
         Py_DECREF(enum_type_obj);
         return -1;
     }
     
-    // 2. Pobranie i modyfikacja słownika typu (tp_dict)
+    // 2. Dictionary acquisition
     PyObject *dict = ((PyTypeObject *)enum_type_obj)->tp_dict;
     if (!dict) {
         PyErr_SetString(PyExc_RuntimeError, "Type dictionary is NULL.");
         return -1;
     }
 
-    // Makro pomocnicze do dodawania stałych bezpośrednio do słownika typu
+    // Macro for filling the dictionary
     #define ADD_ENUM_CONST_TO_DICT(name, val) \
         do { \
             PyObject *v = PyLong_FromLong(val); \
@@ -62,7 +54,7 @@ static int init_ReferencePointCalculationStyle(PyObject *m) {
             if (result < 0) return -1; \
         } while (0)
 
-    // Dodanie stałych
+    // Adding literals to the dictionary
     ADD_ENUM_CONST_TO_DICT("epsilon", moda::SolverParameters::epsilon);
     ADD_ENUM_CONST_TO_DICT("tenpercent", moda::SolverParameters::tenpercent);
     ADD_ENUM_CONST_TO_DICT("zeroone", moda::SolverParameters::zeroone);
@@ -73,43 +65,40 @@ static int init_ReferencePointCalculationStyle(PyObject *m) {
     
     return 0;
 }
-// Funkcja pomocnicza do inicjalizacji enuma (wywołana w PyInit_moda)
-static int init_SearchSubjectOption(PyObject *m) {
+//Enum initializations
+int init_SearchSubjectOption(PyObject *m) {
     // Obiekt typu, do którego dodajemy stałe
     PyObject *enum_type_obj = (PyObject *)&SearchSubjectOptionType;
     
-    // 1. Upewnienie się, że typ jest gotowy (już wywołane w PyInit_moda, ale bezpieczne do powtórzenia)
+    // 
     if (PyType_Ready(&SearchSubjectOptionType) < 0) return -1;
     
-    // 2. Dodanie typu do modułu m 
+    // 1. We put the enum into the module
     Py_INCREF(enum_type_obj);
     if (PyModule_AddObject(m, "SearchSubjectOption", enum_type_obj) < 0) {
         Py_DECREF(enum_type_obj);
         return -1;
     }
 
-    // --- NOWY FRAGMENT: BEZPOŚREDNIA MODYFIKACJA SŁOWNIKA TYPU ---
     
-    // 3. Pobranie słownika typu (tp_dict)
+    // 2. Dictionary acquisition
     PyObject *dict = ((PyTypeObject *)enum_type_obj)->tp_dict;
     if (!dict) {
         PyErr_SetString(PyExc_RuntimeError, "Type dictionary is NULL for SearchSubjectOptionType.");
         return -1;
     }
 
-    // Makro pomocnicze do dodawania stałych bezpośrednio do słownika typu
+    // Macro for filling the dictionary
     #define ADD_ENUM_CONST_TO_DICT(name, val) \
         do { \
-            /* Tworzenie obiektu PyLong z wartości int */ \
             PyObject *v = PyLong_FromLong(val); \
             if (!v) return -1; \
-            /* Dodawanie do słownika typu za pomocą PyDict_SetItemString */ \
             int result = PyDict_SetItemString(dict, name, v); \
             Py_DECREF(v); \
             if (result < 0) return -1; \
         } while (0)
 
-    // 4. Dodanie stałych
+    // 4. Adding literals to the dictionary
     ADD_ENUM_CONST_TO_DICT("MinimumContribution", moda::QEHCParameters::MinimumContribution);
     ADD_ENUM_CONST_TO_DICT("MaximumContribution", moda::QEHCParameters::MaximumContribution);
     ADD_ENUM_CONST_TO_DICT("Both", moda::QEHCParameters::Both);
@@ -119,14 +108,14 @@ static int init_SearchSubjectOption(PyObject *m) {
     return 0;
 }
 
-static void SolverParameters_dealloc(SolverParametersObject *self) {
+void SolverParameters_dealloc(SolverParametersObject *self) {
     if (self->params) {
         delete self->params;
     }
     Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
-static int SolverParameters_init(SolverParametersObject *self, PyObject *args, PyObject *kwds) {
+int SolverParameters_init(SolverParametersObject *self, PyObject *args, PyObject *kwds) {
     // Parser argumentów: wszystkie opcjonalne, na podstawie domyślnego konstruktora C++
     int worseStyle = moda::SolverParameters::epsilon;
     int betterStyle = moda::SolverParameters::epsilon;
@@ -156,11 +145,11 @@ static int SolverParameters_init(SolverParametersObject *self, PyObject *args, P
 
 
 
-static PyObject *SolverParameters_get_WorseStyle(SolverParametersObject *self, void *closure) {
+PyObject *SolverParameters_get_WorseStyle(SolverParametersObject *self, void *closure) {
     return PyLong_FromLong((long)self->params->WorseReferencePointCalculationStyle);
 }
 
-static int SolverParameters_set_WorseStyle(SolverParametersObject *self, PyObject *value, void *closure) {
+int SolverParameters_set_WorseStyle(SolverParametersObject *self, PyObject *value, void *closure) {
     if (value == NULL) {
         PyErr_SetString(PyExc_AttributeError, "Cannot delete the WorseReferencePointCalculationStyle attribute");
         return -1;
@@ -174,11 +163,11 @@ static int SolverParameters_set_WorseStyle(SolverParametersObject *self, PyObjec
     return 0;
 }
 
-static PyObject *SolverParameters_get_BetterStyle(SolverParametersObject *self, void *closure) {
+PyObject *SolverParameters_get_BetterStyle(SolverParametersObject *self, void *closure) {
     return PyLong_FromLong((long)self->params->BetterReferencePointCalculationStyle);
 }
 
-static int SolverParameters_set_BetterStyle(SolverParametersObject *self, PyObject *value, void *closure) {
+int SolverParameters_set_BetterStyle(SolverParametersObject *self, PyObject *value, void *closure) {
     if (value == NULL) {
         PyErr_SetString(PyExc_AttributeError, "Cannot delete the BetterReferencePointCalculationStyle attribute");
         return -1;
@@ -193,7 +182,7 @@ static int SolverParameters_set_BetterStyle(SolverParametersObject *self, PyObje
 }
 
 
-static PyObject *SolverParameters_get_betterRefPoint(SolverParametersObject *self, void *closure) {
+PyObject *SolverParameters_get_betterRefPoint(SolverParametersObject *self, void *closure) {
     if (!self->params->betterReferencePoint) {
         Py_RETURN_NONE;
     }
@@ -212,7 +201,7 @@ static PyObject *SolverParameters_get_betterRefPoint(SolverParametersObject *sel
     }
 }
 
-static PyObject *SolverParameters_get_worseRefPoint(SolverParametersObject *self, void *closure) {
+PyObject *SolverParameters_get_worseRefPoint(SolverParametersObject *self, void *closure) {
     if (!self->params->betterReferencePoint) {
         Py_RETURN_NONE;
     }
@@ -231,7 +220,7 @@ static PyObject *SolverParameters_get_worseRefPoint(SolverParametersObject *self
     }
 }
 
-static PyGetSetDef SolverParameters_getsetters[] = {
+PyGetSetDef SolverParameters_getsetters[] = {
     {"WorseReferencePointCalculationStyle", 
      (getter)SolverParameters_get_WorseStyle, (setter)SolverParameters_set_WorseStyle,
      "ReferencePointCalculationStyle for the worse reference point.", NULL},
@@ -250,29 +239,29 @@ static PyGetSetDef SolverParameters_getsetters[] = {
     {NULL}  /* Sentinel */
 };
 
-static PyMemberDef SolverParameters_members[] = {
-    {"callbacks", 
-     T_BOOL, 
-     offsetof(SolverParametersObject, params) + offsetof(moda::SolverParameters, callbacks), 
-     0,
-     "should the solver use iteration callbacks"},
+// PyMemberDef SolverParameters_members[] = {
+//     {"callbacks", 
+//      T_BOOL, 
+//      offsetof(SolverParametersObject, params) + offsetof(moda::SolverParameters, callbacks), 
+//      0,
+//      "should the solver use iteration callbacks"},
      
-    {"MaxEstimationTime", 
-     T_INT, 
-     offsetof(SolverParametersObject, params) + offsetof(moda::SolverParameters, MaxEstimationTime), 
-     0,
-     "maximum time of estimation in ms"},
+//     {"MaxEstimationTime", 
+//      T_INT, 
+//      offsetof(SolverParametersObject, params) + offsetof(moda::SolverParameters, MaxEstimationTime), 
+//      0,
+//      "maximum time of estimation in ms"},
      
-    {"seed", 
-     T_UINT, // unsigned int
-     offsetof(SolverParametersObject, params) + offsetof(moda::SolverParameters, seed), 
-     0,
-     "Custom random seed"},
+//     {"seed", 
+//      T_UINT, // unsigned int
+//      offsetof(SolverParametersObject, params) + offsetof(moda::SolverParameters, seed), 
+//      0,
+//      "Custom random seed"},
      
-    {NULL}
-};
+//     {NULL}
+// };
 
-static PyTypeObject SolverParametersType = {
+PyTypeObject SolverParametersType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "moda.SolverParameters",                    /* tp_name */
     sizeof(SolverParametersObject),             /* tp_basicsize */
@@ -301,7 +290,7 @@ static PyTypeObject SolverParametersType = {
     0,                                          /* tp_iter */ 
     0,                                          /* tp_iternext */ 
     NULL,                                       /* tp_methods (dla GetWorse/BetterReferencePoint) */
-    SolverParameters_members,                   /* tp_members */
+    0,                                          /* tp_members */
     SolverParameters_getsetters,                /* tp_getset */
     0,                                          /* tp_base */
     0,                                          /* tp_dict */
@@ -315,7 +304,7 @@ static PyTypeObject SolverParametersType = {
 
 
 
-static int QEHCParameters_init(QEHCParametersObject *self, PyObject *args, PyObject *kwds) {
+int QEHCParameters_init(QEHCParametersObject *self, PyObject *args, PyObject *kwds) {
     // 1. Wywołanie konstruktora klasy bazowej (SolverParameters_init)
     // Zapewniamy, że pole 'base.params' zostanie zainicjalizowane na moda::SolverParameters*.
     // Jeśli nie wywołamy init klasy bazowej, musimy sami zaalokować pamięć i ją skonstruować.
@@ -371,12 +360,12 @@ static int QEHCParameters_init(QEHCParametersObject *self, PyObject *args, PyObj
 }
 
 // --- Get/Set dla SearchSubject (Enum) ---
-static PyObject *QEHCParameters_get_SearchSubject(QEHCParametersObject *self, void *closure) {
+PyObject *QEHCParameters_get_SearchSubject(QEHCParametersObject *self, void *closure) {
     moda::QEHCParameters* qehc_params = (moda::QEHCParameters*)self->base.params;
     return PyLong_FromLong((long)qehc_params->SearchSubject);
 }
 
-static int QEHCParameters_set_SearchSubject(QEHCParametersObject *self, PyObject *value, void *closure) {
+int QEHCParameters_set_SearchSubject(QEHCParametersObject *self, PyObject *value, void *closure) {
     if (value == NULL) {
         PyErr_SetString(PyExc_AttributeError, "Cannot delete the SearchSubject attribute");
         return -1;
@@ -390,8 +379,30 @@ static int QEHCParameters_set_SearchSubject(QEHCParametersObject *self, PyObject
     ((moda::QEHCParameters*)self->base.params)->SearchSubject = (moda::QEHCParameters::SearchSubjectOption)style_val;
     return 0;
 }
+PyObject* QEHCParameters_get_iterationsLimit(QEHCParametersObject *self, void *closure) {
+    if (!self->base.params) { PyErr_SetString(PyExc_RuntimeError, "C++ object not init"); return NULL; }
+    moda::QEHCParameters* cast = static_cast<moda::QEHCParameters*>(self->base.params);
+    return PyLong_FromUnsignedLongLong(cast->iterationsLimit);
+}
 
-static PyGetSetDef QEHCParameters_getsetters[] = {
+static int QEHCParameters_set_iterationsLimit(QEHCParametersObject *self, PyObject *value, void *closure) {
+    if (!self->base.params) {
+        PyErr_SetString(PyExc_RuntimeError, "Internal C++ parameters not initialized");
+        return -1;
+    }
+
+    // Convert Python object to C++ type
+    unsigned long val = PyLong_AsUnsignedLong(value);
+    if (PyErr_Occurred()) return -1;
+
+    // CAST: Access the member via the derived class pointer
+    static_cast<moda::QEHCParameters*>(self->base.params)->iterationsLimit = val;
+    
+    return 0;
+}
+PyGetSetDef QEHCParameters_getsetters[] = {
+    {"iterationsLimit", (getter)QEHCParameters_get_iterationsLimit, (setter)QEHCParameters_set_iterationsLimit, "Limit docs", NULL},
+  
     {"SearchSubject", 
      (getter)QEHCParameters_get_SearchSubject, (setter)QEHCParameters_set_SearchSubject,
      "Type of the problem for the QEHCSolver contribution.", NULL},
@@ -399,43 +410,39 @@ static PyGetSetDef QEHCParameters_getsetters[] = {
 };
 
 
-// --- Mapowanie Pól (PyMemberDef) ---
-// Używamy T_ULONGLONG dla unsigned long int (lub T_ULONG), T_BOOL, T_INT
-static PyMemberDef QEHCParameters_members[] = {
-    {"iterationsLimit", 
-     T_ULONGLONG, // lub T_ULONG, zależy od platformy
-     offsetof(QEHCParametersObject, base.params) + offsetof(moda::QEHCParameters, iterationsLimit), 
-     0,
-     "iterations limit for QEHCSolver"},
+// // --- Mapowanie Pól (PyMemberDef) ---
+// // Używamy T_ULONGLONG dla unsigned long int (lub T_ULONG), T_BOOL, T_INT
+// PyGetSetDef QEHCParameters_getsetters[] = {
+    
+   
+//     // {"shuffle", 
+//     //  T_BOOL, 
+//     //  offsetof(QEHCParametersObject, base.params) + offsetof(moda::QEHCParameters, shuffle), 
+//     //  0,
+//     //  "If sorting is not allowed, should the set be shuffled."},
      
-    {"shuffle", 
-     T_BOOL, 
-     offsetof(QEHCParametersObject, base.params) + offsetof(moda::QEHCParameters, shuffle), 
-     0,
-     "If sorting is not allowed, should the set be shuffled."},
+//     // {"offset", 
+//     //  T_INT, 
+//     //  offsetof(QEHCParametersObject, base.params) + offsetof(moda::QEHCParameters, offset), 
+//     //  0,
+//     //  "If set is being rotated, indicates rotation offset."},
      
-    {"offset", 
-     T_INT, 
-     offsetof(QEHCParametersObject, base.params) + offsetof(moda::QEHCParameters, offset), 
-     0,
-     "If set is being rotated, indicates rotation offset."},
+//     // {"sort", 
+//     //  T_BOOL, 
+//     //  offsetof(QEHCParametersObject, base.params) + offsetof(moda::QEHCParameters, sort), 
+//     //  0,
+//     //  "Is sorting allowed in QEHCSolver."},
      
-    {"sort", 
-     T_BOOL, 
-     offsetof(QEHCParametersObject, base.params) + offsetof(moda::QEHCParameters, sort), 
-     0,
-     "Is sorting allowed in QEHCSolver."},
+//     // {"maxlevel", 
+//     //  T_INT, 
+//     //  offsetof(QEHCParametersObject, base.params) + offsetof(moda::QEHCParameters, maxlevel), 
+//     //  0,
+//     //  "Maximum level parameter."},
      
-    {"maxlevel", 
-     T_INT, 
-     offsetof(QEHCParametersObject, base.params) + offsetof(moda::QEHCParameters, maxlevel), 
-     0,
-     "Maximum level parameter."},
-     
-    {NULL}  // Sentinel
-};
+//     {NULL}  // Sentinel
+// };
 
-static PyTypeObject QEHCParametersType = {
+PyTypeObject QEHCParametersType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "moda.QEHCParameters",                    /* tp_name */
     sizeof(QEHCParametersObject),             /* tp_basicsize */
@@ -464,7 +471,7 @@ static PyTypeObject QEHCParametersType = {
     0,                                          /* tp_iter */ 
     0,                                          /* tp_iternext */ 
     NULL,                                       /* tp_methods (dla GetWorse/BetterReferencePoint) */
-    QEHCParameters_members,                     /* tp_members */
+    0,                                          /* tp_members */
     QEHCParameters_getsetters,                  /* tp_getset */
     &SolverParametersType,                      /* tp_base */
     0,                                          /* tp_dict */
