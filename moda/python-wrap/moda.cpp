@@ -10,9 +10,14 @@ extern PyTypeObject PointType;
 extern PyTypeObject DatasetType; 
 extern PyTypeObject SolverType; 
 extern PyTypeObject QEHCSolverType;
+extern PyTypeObject IQHVSolverType;
 extern PyTypeObject ReferencePointCalculationStyleType;
 extern PyTypeObject SearchSubjectOptionType;
+extern PyTypeObject SubsetSelectionStrategyType;
+extern PyTypeObject StoppingCriteriaTypeType;
 extern PyTypeObject QEHCParametersType;
+extern PyTypeObject IQHVParametersType;
+extern PyTypeObject HSSParametersType;
 extern PyTypeObject SolverParametersType;
 // --- Module Methods ---
 static PyMethodDef ModaMethods[] = {
@@ -46,15 +51,24 @@ PyInit_moda(void)
         return NULL;
     if (PyType_Ready(&QEHCParametersType) < 0)
         return NULL;
+    if (PyType_Ready(&IQHVParametersType) < 0)
+        return NULL;    
+    if (PyType_Ready(&HSSParametersType) < 0)
+        return NULL;
     if (PyType_Ready(&ReferencePointCalculationStyleType) < 0)
         return NULL;
     if (PyType_Ready(&SearchSubjectOptionType) < 0)
+        return NULL;
+    if (PyType_Ready(&SubsetSelectionStrategyType) < 0)
+        return NULL;
+    if (PyType_Ready(&StoppingCriteriaTypeType) < 0)
         return NULL;
     if (PyType_Ready(&SolverType) < 0) 
         return NULL;
     if (PyType_Ready(&QEHCSolverType) < 0) 
         return NULL;
-
+    if (PyType_Ready(&IQHVSolverType) < 0) 
+        return NULL;
 
 
     // 2. Create the module object
@@ -90,6 +104,18 @@ PyInit_moda(void)
         Py_DECREF(m);
         return NULL;
     }
+    Py_INCREF(&IQHVParametersType);
+    if (PyModule_AddObject(m, "IQHVParameters", (PyObject *)&IQHVParametersType) < 0) {
+        Py_DECREF(&IQHVParametersType);
+        Py_DECREF(m);
+        return NULL;
+    }
+    Py_INCREF(&HSSParametersType);
+    if (PyModule_AddObject(m, "HSSParameters", (PyObject *)&HSSParametersType) < 0) {
+        Py_DECREF(&HSSParametersType);
+        Py_DECREF(m);
+        return NULL;
+    }
     Py_INCREF(&SolverType);
     if (PyModule_AddObject(m, "Solver", (PyObject *)&SolverType) < 0) {
         Py_DECREF(&SolverType);
@@ -100,8 +126,14 @@ PyInit_moda(void)
     if (PyModule_AddObject(m, "QEHCSolver", (PyObject *)&QEHCSolverType) < 0) {
         Py_DECREF(&QEHCSolverType); Py_DECREF(m); return NULL;
     }
+        Py_INCREF(&IQHVSolverType);
+    if (PyModule_AddObject(m, "IQHVSolver", (PyObject *)&IQHVSolverType) < 0) {
+        Py_DECREF(&IQHVSolverType); Py_DECREF(m); return NULL;
+    }
     if (init_ReferencePointCalculationStyle(m) < 0) return NULL;
     if (init_SearchSubjectOption(m) < 0) return NULL;
     if (init_OptimizationType(m) < 0) return NULL;
+    if (init_SubsetSelectionStrategy(m) < 0) return NULL;
+    if (init_StoppingCriteriaType(m) < 0) return NULL;
     return m;
 }

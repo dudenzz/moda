@@ -79,4 +79,3 @@ VisualStudioProjects/x64/Debug/UnitTests.exp
 moda/python-wrap/build/temp.win-amd64-cpython-312/moda.cp312-win_amd64.exp
 moda/python-wrap/build/lib.win-amd64-cpython-312/moda.cp312-win_amd64.pyd
 moda/python-wrap/moda.egg-info/*
-*.mp4

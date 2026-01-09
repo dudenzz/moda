@@ -5,23 +5,27 @@
 #include "../Point.h"
 #include "../myvector.h"
 
-// Struktura dla Solver
+// Base Solver
 typedef struct {
     PyObject_HEAD
     moda::Solver *solver;
-    // Potrzebujemy też miejsca na przechowywanie referencji do obiektów Callbacks
+    // callbacks
     PyObject *start_callback; 
     PyObject *iteration_callback;
     PyObject *end_callback;
 } SolverObject;
 
-// 2. Define the derived structure
+//  Derived solvers
 typedef struct {
     SolverObject super; 
     moda::myvector<moda::Point*> indexSet;
 } QEHCSolverObject;
 
-// 3. Define the DataSet structure
+typedef struct {
+    SolverObject super; 
+} IQHVSolverObject;
+
+// Data containers
 typedef struct {
     PyObject_HEAD
     moda::DataSet *data_set;
@@ -33,15 +37,26 @@ typedef struct {
     moda::Point *point;       // Pointer to the actual C++ Point object
 } PointObject;
 
+// Parameters
 typedef struct {
     PyObject_HEAD
     moda::SolverParameters *params;
 } SolverParametersObject;
 
 typedef struct {
-    SolverParametersObject base; // Musi być PIERWSZE dla dziedziczenia w Pythonie!
+    SolverParametersObject base; 
     moda::QEHCParameters *innerParams;
 } QEHCParametersObject;
+
+typedef struct {
+    SolverParametersObject base; 
+    moda::IQHVParameters *innerParams;
+} IQHVParametersObject;
+
+typedef struct {
+    SolverParametersObject base; 
+    moda::HSSParameters *innerParams;
+} HSSParametersObject;
 
 // 4. Declare the Type objects as extern so other files can see them
 #ifdef __cplusplus
@@ -51,18 +66,26 @@ extern "C" {
 // 1. Declare the Types
 extern PyTypeObject SolverType;
 extern PyTypeObject QEHCSolverType;
+extern PyTypeObject IQHVSolverType;
 extern PyTypeObject DataSetType;
 extern PyTypeObject PointType;
 extern PyTypeObject QEHCParametersType;
+extern PyTypeObject IQHVParametersType;
+extern PyTypeObject HSSParametersType;
 extern PyTypeObject SolverParametersType;
 extern PyTypeObject ReferencePointCalculationStyleType;
 extern PyTypeObject SearchSubjectOptionType;
+extern PyTypeObject StoppingCriteriaTypeType;
+extern PyTypeObject SubsetSelectionStrategyType;
 extern PyTypeObject OptimizationTypeType;
 
 // 2. Declare the Helper Functions
 int init_SearchSubjectOption(PyObject *m);
 int init_ReferencePointCalculationStyle(PyObject *m);
+int init_SubsetSelectionStrategy(PyObject *m);
+int init_StoppingCriteriaType(PyObject *m);
 int init_OptimizationType(PyObject *m);
+
 
 PyObject* Point_create_copy(moda::Point* cpp_point);
 
