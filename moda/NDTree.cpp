@@ -132,7 +132,6 @@ namespace moda {
 		return ds;
 	}
 	template <class Solution> NDTree<Solution>::NDTree(DataSet dataset, bool maximization) {
-		int j;
 		this->maximization = maximization;
 		NumberOfObjectives = dataset.getParameters()->NumberOfObjectives;
 

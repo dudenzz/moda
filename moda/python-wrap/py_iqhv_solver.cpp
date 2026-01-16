@@ -76,11 +76,13 @@ PyObject *IQHVSolver_Solve(IQHVSolverObject *self, PyObject *args) {
         return NULL;
     }
 
-    moda::IQHVResult* result_ptr = NULL;
-    moda::IQHVParameters* params =  new moda::IQHVParameters(moda::IQHVParameters::ReferencePointCalculationStyle::exact, moda::IQHVParameters::ReferencePointCalculationStyle::exact);
+    moda::HypervolumeResult* result_ptr = NULL;
+    moda::IQHVParameters* params =  new moda::IQHVParameters(moda::IQHVParameters::ReferencePointCalculationStyle::pymoo, moda::IQHVParameters::ReferencePointCalculationStyle::pymoo);
     try {
 
-
+        // params->WorseReferencePointCalculationStyle = static_cast<moda::IQHVParameters*>(params_wrapper->base.params)->WorseReferencePointCalculationStyle;
+        // params->BetterReferencePointCalculationStyle = static_cast<moda::IQHVParameters*>(params_wrapper->base.params)->BetterReferencePointCalculationStyle;
+      
         //static cast
         moda::IQHVSolver* iqhv_ptr = static_cast<moda::IQHVSolver*>(self->super.solver);
         // calling the method

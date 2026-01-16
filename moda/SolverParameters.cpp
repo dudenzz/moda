@@ -62,9 +62,12 @@ namespace moda
 
 		case ReferencePointCalculationStyle::zeroone:
 			return new Point(Point::ones(dataset->getParameters()->NumberOfObjectives));
+		case ReferencePointCalculationStyle::pymoo:
+			return new Point(*dataset->getIdeal() + 0.1);
 		case ReferencePointCalculationStyle::exact:
 			ide = dataset->getIdeal();
 			return new Point(*ide);
+	
 		case ReferencePointCalculationStyle::epsilon:
 		default:
 			Point t =  *(dataset->getIdeal()) + EPSILON;
@@ -86,6 +89,8 @@ namespace moda
 			return new Point(Point::zeroes(dataset->getParameters()->NumberOfObjectives));
 		case ReferencePointCalculationStyle::exact:
 			return new Point(*dataset->getNadir());
+		case ReferencePointCalculationStyle::pymoo:
+			return new Point(*dataset->getNadir() - 0.1);
 		case ReferencePointCalculationStyle::epsilon:
 		default:
 			Point t = *(dataset->getNadir()) - EPSILON;

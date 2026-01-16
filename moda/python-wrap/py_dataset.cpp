@@ -289,6 +289,27 @@ PyObject* DataSet_normalize(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
     Py_RETURN_NONE;
 }
 
+PyObject* DataSet_reverse(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
+    // Py_UNUSED(ignored) to konwencja dla funkcji C-API, która jest wywoływana
+    // bez argumentów Pythona (METH_NOARGS).
+
+    try {
+        
+        self->data_set->reverseObjectives();
+
+    } catch (const std::exception &e) {
+       
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return NULL;
+    } catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "Unknown error during DataSet::reverseObjectives.");
+        return NULL;
+    }
+
+    // it's a procedure, does not have any return value
+    Py_RETURN_NONE;
+}
+
 PyObject* DataSet_get_ideal(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
     moda::Point *cpp_ideal_point;
     PointObject *py_point_wrapper = NULL;
@@ -382,6 +403,7 @@ PyMethodDef DataSet_methods[] = {
     {"add", (PyCFunction)DataSet_add, METH_VARARGS, "Adds a Point to the DataSet."},
     {"normalize", (PyCFunction)DataSet_normalize, METH_NOARGS, "Normalizes the DataSet."},
     {"get_ideal", (PyCFunction)DataSet_get_ideal, METH_NOARGS, "Returns the calculated ideal point."},
+    {"reverse", (PyCFunction)DataSet_reverse, METH_NOARGS, "Reverses objective values."},
     {NULL}  // Sentinel
 };
 

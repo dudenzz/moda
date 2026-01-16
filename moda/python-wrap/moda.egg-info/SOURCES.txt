@@ -1,5 +1,7 @@
 moda.cpp
 py_dataset.cpp
+py_hss_solver.cpp
+py_iqhv_solver.cpp
 py_point.cpp
 py_qehc_solver.cpp
 py_solver.cpp
@@ -11,10 +13,15 @@ setup.py
 ../ExecutionContext.cpp
 ../ExecutionPool.cpp
 ../ExecutionService.cpp
+../HSS.cpp
+../HSSSolver.cpp
 ../Helpers.cpp
 ../Hypervolume.cpp
+../IQHV.cpp
+../IQHVSolver.cpp
 ../ListSet.cpp
 ../NDTree.cpp
+../ObjectivesTransformer.cpp
 ../Point.cpp
 ../QEHC.cpp
 ../QEHCSolver.cpp

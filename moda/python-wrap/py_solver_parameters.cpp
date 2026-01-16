@@ -78,6 +78,7 @@ int init_ReferencePointCalculationStyle(PyObject *m) {
     ADD_ENUM_CONST_TO_DICT("tenpercent", moda::SolverParameters::tenpercent);
     ADD_ENUM_CONST_TO_DICT("zeroone", moda::SolverParameters::zeroone);
     ADD_ENUM_CONST_TO_DICT("userdefined", moda::SolverParameters::userdefined);
+    ADD_ENUM_CONST_TO_DICT("pymoo", moda::SolverParameters::pymoo);
     ADD_ENUM_CONST_TO_DICT("exact", moda::SolverParameters::exact);
 
     #undef ADD_ENUM_CONST_TO_DICT
@@ -204,8 +205,8 @@ int init_SubsetSelectionStrategy(PyObject *m) {
         } while (0)
 
     // 4. Adding literals to the dictionary
-    ADD_ENUM_CONST_TO_DICT("Incremental", moda::HSSParameters::MinimumContribution);
-    ADD_ENUM_CONST_TO_DICT("Decremental", moda::HSSParameters::MaximumContribution);
+    ADD_ENUM_CONST_TO_DICT("Incremental", moda::HSSParameters::Incremental);
+    ADD_ENUM_CONST_TO_DICT("Decremental", moda::HSSParameters::Decremental);
 
     
     #undef ADD_ENUM_CONST_TO_DICT
@@ -554,7 +555,7 @@ PyTypeObject QEHCParametersType = {
 #pragma endregion
 #pragma region IQHV
 
-int IQHVParameters_init(IQHVParameters *self, PyObject *args, PyObject *kwds) {
+int IQHVParameters_init(IQHVParametersObject *self, PyObject *args, PyObject *kwds) {
    
     // Proper memory allocation
     if (self->base.params == NULL) {
@@ -562,7 +563,7 @@ int IQHVParameters_init(IQHVParameters *self, PyObject *args, PyObject *kwds) {
             // Allocate size of the derived object to the base object
             self->base.params = new moda::IQHVParameters();
         } catch (const std::bad_alloc& e) {
-            PyErr_SetString(PyExc_MemoryError, "Failed to allocate memory for QEHCParameters.");
+            PyErr_SetString(PyExc_MemoryError, "Failed to allocate memory for IQHVParameters.");
             return -1;
         }
     }
@@ -653,7 +654,7 @@ int HSSParameters_init(HSSParametersObject *self, PyObject *args, PyObject *kwds
             
             self->base.params = new moda::HSSParameters();
         } catch (const std::bad_alloc& e) {
-            PyErr_SetString(PyExc_MemoryError, "Failed to allocate memory for QEHCParameters.");
+            PyErr_SetString(PyExc_MemoryError, "Failed to allocate memory for HSSParameters.");
             return -1;
         }
     }
@@ -682,24 +683,21 @@ int HSSParameters_init(HSSParametersObject *self, PyObject *args, PyObject *kwds
     hss_params->MaxEstimationTime = maxTime;
     hss_params->callbacks = (bool)callbacks;
 
-    // Pola klasy QEHCParameters
+    // Pola klasy HSSParameters
     hss_params->StoppingTime = stopTime;
     hss_params->StoppingSubsetSize = stopSize;
-    hss_params->StoppingCriteria = (moda::IQHVParameters::StoppingCriteriaType)stoppingCriteria;
-    hss_params->Strategy = (moda::IQHVParameters::SubsetSelectionStrategy)selectionStrategy;
+    hss_params->StoppingCriteria = (moda::HSSParameters::StoppingCriteriaType)stoppingCriteria;
+    hss_params->Strategy = (moda::HSSParameters::SubsetSelectionStrategy)selectionStrategy;
 
 
-    
-    // (Pola 'maxlevel' nie ma w konstruktorze C++, ale możemy mu dać domyślną wartość 10)
-    // qehc_params->maxlevel = 10;
 
     return 0;
 }
 
 // --- Get/Set for  ---
 PyObject *HSSParameters_get_StoppingSubsetSize(HSSParametersObject *self, void *closure) {
-    moda::HSSParameters* qehc_params = (moda::HSSParameters*)self->base.params;
-    return PyLong_FromLong((long)qehc_params->StoppingSubsetSize);
+    moda::HSSParameters* hss_params = (moda::HSSParameters*)self->base.params;
+    return PyLong_FromLong((long)hss_params->StoppingSubsetSize);
 }
 
 int HSSParameters_set_StoppingSubsetSize(HSSParametersObject *self, PyObject *value, void *closure) {
@@ -713,7 +711,7 @@ int HSSParameters_set_StoppingSubsetSize(HSSParametersObject *self, PyObject *va
         PyErr_SetString(PyExc_ValueError, "Invalid value for StoppingSubsetSize.");
         return -1;
     }
-    ((moda::QEHCParameters*)self->base.params)->StoppingSubsetSize =  style_val;
+    ((moda::HSSParameters*)self->base.params)->StoppingSubsetSize =  val;
     return 0;
 }
 PyObject* HSSParameters_get_StoppingTime(HSSParametersObject *self, void *closure) {
@@ -780,8 +778,8 @@ static int HSSParameters_set_Criteria(HSSParametersObject *self, PyObject *value
 PyGetSetDef HSSParameters_getsetters[] = {
     {"Strategy", (getter)HSSParameters_get_Strategy, (setter)HSSParameters_set_Strategy, "Limit docs", NULL},
     {"Criteria", (getter)HSSParameters_get_Criteria, (setter)HSSParameters_set_Criteria, "Limit docs", NULL},
-    {"StoppingSize", (getter)HSSParameters_get_StoppingSubsetSize, (setter)HSSParameters_set_StoppingTime,"Type of the problem for the QEHCSolver contribution.", NULL},
-    {"StoppingTime", (getter)HSSParameters_get_StoppingTime, (setter)HSSParameters_set_StoppingTime,"Type of the problem for the QEHCSolver contribution.", NULL},
+    {"StoppingSize", (getter)HSSParameters_get_StoppingSubsetSize, (setter)HSSParameters_set_StoppingSubsetSize,"Type of the problem for the HSSSolver contribution.", NULL},
+    {"StoppingTime", (getter)HSSParameters_get_StoppingTime, (setter)HSSParameters_set_StoppingTime,"Type of the problem for the HSSSolver contribution.", NULL},
     {NULL}  /* Sentinel */
 };
 

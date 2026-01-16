@@ -31,7 +31,8 @@ modamodule = Extension(
               'py_solver.cpp', '../Solver.cpp',
               'py_qehc_solver.cpp', '../QEHCSolver.cpp',
               'py_iqhv_solver.cpp', '../IQHVSolver.cpp',
-              '../QEHC.cpp', '../Hypervolume.cpp', '../IQHV.cpp'
+              'py_hss_solver.cpp', '../HSSSolver.cpp',
+              '../QEHC.cpp', '../Hypervolume.cpp', '../IQHV.cpp', '../HSS.cpp','../ObjectivesTransformer.cpp'
              
             ], 
     include_dirs=[np.get_include(), '.'], # Include numpy headers and local headers

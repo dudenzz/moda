@@ -563,7 +563,7 @@ namespace moda {
             if (points[i] == NULL) {
                 continue;
             }
-            *points[i] = 1.0f - *points[i];
+            *points[i] = 0 - *points[i];
             //short j;
             //for (j = 0; j < parameters.NumberOfObjectives; j++) {
             //    

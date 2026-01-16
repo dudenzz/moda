@@ -69,7 +69,7 @@ PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
 
     
     QEHCParametersObject *params_wrapper = (QEHCParametersObject *)py_params_obj;   
-
+    // SolverParametersObject *base_params_wrapper = (SolverParametersObject *)py_params_obj;  
     // pointers validation
     if (!self->super.solver || !dataset_wrapper->data_set || !params_wrapper->base.params) {
         PyErr_SetString(PyExc_RuntimeError, "Internal C++ object or parameters were not initialized.");
@@ -78,10 +78,17 @@ PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
 
     moda::QEHCResult* result_ptr = NULL;
     moda::QEHCParameters* params =  new moda::QEHCParameters(moda::QEHCParameters::ReferencePointCalculationStyle::exact, moda::QEHCParameters::ReferencePointCalculationStyle::exact);
+    params->SearchSubject = moda::QEHCParameters::SearchSubjectOption::MinimumContribution;
     try {
 
-
-        //static cast
+        params->iterationsLimit = static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->iterationsLimit;
+        params->shuffle = static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->shuffle;
+        params->offset= static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->offset;
+        params->SearchSubject= static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->SearchSubject;
+        params->sort= static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->sort;
+        params->maxlevel= static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->maxlevel;
+        // params->WorseReferencePointCalculationStyle = static_cast<moda::SolverParameters*>(base_params_wrapper->params)->WorseReferencePointCalculationStyle;
+        // params->BetterReferencePointCalculationStyle = static_cast<moda::SolverParameters*>(base_params_wrapper->params)->BetterReferencePointCalculationStyle;        //static cast
         moda::QEHCSolver* qehc_ptr = static_cast<moda::QEHCSolver*>(self->super.solver);
         // calling the method
         result_ptr = qehc_ptr->Solve(

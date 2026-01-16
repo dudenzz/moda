@@ -11,6 +11,7 @@ extern PyTypeObject DatasetType;
 extern PyTypeObject SolverType; 
 extern PyTypeObject QEHCSolverType;
 extern PyTypeObject IQHVSolverType;
+extern PyTypeObject HSSSolverType;
 extern PyTypeObject ReferencePointCalculationStyleType;
 extern PyTypeObject SearchSubjectOptionType;
 extern PyTypeObject SubsetSelectionStrategyType;
@@ -68,6 +69,8 @@ PyInit_moda(void)
     if (PyType_Ready(&QEHCSolverType) < 0) 
         return NULL;
     if (PyType_Ready(&IQHVSolverType) < 0) 
+        return NULL;
+    if (PyType_Ready(&HSSSolverType) < 0) 
         return NULL;
 
 
@@ -129,6 +132,10 @@ PyInit_moda(void)
         Py_INCREF(&IQHVSolverType);
     if (PyModule_AddObject(m, "IQHVSolver", (PyObject *)&IQHVSolverType) < 0) {
         Py_DECREF(&IQHVSolverType); Py_DECREF(m); return NULL;
+    }
+
+        if (PyModule_AddObject(m, "HSSSolver", (PyObject *)&HSSSolverType) < 0) {
+        Py_DECREF(&HSSSolverType); Py_DECREF(m); return NULL;
     }
     if (init_ReferencePointCalculationStyle(m) < 0) return NULL;
     if (init_SearchSubjectOption(m) < 0) return NULL;

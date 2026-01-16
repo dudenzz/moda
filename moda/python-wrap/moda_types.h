@@ -25,6 +25,10 @@ typedef struct {
     SolverObject super; 
 } IQHVSolverObject;
 
+typedef struct {
+    SolverObject super; 
+} HSSSolverObject;
+
 // Data containers
 typedef struct {
     PyObject_HEAD
@@ -67,6 +71,7 @@ extern "C" {
 extern PyTypeObject SolverType;
 extern PyTypeObject QEHCSolverType;
 extern PyTypeObject IQHVSolverType;
+extern PyTypeObject HSSSolverType;
 extern PyTypeObject DataSetType;
 extern PyTypeObject PointType;
 extern PyTypeObject QEHCParametersType;

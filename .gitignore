@@ -2,6 +2,7 @@
 vcpkg-moda/vcpkg_installed
 VisualStudioProjects/
 moda/python-wrap/.venv/*
+moda/python-wrap/.venv-windows/*
 # Prerequisites
 *.d
 
