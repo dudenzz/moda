@@ -21,6 +21,22 @@ namespace moda {
         return onesPoint;
     }
 
+        //
+    Point Point::elevens(int NumberOfObjectives)
+    {
+        Point onesPoint = Point(NumberOfObjectives);
+        for (int i = 0; i < NumberOfObjectives; i++)
+            onesPoint[i] = 11;
+        return onesPoint;
+    }
+    Point Point::negElevens(int NumberOfObjectives)
+    {
+        Point onesPoint = Point(NumberOfObjectives);
+        for (int i = 0; i < NumberOfObjectives; i++)
+            onesPoint[i] = -11;
+        return onesPoint;
+    }
+
     Point Point::zeroes(int NumberOfObjectives)
     {
         Point zeroesPoint = Point(NumberOfObjectives);

@@ -71,7 +71,7 @@ namespace moda {
 			backend::QEHCExecutionContext* context = (backend::QEHCExecutionContext*)pool->getContext(contextId);
 			SubproblemsPool<SubProblem>& subProblems = *context->subProblemsPool;
 			indexSet = context->points;
-			ProcessData* process = context->process;
+			ProcessData* process = context->process.get();
 			for (ii = 0; ii < iterLimit; ii++) {
 
 				if (process->subProblemsStack.size() == 0) {
@@ -411,7 +411,7 @@ namespace moda {
 				ProcessData* process = new ProcessData(maxlevel);
 				int newId = pool->reserveContext(numberOfSolutions, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::QEHCContext, true);
 				QEHCExecutionContext* newContext = (QEHCExecutionContext*)pool->getContext(newId);
-				newContext->subProblemsPool = &subProblems;
+				newContext->subProblemsPool = std::make_shared<moda::SubproblemsPool<SubProblem>>(subProblems);
 				int iSP = subProblems.getNew();
 				//int iSP = subProblems.getNew();
 				subProblems[iSP].IdealPoint = *(*indexSet)[ip];
@@ -427,7 +427,7 @@ namespace moda {
 				process->subProblemsStack.push_back(iSP);
 				process->id = ip;
 
-				newContext->process = process;
+				newContext->process = std::make_shared<ProcessData>(process);
 				contexts.push_back(newId);
 
 				int i3 = 0;

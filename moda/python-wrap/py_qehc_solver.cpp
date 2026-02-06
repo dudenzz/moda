@@ -77,7 +77,7 @@ PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
     }
 
     moda::QEHCResult* result_ptr = NULL;
-    moda::QEHCParameters* params =  new moda::QEHCParameters(moda::QEHCParameters::ReferencePointCalculationStyle::exact, moda::QEHCParameters::ReferencePointCalculationStyle::exact);
+    moda::QEHCParameters* params =  new moda::QEHCParameters(moda::QEHCParameters::ReferencePointCalculationStyle::pymoo, moda::QEHCParameters::ReferencePointCalculationStyle::pymoo);
     params->SearchSubject = moda::QEHCParameters::SearchSubjectOption::MinimumContribution;
     try {
 

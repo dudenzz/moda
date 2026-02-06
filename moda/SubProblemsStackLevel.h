@@ -8,6 +8,7 @@ namespace moda {
 	//SubproblemsPool <SubProblem> subProblems;
 
 	class SubProblemsStackLevel {
+
 	private:
 
 		int _size = 0;
@@ -26,7 +27,6 @@ namespace moda {
 			levels.resize(maxlevel);
 		}
 		SubProblemsStackLevel(int maxlevel);
-
 
 
 		void startIterating();
