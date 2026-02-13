@@ -13,6 +13,26 @@ Quick R2 Calculation (QR2): Efficiently computes the R2 indicator value for a gi
 
 ## Installation guide
 
+### Basic Visual Studio Installation
+
+**Prerequisities:**
+1. Visual Studio 2018+
+
+The basic installation guide constitues of three very simple steps:
+
+1. Navigate to the repository website: https://github.com/dudenzz/moda
+2. Use the interface to "Open with Visual Studio" (Code -> Open with Visual Studio)
+
+| ![](docs/images/vs-installation.png) | 
+|:----------------------------------------:|
+
+3. In both projects preferences, set the platform toolset to  an installed one.
+
+| ![](docs/images/toolset.png) | 
+|:----------------------------------------:|
+
+
+
 ### VCPKG
 
 The library is going to be availiable via packet managers PyPi (python wrap) and VCPKG (C++ original library). Additionally, the library makes use of the CMake for Windows and the Make for Linux based operating systems. 
