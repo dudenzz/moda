@@ -5,6 +5,7 @@
 #include <QEHCSolver.h>
 #include <IQHVSolver.h>
 #include <DataSet.h>
+#include <HSSSolver.h>
 
 using namespace moda;
 int main()
@@ -62,6 +63,12 @@ int main()
     hvparams->worseReferencePoint = nadir;
     hvparams->betterReferencePoint = ideal;
     IQHVSolver hsolver;
+    HSSSolver hsssolver;
+    HSSParameters* hssparams = new HSSParameters(SolverParameters::ReferencePointCalculationStyle::userdefined, SolverParameters::ReferencePointCalculationStyle::userdefined);
+    hssparams->worseReferencePoint = nadir;
+    hssparams->betterReferencePoint = ideal;
+    hssparams->StoppingSubsetSize = 10;
+    auto res = hsssolver.Solve(ds, *hssparams);
 
     double* py_hvcs = new double[16] {
         6.76920703e-05, 1.88971388e-04, 1.93556007e-03, 1.10670045e-02,

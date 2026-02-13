@@ -37,8 +37,8 @@ namespace moda
 	{
 		this->Strategy = SubsetSelectionQHVIncremental;
 		this->StoppingCriteria = StoppingCriteria;
-		this->StoppingSubsetSize = StopTime;
-		this->StoppingTime = StopSize;
+		this->StoppingSubsetSize = StopSize;
+		this->StoppingTime = StopTime;
 	}
 	QEHCParameters::QEHCParameters(ReferencePointCalculationStyle worseReferencePointCalculationStyle, ReferencePointCalculationStyle betterReferencePointCalculationStyle,
 		int MaxEstimationTime, bool callbacks, unsigned long int iterationsLimit, bool sort,
