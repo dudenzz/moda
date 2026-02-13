@@ -1,0 +1,14 @@
+﻿################################################################################
+# Ten plik .gitignore został utworzony automatycznie przez Microsoft(R) Visual Studio.
+################################################################################
+
+/out/build/x64-Debug
+/.vs
+/SampleModaApp/.vs
+/SampleModaApp/Moda/x64/Debug
+/SampleModaApp/SampleModaApp/x64/Debug
+/SampleModaApp/x64/Debug
+moda/python-wrap/.venv
+moda/python-wrap/.venv-windows
+moda/python-wrap/build
+VisualStudioProjects/
