@@ -198,7 +198,7 @@ namespace moda {
 		void buildSubProblems(QEHCExecutionContext* context,  SubproblemParam* subproblemParams, Point* partIdealPoint, Point* partNadirPoint, ProcessData* process, int iPivot, int iSP, int numberOfObjectives)
 		{
 			UType indexSet = context->points;
-			SubproblemsPool <SubProblem>* subProblems = context->subProblemsPool;
+			SubproblemsPool <SubProblem>* subProblems = context->subProblemsPool.get();
 			int j, partStart, partEnd;
 			for (int jj = 0; jj < numberOfObjectives; jj++) {
 				j = subproblemParams[jj].objectiveIndex;
@@ -235,7 +235,7 @@ namespace moda {
 			//backend::ExecutionPool* pool = &(poolService->getPool());
 			//int newContextId = pool->reserveContext(0, 0, 0, ExecutionContext::QEHCContext, true);
 			//backend::QEHCExecutionContext* newContext = (backend::QEHCExecutionContext*)pool->getContext(newContextId);
-			SubproblemsPool <SubProblem>* subProblems = context->subProblemsPool;
+			SubproblemsPool <SubProblem>* subProblems = context->subProblemsPool.get();
 			UType indexSet = context->points;
 			DType maxContributionLowerBound = context->maxContributionLowerBound;
 			int lowerBoundProcessId = context->lowerBoundProcessId;
@@ -351,7 +351,7 @@ namespace moda {
 			backend::ExecutionPool* pool = &(poolService->getPool());
 						
 			backend::QEHCExecutionContext* context = (backend::QEHCExecutionContext*)pool->getContext(contextId);
-			context->subProblemsPool = new SubproblemsPool <SubProblem>();
+			context->subProblemsPool = std::make_shared< SubproblemsPool <SubProblem>>(new SubproblemsPool <SubProblem>());
 			indexSet = context->points;
 			int maxIndexUsed = context->maxIndexUsed;
 			//if (!useDelete) {

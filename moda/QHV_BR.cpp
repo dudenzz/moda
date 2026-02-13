@@ -50,8 +50,8 @@ namespace moda {
 		Point newNadirPoint = Point(currentSettings->NumberOfObjectives);
 		int j;
 		for (j = 0; j < currentSettings->NumberOfObjectives; j++) {
-			newIdealPoint.ObjectiveValues[j] = 1;
-			newNadirPoint.ObjectiveValues[j] = 0;
+			newIdealPoint.ObjectiveValues[j] = 1; //@TODO hard coded definition of nadir
+			newNadirPoint.ObjectiveValues[j] = 0; //@TODO hard coded definition of nadir
 		}
 
 		this->maxIndexUsed = numberOfSolutions - 1;

@@ -6,9 +6,7 @@ namespace moda {
 	template<class T> myvector<T>::myvector() {
 		vec.resize(base);
 	}
-	template<class T> myvector<T>::~myvector() {
-		vec.clear();
-	}
+
 	template<class T> int myvector<T>::size()
 	{
 		return (currentMaxRow + 1) * base;
@@ -43,7 +41,5 @@ namespace moda {
 	template void myvector<SubProblem>::clear();
 	template myvector<Point*>::myvector();
 	template myvector<SubProblem>::myvector();
-	template myvector<Point*>::~myvector();
-	template myvector<SubProblem>::~myvector();
 
 }

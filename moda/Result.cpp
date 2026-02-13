@@ -2,5 +2,5 @@
 namespace moda {
 	Result::Result() {};
 
-
+	
 }

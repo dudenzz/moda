@@ -25,7 +25,7 @@ Quick Extreme Hypervolume Contributor
  [1] Andrzej Jaszkiewicz and Piotr Zielniewicz. 2021. 
      Quick extreme hypervolume contribution algorithm.
      In Proceedings of the Genetic and Evolutionary Computation Conference (GECCO '21). 
-     Association for Computing Machinery, New York, NY, USA, 412�420. 
+     Association for Computing Machinery, New York, NY, USA, 412-420. 
      https://doi.org/10.1145/3449639.3459394
 
 *************************************************************************/
@@ -34,7 +34,7 @@ namespace moda {
 		bool sortByPointsCounterAsc(SubproblemParam lhs, SubproblemParam rhs) {
 			return lhs.pointsCounter < rhs.pointsCounter;
 		}
-		QEHCResult QEHC(int contextId, int numberOfSolutions, int maxlevel, QEHCParameters::SearchSubjectOption searchSubject, bool useSort, bool useShuffle, int offset, unsigned long int iterationLimit, int numberOfObjectives)
+		QEHCResult QEHC(int contextId, int numberOfSolutions, int maxlevel, QEHCParameters::SearchSubjectOption searchSubject, bool useSort, bool useShuffle, int offset, unsigned long int iterationLimit, int numberOfObjectives, Point nadir)
 		{
 			QEHCResult tmpResult;
 			std::random_device randomDevice;
@@ -69,7 +69,7 @@ namespace moda {
 			Point newNadirPoint;
 			int j;
 			for (j = 0; j < numberOfObjectives; j++) {
-				newNadirPoint.ObjectiveValues[j] = 0;
+				newNadirPoint.ObjectiveValues[j] = nadir.ObjectiveValues[j];
 			}
 
 			DType maxContributionLowerBound = 0;
@@ -263,7 +263,7 @@ namespace moda {
 
 						int iPivot = subProblems[iSP].start;
 						DType maxVolume;
-						maxVolume = backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[iPivot], &subProblems[iSP].IdealPoint, numberOfObjectives); //niepotrzebnie w p�tli ??
+						maxVolume = backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[iPivot], &subProblems[iSP].IdealPoint, numberOfObjectives); //niepotrzebnie w petli ??
 
 						// Find the pivot point
 						unsigned i;

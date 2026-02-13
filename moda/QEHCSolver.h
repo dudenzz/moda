@@ -29,7 +29,7 @@ namespace moda {
     private:
 
         
-        QEHCResult solveQEHC(std::vector <Point*>& set, int numberOfSolutions, QEHCParameters::SearchSubjectOption seachSubject,  bool useSort = true, bool useShuffle = true, int offset = 2, int maxlevel=10, unsigned long int iterationLimit = 1);
+        QEHCResult solveQEHC(std::vector <Point*>& set, int numberOfSolutions, QEHCParameters::SearchSubjectOption seachSubject, Point* nadir, bool useSort = true, bool useShuffle = true, int offset = 2, int maxlevel=10, unsigned long int iterationLimit = 1);
         myvector<Point*> indexSet;
     };
 }

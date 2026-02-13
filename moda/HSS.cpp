@@ -186,8 +186,8 @@ namespace moda
 			while (subset.size() > stopSize) {
 				if (clock() - t0 > stopTime && stopStyle == 2) break;
 				std::vector<BHC> newLBHC;
-				DType minContribution = 1e30;
-				int minContributor = -1;
+				DType minContribution = getPointContributionIQHV(0, subset, idealPoint, nadirPoint, numberOfObjectives);
+				int minContributor = 0;
 
 				if (initialLoop) {
 					for (j = 0; j < wholeSet.size(); j++) {
@@ -196,6 +196,7 @@ namespace moda
 						if (minContribution > contribution) {
 							minContribution = contribution;
 							minContributor = j;
+							
 						}
 
 						BHC lBHC;

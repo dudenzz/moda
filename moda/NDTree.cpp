@@ -118,8 +118,8 @@ namespace moda {
 		int j;
 		this->maximization = maximization;
 		for (j = 0; j < MAXOBJECTIVES; j++) {
-			NadirPoint.ObjectiveValues[j] = 0;
-			IdealPoint.ObjectiveValues[j] = 0;
+			NadirPoint.ObjectiveValues[j] = 0; //@TODO - does this line imply hard coded definition of nadir
+			IdealPoint.ObjectiveValues[j] = 0; //@TODO - does this line imply hard coded definition of ideal
 		}
 	}
 	template <class Solution> DataSet* NDTree<Solution>::toDataSet()
@@ -132,7 +132,6 @@ namespace moda {
 		return ds;
 	}
 	template <class Solution> NDTree<Solution>::NDTree(DataSet dataset, bool maximization) {
-		int j;
 		this->maximization = maximization;
 		NumberOfObjectives = dataset.getParameters()->NumberOfObjectives;
 
