@@ -8,3 +8,7 @@
 /SampleModaApp/Moda/x64/Debug
 /SampleModaApp/SampleModaApp/x64/Debug
 /SampleModaApp/x64/Debug
+moda/python-wrap/.venv
+moda/python-wrap/.venv-windows
+moda/python-wrap/build
+VisualStudioProjects/
