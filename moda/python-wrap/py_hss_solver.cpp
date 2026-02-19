@@ -80,25 +80,32 @@ PyObject *HSSSolver_Solve(HSSSolverObject *self, PyObject *args) {
     moda::HSSResult* result_ptr = NULL;
     moda::HSSParameters* params =  new moda::HSSParameters(moda::HSSParameters::ReferencePointCalculationStyle::pymoo, moda::HSSParameters::ReferencePointCalculationStyle::pymoo);
     try {
-        //std::cout << params_wrapper->innerParams;
-        
+
+        fprintf(stderr, "DEBUG: params pointer: %p\n", (void*)params_wrapper->base.params);
+        fflush(stderr); 
         params->Strategy = static_cast<moda::HSSParameters*>(params_wrapper->base.params)->Strategy;
         params->StoppingCriteria = static_cast<moda::HSSParameters*>(params_wrapper->base.params)->StoppingCriteria;
         params->StoppingSubsetSize = static_cast<moda::HSSParameters*>(params_wrapper->base.params)->StoppingSubsetSize;
         params->StoppingTime = static_cast<moda::HSSParameters*>(params_wrapper->base.params)->StoppingTime;
         // params->WorseReferencePointCalculationStyle = static_cast<moda::SolverParameters*>(base_params_wrapper->params)->WorseReferencePointCalculationStyle;
         // params->BetterReferencePointCalculationStyle = static_cast<moda::SolverParameters*>(base_params_wrapper->params)->BetterReferencePointCalculationStyle;
+        fprintf(stderr, "DEBUG: solver strategy: %d\n", params->Strategy);
+        fprintf(stderr, "DEBUG: solver criteria: %d\n", params->StoppingCriteria);
+        fprintf(stderr, "DEBUG: solver subsetsize: %d\n", params->StoppingSubsetSize);
+        fprintf(stderr, "DEBUG: solver stoptime: %d\n", params->StoppingTime);
+        
         //static cast
         moda::HSSSolver* hss_ptr = static_cast<moda::HSSSolver*>(self->super.solver);
+        fprintf(stderr, "DEBUG: solver pointer: %p\n", (void*)hss_ptr);
+        fflush(stderr);
         // calling the method
         result_ptr = hss_ptr->Solve(
             dataset_wrapper->data_set, 
             *params
         );
-
+        fprintf(stderr, "DEBUG: results pointer: %p\n", (void*)result_ptr);
+        fflush(stderr);
         delete params;
-
-
     } catch (const std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         return NULL;
@@ -108,16 +115,17 @@ PyObject *HSSSolver_Solve(HSSSolverObject *self, PyObject *args) {
     // ---- convert vector<int> to Python list ----
     const std::vector<int>& pts = result_ptr->selectedPoints;
 
-    PyObject* pyList = PyList_New(pts.size());
-    for (size_t i = 0; i < pts.size(); ++i) {
-        PyObject* val = PyLong_FromLong(pts[i]);
-        PyList_SetItem(pyList, i, val); 
-    }
+    // PyObject* pyList = PyList_New(pts.size());
+    // for (size_t i = 0; i < pts.size(); ++i) {
+    //     PyObject* val = PyLong_FromLong(pts[i]);
+    //     PyList_SetItem(pyList, i, val); 
+    // }
 
     // Create a tuple of size 2
     PyObject* pyTuple = PyTuple_New(2);
 
-    PyTuple_SetItem(pyTuple, 0, pyList);
+    // PyTuple_SetItem(pyTuple, 0, pyList);
+    PyTuple_SetItem(pyTuple, 0, PyFloat_FromDouble(result_ptr->HyperVolume));
     PyTuple_SetItem(pyTuple, 1, PyFloat_FromDouble(result_ptr->HyperVolume));
     delete result_ptr;
     return pyTuple;
@@ -135,7 +143,7 @@ PyTypeObject HSSSolverType = {
     "moda.HSSSolver",             /* tp_name */
     sizeof(HSSSolverObject),      /* tp_basicsize */
     0, 
-    (destructor)HSSSolver_dealloc, /* tp_dealloc (używa własnego dealokatora) */
+    (destructor)HSSSolver_dealloc, /* tp_dealloc (dedicated dealloc) */
     0, /* tp_print (Deprecated) */
     0, /* tp_getattr (Deprecated) */
     0, /* tp_setattr (Deprecated) */
@@ -161,7 +169,7 @@ PyTypeObject HSSSolverType = {
     HSSSolver_methods,            /* tp_methods */
     NULL,                          /* tp_members */
     NULL,                          /* tp_getset */
-    &SolverType,                   /* tp_base: DZIEDZICZY Z SolverType */
+    &SolverType,                   /* tp_base: derived from SolverType */
     0, /* tp_dict */
     0, /* tp_descr_get */
     0, /* tp_descr_set */
