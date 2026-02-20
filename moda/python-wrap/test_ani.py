@@ -1,5 +1,5 @@
 from pymoo.algorithms.moo.moda.sms_moda import SMSEMOA_MODA
-from pymoo.algorithms.moo.moda.sms_moda_hss import SMSEMOA_HSSMODA
+from pymoo.algorithms.moo.moda.sms_moda_hss import SMSEMOA_HSS
 from pymoo.algorithms.moo.sms import SMSEMOA
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -10,11 +10,11 @@ import time
 # 1. Setup Problem and Run Optimization once
 n_obj = 3
 problem = get_problem("dtlz1",6,n_obj=n_obj)
-algorithm = SMSEMOA()
+algorithm = SMSEMOA_HSS()
 pf = problem.pareto_front(ref_dirs = UniformReferenceDirectionFactory(n_obj, n_points=15  ).do())
 
 start = time.time()
-res = minimize(problem, algorithm, ('n_gen', 100), seed=42, save_history=True)
+res = minimize(problem, algorithm, ('n_gen', 2), seed=42, save_history=True)
 print(f'Elsapsed: {time.time() - start}')
 # 2. Setup the Figure for Animation
 fig = plt.figure(figsize=(7, 5))
