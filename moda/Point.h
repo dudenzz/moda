@@ -16,8 +16,11 @@ namespace moda
 
 		/** Constructors */
 		Point();
+
 		Point(int NumberOfObjectives);
 		static Point ones(int NumberOfObjectives);
+		static Point elevens(int NumberOfObjectives);
+		static Point negElevens(int NumberOfObjectives);
 		static Point zeroes(int NumberOfObjectives);
 		/** Copy constructor */
 		Point(const Point& Point);
@@ -25,6 +28,7 @@ namespace moda
 		Point& operator=(Point& Point);
 		Point& operator=(const Point& Point);
 		Point& operator-(DType value);
+		Point& operator-();
 		Point& operator+(DType value);
 		/** Comparator */
 		

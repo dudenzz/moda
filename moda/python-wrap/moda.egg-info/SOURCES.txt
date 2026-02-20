@@ -6,6 +6,7 @@ py_point.cpp
 py_qehc_solver.cpp
 py_solver.cpp
 py_solver_parameters.cpp
+pyproject.toml
 setup.py
 ../DataSet.cpp
 ../DataSetParameters.cpp

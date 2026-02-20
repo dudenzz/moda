@@ -67,7 +67,7 @@ namespace moda {
 
 				MCHVResult* result = new MCHVResult;
 				result->ElapsedTime = time - t0;
-				DType scaler = Hypervolume(&nadirPoint, &idealPoint, numberOfObjectives);
+				DType scaler = Backend::Hypervolume(&nadirPoint, &idealPoint, numberOfObjectives);
 				approximateVolume = scaler * (DType)dominated / tested;
 				DType np = dominated;
 				DType n = tested;

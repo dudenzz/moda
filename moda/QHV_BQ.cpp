@@ -70,7 +70,7 @@ namespace moda {
 			newSubproblem->NadirPoint = newNadirPoint;
 			newSubproblem->start = 0;
 			newSubproblem->end = numberOfSolutions - 1;
-			newSubproblem->volume = Hypervolume(&newSubproblem->NadirPoint, &newSubproblem->IdealPoint, numberOfObjectives);
+			newSubproblem->volume = Backend::Hypervolume(&newSubproblem->NadirPoint, &newSubproblem->IdealPoint, numberOfObjectives);
 
 			DType upperBoundVolume = newSubproblem->volume;
 			DType lowerBoundVolume = 0;
@@ -129,7 +129,7 @@ namespace moda {
 
 				// If there is just one point
 				if (pSP->start == pSP->end) {
-					DType v = backend::Hypervolume(&(pSP->NadirPoint), indexSet[pSP->start], &(pSP->IdealPoint), numberOfObjectives);
+					DType v = backend::Backend::Hypervolume(&(pSP->NadirPoint), indexSet[pSP->start], &(pSP->IdealPoint), numberOfObjectives);
 					lowerBoundVolume += v;
 					upperBoundVolume -= pSP->volume - v;
 					(*subProblems).free(iSP);
@@ -138,14 +138,14 @@ namespace moda {
 
 				// If there are just two points
 				if (pSP->end - pSP->start == 1) {
-					DType v = backend::Hypervolume(&pSP->NadirPoint, indexSet[pSP->start], &pSP->IdealPoint, numberOfObjectives);
-					v += backend::Hypervolume(&pSP->NadirPoint, indexSet[pSP->end], & pSP->IdealPoint, numberOfObjectives);
+					DType v = backend::Backend::Hypervolume(&pSP->NadirPoint, indexSet[pSP->start], &pSP->IdealPoint, numberOfObjectives);
+					v += backend::Backend::Hypervolume(&pSP->NadirPoint, indexSet[pSP->end], & pSP->IdealPoint, numberOfObjectives);
 					*point2 = *(indexSet[pSP->start]);
 					unsigned j;
 					for (j = 0; j < numberOfObjectives; j++) {
 						point2->ObjectiveValues[j] = std::min(point2->ObjectiveValues[j], indexSet[pSP->end]->ObjectiveValues[j]);
 					}
-					v -= backend::Hypervolume(&pSP->NadirPoint, point2, &pSP->IdealPoint, numberOfObjectives);
+					v -= backend::Backend::Hypervolume(&pSP->NadirPoint, point2, &pSP->IdealPoint, numberOfObjectives);
 
 					lowerBoundVolume += v;
 					upperBoundVolume -= pSP->volume - v;
@@ -159,20 +159,20 @@ namespace moda {
 				int iPivot = pSP->start;
 				DType maxVolume;
 				Point p = *(indexSet)[iPivot];
-				maxVolume = backend::Hypervolume(&pSP->NadirPoint, &p, &pSP->IdealPoint, numberOfObjectives);
+				maxVolume = backend::Backend::Hypervolume(&pSP->NadirPoint, &p, &pSP->IdealPoint, numberOfObjectives);
 
 				// Find the pivot point
 				unsigned i;
 				for (i = pSP->start + 1; i <= pSP->end; i++) {
 					DType volumeCurrent;
-					volumeCurrent = backend::Hypervolume(&pSP->NadirPoint, indexSet[i], &pSP->IdealPoint, numberOfObjectives);
+					volumeCurrent = backend::Backend::Hypervolume(&pSP->NadirPoint, indexSet[i], &pSP->IdealPoint, numberOfObjectives);
 					if (maxVolume < volumeCurrent) {
 						maxVolume = volumeCurrent;
 						iPivot = i;
 					}
 				}
 
-				DType v = backend::Hypervolume(&pSP->NadirPoint, indexSet[iPivot], &pSP->IdealPoint, numberOfObjectives);
+				DType v = backend::Backend::Hypervolume(&pSP->NadirPoint, indexSet[iPivot], &pSP->IdealPoint, numberOfObjectives);
 				lowerBoundVolume += v;
 				upperBoundVolume += v;
 
@@ -193,10 +193,10 @@ namespace moda {
 
 				// Recursive call for each subproblem
 				for (jj = 0; jj < numberOfObjectives; jj++) {
-					j = off(offset, jj,numberOfObjectives);
+					j = Backend::off(offset, jj,numberOfObjectives);
 
 					if (jj > 0) {
-						int j2 = off(offset, jj - 1,numberOfObjectives);
+						int j2 = Backend::off(offset, jj - 1,numberOfObjectives);
 						partIdealPoint.ObjectiveValues[j2] = std::min(pSP->IdealPoint.ObjectiveValues[j2], pPivotPoint->ObjectiveValues[j2]);
 						partNadirPoint.ObjectiveValues[j2] = pSP->NadirPoint.ObjectiveValues[j2];
 					}
@@ -219,7 +219,7 @@ namespace moda {
 					if (partEnd >= partStart) {
 						partNadirPoint.ObjectiveValues[j] = std::min(pSP->IdealPoint.ObjectiveValues[j], pPivotPoint->ObjectiveValues[j]);
 
-						DType v = Hypervolume(&partNadirPoint, &partIdealPoint,numberOfObjectives);
+						DType v = Backend::Hypervolume(&partNadirPoint, &partIdealPoint,numberOfObjectives);
 						upperBoundVolume += v;
 
 						int newISP = (*subProblems).getNew();

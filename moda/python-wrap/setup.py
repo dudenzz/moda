@@ -7,11 +7,15 @@ import sys
 # Define the C/C++ extension module
 
 if sys.platform == 'win32':
-    # Flagi dla kompilatora MSVC (Windows)
-    compile_args = ['/std:c++17']
+    # MSVC Flags
+    compile_args = ['/std:c++17', '/Zi'] # /Zi adds debug info
+    link_args = ['/DEBUG']
 else:
-    # Flagi dla GCC/Clang (Linux/macOS)
+    # GCC/Clang Flags (Linux/WSL)
+    # compile_args = ['-std=c++17', '-fsanitize=address', '-fno-omit-frame-pointer', '-g']
     compile_args = ['-std=c++17']
+    # link_args = ['-fsanitize=address']
+    link_args = []
     
 modamodule = Extension(
     'moda',  # The name of the compiled module
@@ -37,7 +41,8 @@ modamodule = Extension(
             ], 
     include_dirs=[np.get_include(), '.'], # Include numpy headers and local headers
     language='c++',
-    extra_compile_args=compile_args, # Use modern C++ standard
+    extra_compile_args=compile_args # Use modern C++ standard
+    # extra_link_args=link_args
 )
 
 setup(
@@ -48,6 +53,5 @@ setup(
     install_requires=[
         'numpy>=1.18.0',
     ],
-    # The Python module is not explicitly needed here if using a simple structure, 
-    # but in a real project, you would place moda.py inside a 'moda' directory.
+    # place moda.py inside a 'moda' directory.
 )

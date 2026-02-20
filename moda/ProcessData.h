@@ -6,7 +6,11 @@ namespace moda {
 	public:
 
 
-		
+		ProcessData() = default;
+		ProcessData(const ProcessData& other) = default;
+		ProcessData(ProcessData* other) {
+
+		};
 		ProcessData(int maxlevel): subProblemsStack(maxlevel) { }
 		DType upperBoundVolume;
 		DType lowerBoundVolume;

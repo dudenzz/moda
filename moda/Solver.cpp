@@ -24,13 +24,15 @@ namespace moda {
         if (problem->typeOfOptimization == DataSet::OptimizationType::minimization)
         {
             currentlySolvedProblem->reverseObjectives();
-            worsePoint = settings.GetWorseReferencePoint(currentlySolvedProblem);
-            betterPoint = settings.GetBetterReferencePoint(currentlySolvedProblem);
+            worsePoint = &settings.GetBetterReferencePoint(currentlySolvedProblem)->operator-();
+            betterPoint = &settings.GetWorseReferencePoint(currentlySolvedProblem)->operator-();
+
         }
         else
         {
             worsePoint = settings.GetWorseReferencePoint(currentlySolvedProblem);
             betterPoint = settings.GetBetterReferencePoint(currentlySolvedProblem);
+
         }
     }
 

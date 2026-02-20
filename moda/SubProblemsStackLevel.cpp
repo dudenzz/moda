@@ -3,6 +3,7 @@
 namespace moda {
 
 	SubProblemsStackLevel::SubProblemsStackLevel(int maxlevel) {
+		this->subProblems = nullptr;
 		this->maxlevel = maxlevel;
 		levels.resize(maxlevel);
 	}
