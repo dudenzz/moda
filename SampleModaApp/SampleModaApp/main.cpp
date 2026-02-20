@@ -10,11 +10,10 @@
 using namespace moda;
 int main()
 {
-    /*
+ /*
     // 1. Load Data
     // Loads sample data from file (file must be accessible in execution directory)
-    DataSet* ds = moda::DataSet::LoadFromFilename("../../sample-file/data_6_500_convex_triangular_1");
-
+    DataSet* ds = moda::DataSet::LoadFromFilename("../../sample-file/linear_d4n100_1");
     // Display data points one by one
     std::cout << "Loaded Data Points:\n";
     for (auto p : ds->points)
@@ -24,27 +23,22 @@ int main()
         std::cout << "\n";
     }
     std::cout << "---------------------------------\n";
-
     // 2. Prepare Data and Solver
     ds->typeOfOptimization = moda::DataSet::minimization; // Set optimization type
     ds->normalize();                                      // Apply normalization
-
-    moda::IQHVSolver solver;
-    moda::IQHVParameters params;
-
+    moda::HSSSolver solver;
+    moda::HSSParameters params;
     // 3. Set Solver Parameters
     // Sets calculation formulas for the reference points (zeroone substitues zeroes and ones vectors for reference points)
-    using RefStyle = moda::IQHVParameters::ReferencePointCalculationStyle;
+    using RefStyle = moda::HSSParameters::ReferencePointCalculationStyle;
     params.BetterReferencePointCalculationStyle = RefStyle::zeroone;
     params.WorseReferencePointCalculationStyle = RefStyle::zeroone;
-
+    params.StoppingSubsetSize = 10;
     // 4. Run Solve and Display Result
     // Solve returns a pointer to a HypervolumeResult
-    moda::HypervolumeResult* result = solver.Solve(ds, params);
-
+    moda::HSSResult* result = solver.Solve(ds, params);
     std::cout << "Calculated Hypervolume: " << result->HyperVolume << std::endl;
     std::cout << "Elapsed Time (ms): " << result->ElapsedTime << std::endl;
-
     // Cleanup (optional but recommended)
     delete ds;
     delete result;
@@ -68,7 +62,7 @@ int main()
             new double[2] { 0.69166411, 0.05259329 },
         };
     DataSet* ds = new DataSet(2);
-
+    
     for (int i = 0; i < 16; i++)
     {
         Point* p = new Point(2);
@@ -83,9 +77,7 @@ int main()
         Point p = (*ds)[i];
         (*ds)[i][0] = p[0];
         (*ds)[i][1] = p[1];
-
     }
-
     Point* nadir = new Point(2);
     (*nadir)[0] = -2;
     (*nadir)[1] = -2;
@@ -95,7 +87,6 @@ int main()
     QEHCParameters* params = new QEHCParameters(SolverParameters::ReferencePointCalculationStyle::userdefined, SolverParameters::ReferencePointCalculationStyle::userdefined);
     params->worseReferencePoint = nadir;
     params->betterReferencePoint = ideal;
- 
     QEHCSolver solver;
     //ds->typeOfOptimization = ds->minimization;
     IQHVParameters* hvparams = new IQHVParameters(SolverParameters::ReferencePointCalculationStyle::userdefined, SolverParameters::ReferencePointCalculationStyle::userdefined);
@@ -107,15 +98,15 @@ int main()
     HSSParameters* hssparams = new HSSParameters(SolverParameters::ReferencePointCalculationStyle::userdefined, SolverParameters::ReferencePointCalculationStyle::userdefined);
     hssparams->worseReferencePoint = nadir;
     hssparams->betterReferencePoint = ideal;
-    hssparams->StoppingSubsetSize = 10;
+    hssparams->StoppingSubsetSize = 5;
     auto res = hsssolver.Solve(ds, *hssparams);
+    
     double* py_hvcs = new double[16] {
         6.76920703e-05, 1.88971388e-04, 1.93556007e-03, 1.10670045e-02,
             6.69092328e-03, 4.65240351e-05, 9.05157353e-05, 2.38866579e-01,
             2.95675901e-03, 5.64886209e-04, 1.83400107e-04, 1.53125100e-03,
             1.92139151e-03, 2.77026241e-03, 2.10917118e-01, 1.68106613e-03
         };
-
     auto hv = hsolver.Solve(ds, *hvparams);
     for (int i = 0; i < 16; i++)
     {

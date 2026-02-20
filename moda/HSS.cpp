@@ -187,7 +187,12 @@ namespace moda
 				if (clock() - t0 > stopTime && stopStyle == 2) break;
 				std::vector<BHC> newLBHC;
 				DType minContribution = getPointContributionIQHV(0, subset, idealPoint, nadirPoint, numberOfObjectives);
-				int minContributor = 0;
+				int minContributor = find(wholeSet.begin(), wholeSet.end(), subset[0]) - wholeSet.begin(); //important bugfix - 
+																										 //original code: int minContributor = 0;
+																										 //if the least contributor is first on the list the bug occurs
+																										 //if the previous round contributor index is in-bounds the bug appears as a wrong result\
+																										 //if the previous round contributor index is out of bounds the bug appears as an exception
+																										 
 
 				if (initialLoop) {
 					for (j = 0; j < wholeSet.size(); j++) {
