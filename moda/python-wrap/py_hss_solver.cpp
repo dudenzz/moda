@@ -78,7 +78,7 @@ PyObject *HSSSolver_Solve(HSSSolverObject *self, PyObject *args) {
     }
 
     moda::HSSResult* result_ptr = NULL;
-    moda::HSSParameters* params =  new moda::HSSParameters(moda::HSSParameters::ReferencePointCalculationStyle::zeroone, moda::HSSParameters::ReferencePointCalculationStyle::zeroone);
+    moda::HSSParameters* params =  new moda::HSSParameters(moda::HSSParameters::ReferencePointCalculationStyle::pymoo, moda::HSSParameters::ReferencePointCalculationStyle::pymoo);
     try {
 
         // fprintf(stderr, "DEBUG: params pointer: %p\n", (void*)params_wrapper->base.params);

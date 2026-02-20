@@ -54,7 +54,6 @@ solver = QEHCSolver()
 params = QEHCParameters()
 data = data               
 ds = moda.DataSet(data) # this takes virtually no time compared to Solve
-print(ds)
 ds.typeOfOptimization = OptimizationType.minimization
 r = solver.Solve(ds,params) 
 print(r)
