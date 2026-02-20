@@ -88,6 +88,8 @@ namespace moda {
         /// Denotes the index of a point with the lowest HV contribution value for any single point in the set. 
         /// </summary>
         int MinimumContributionIndex;
+
+        
     };
     class QHV_BQResult : public BoundedResult {
 

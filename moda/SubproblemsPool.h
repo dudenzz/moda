@@ -12,7 +12,7 @@ namespace moda {
 		std::priority_queue<int> pool;
 
 	public:
-
+		SubproblemsPool(SubproblemsPool* other) {}
 
 		SubproblemsPool();
 		int getNew();

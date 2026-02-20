@@ -14,7 +14,7 @@
 #include <climits>
 namespace moda {
 	namespace backend {
-		QEHCResult QEHC(int contextId, int numberOfSolutions, int maxlevel, QEHCParameters::SearchSubjectOption searchSubject, bool useSort, bool useShuffle, int offset, unsigned long int iterationLimit, int numberOfObjectives);
+		QEHCResult QEHC(int contextId, int numberOfSolutions, int maxlevel, QEHCParameters::SearchSubjectOption searchSubject, bool useSort, bool useShuffle, int offset, unsigned long int iterationLimit, int numberOfObjectives, Point nadir);
 		bool sortByPointsCounterAsc(SubproblemParam lhs, SubproblemParam rhs);
 	}
 }

@@ -8,17 +8,17 @@
 #include "ExecutionPool.h"
 #include "ExecutionService.h"
 namespace moda {
-	QEHCResult* QEHCSolver::Solve(DataSet* problem, QEHCParameters settings)
+	QEHCResult* QEHCSolver::Solve(DataSet* problem, QEHCParameters parameters)
     {
 
 
         //initialize the poblem
-		prepareData(problem, settings);
+		prepareData(problem, parameters);
 		//call the starting callback
 		std::string solverType = "";
-		if (settings.sort) solverType = "QEHC-sort";
-		if (!settings.sort && settings.shuffle) solverType = "QEHC-randomShuffle";
-		if (!settings.sort && !settings.shuffle) solverType = "QEHC-offset";
+		if (parameters.sort) solverType = "QEHC-sort";
+		if (!parameters.sort && parameters.shuffle) solverType = "QEHC-randomShuffle";
+		if (!parameters.sort && !parameters.shuffle) solverType = "QEHC-offset";
 		//if ( parameters.sort && parameters.iterationsLimit == ULONG_MAX) solverType = "REF/REF*()";
 		StartCallback(*currentSettings, "QEHC Contribution Solver type " + solverType);
 		
@@ -28,7 +28,7 @@ namespace moda {
 
 		it0 = clock();
 
-		r_prim = (solveQEHC(currentlySolvedProblem->points, currentSettings->nPoints, settings.SearchSubject, settings.sort, settings.shuffle,settings.offset,settings.maxlevel, settings.iterationsLimit));
+		r_prim = (solveQEHC(currentlySolvedProblem->points, currentSettings->nPoints, parameters.SearchSubject, worsePoint, parameters.sort, parameters.shuffle, parameters.offset, parameters.maxlevel, parameters.iterationsLimit));
 		r->MinimumContribution = r_prim.MinimumContribution;
 		r->MaximumContribution = r_prim.MaximumContribution;
 		r->MinimumContributionIndex = r_prim.MinimumContributionIndex;
@@ -46,7 +46,7 @@ namespace moda {
 
 
 
-	QEHCResult QEHCSolver::solveQEHC(std::vector <Point*>& set, int numberOfSolutions, QEHCParameters::SearchSubjectOption searchSubject, bool useSort, bool useShuffle, int offset, int maxlevel, unsigned long int iterationLimit)
+	QEHCResult QEHCSolver::solveQEHC(std::vector <Point*>& set, int numberOfSolutions, QEHCParameters::SearchSubjectOption searchSubject, Point* nadir, bool useSort, bool useShuffle, int offset, int maxlevel, unsigned long int iterationLimit)
 	{
 		//int reserve_size = 4*numberOfSolutions * numberOfSolutions * currentSettings->NumberOfObjectives;
 		//int reserve_size = 20000000;
@@ -63,7 +63,7 @@ namespace moda {
 
 		}
 		context->maxIndexUsed = numberOfSolutions - 1;
-		QEHCResult result = backend::QEHC(contextId,numberOfSolutions, maxlevel,searchSubject,useSort,useShuffle,offset,iterationLimit,currentSettings->NumberOfObjectives);
+		QEHCResult result = backend::QEHC(contextId,numberOfSolutions, maxlevel,searchSubject,useSort,useShuffle,offset,iterationLimit,currentSettings->NumberOfObjectives, *nadir);
 		pool->releaseContext(contextId);
 		return result;
 	};

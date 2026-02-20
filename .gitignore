@@ -1,4 +1,4 @@
-.vs
+﻿.vs
 vcpkg-moda/vcpkg_installed
 
 # Prerequisites
@@ -73,6 +73,10 @@ VisualStudioProjects/ModaTestApplication/x64/Debug/ModaTestApplication.vcxproj.F
 VisualStudioProjects/OriginalSolutions/x64/Debug/OriginalSolutions.vcxproj.FileListAbsolute.txt
 VisualStudioProjects/UnitTests/x64/Debug/UnitTests.vcxproj.FileListAbsolute.txt
 VisualStudioProjects/VisualStudioProjects/x64/Debug/VisualStudioProjects.vcxproj.FileListAbsolute.txt
+VisualStudioProjects/UnitTests/x64/Debug/UnitTests.dll.recipe
+VisualStudioProjects/x64/Debug/UnitTests.exp
+moda/python-wrap/.venv/*
+moda/python-wrap/.venv-windows/*
 /SampleModaApp/SampleModaApp/x64
 /SampleModaApp/Moda/x64
 /VisualStudioProjects/.vs/VisualStudioProjects/v17/DocumentLayout.backup.json

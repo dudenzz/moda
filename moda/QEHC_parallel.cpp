@@ -71,7 +71,7 @@ namespace moda {
 			backend::QEHCExecutionContext* context = (backend::QEHCExecutionContext*)pool->getContext(contextId);
 			SubproblemsPool<SubProblem>& subProblems = *context->subProblemsPool;
 			indexSet = context->points;
-			ProcessData* process = context->process;
+			ProcessData* process = context->process.get();
 			for (ii = 0; ii < iterLimit; ii++) {
 
 				if (process->subProblemsStack.size() == 0) {
@@ -98,7 +98,7 @@ namespace moda {
 				// If there is just one point
 				if (subProblems[iSP].start == subProblems[iSP].end) {
 					std::cout << iSP << "\n";
-					DType v = Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet)[subProblems[iSP].start]), &subProblems[iSP].IdealPoint, numberOfObjectives);
+					DType v = Backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet)[subProblems[iSP].start]), &subProblems[iSP].IdealPoint, numberOfObjectives);
 					process->lowerBoundVolume += v;
 					process->upperBoundVolume -= subProblems[iSP].volume - v;
 					process->subProblemsStack.subProblems->free(iSP);
@@ -143,15 +143,15 @@ namespace moda {
 
 				// If there are just two points
 				if (subProblems[iSP].end - subProblems[iSP].start == 1) {
-					DType v = backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet)[subProblems[iSP].start]), &subProblems[iSP].IdealPoint, numberOfObjectives);
-					v += backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet)[subProblems[iSP].end]), &subProblems[iSP].IdealPoint, numberOfObjectives);
+					DType v = backend::Backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet)[subProblems[iSP].start]), &subProblems[iSP].IdealPoint, numberOfObjectives);
+					v += backend::Backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet)[subProblems[iSP].end]), &subProblems[iSP].IdealPoint, numberOfObjectives);
 					Point* point2 = new Point(*(*indexSet)[subProblems[iSP].start]);
 					unsigned j;
 					for (j = 0; j < numberOfObjectives; j++) {
 
 						point2->ObjectiveValues[j] = std::min(point2->ObjectiveValues[j], (*indexSet)[subProblems[iSP].end]->ObjectiveValues[j]);
 					}
-					v -= backend::Hypervolume(&subProblems[iSP].NadirPoint, point2, &subProblems[iSP].IdealPoint, numberOfObjectives);
+					v -= backend::Backend::Hypervolume(&subProblems[iSP].NadirPoint, point2, &subProblems[iSP].IdealPoint, numberOfObjectives);
 					delete point2;
 					process->lowerBoundVolume += v;
 					process->upperBoundVolume -= subProblems[iSP].volume - v;
@@ -197,20 +197,20 @@ namespace moda {
 
 				int iPivot = subProblems[iSP].start;
 				DType maxVolume;
-				maxVolume = backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[iPivot], &subProblems[iSP].IdealPoint, numberOfObjectives); //niepotrzebnie w p�tli ??
+				maxVolume = backend::Backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[iPivot], &subProblems[iSP].IdealPoint, numberOfObjectives); //niepotrzebnie w p�tli ??
 
 				// Find the pivot point
 				unsigned i;
 				for (i = subProblems[iSP].start + 1; i <= subProblems[iSP].end; i++) {
 					DType volumeCurrent;
-					volumeCurrent = backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[i], &subProblems[iSP].IdealPoint, numberOfObjectives);
+					volumeCurrent = backend::Backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[i], &subProblems[iSP].IdealPoint, numberOfObjectives);
 					if (maxVolume < volumeCurrent) {
 						maxVolume = volumeCurrent;
 						iPivot = i;
 					}
 				}
 
-				DType v = backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[iPivot], &subProblems[iSP].IdealPoint, numberOfObjectives);
+				DType v = backend::Backend::Hypervolume(&subProblems[iSP].NadirPoint, ((*indexSet))[iPivot], &subProblems[iSP].IdealPoint, numberOfObjectives);
 				process->lowerBoundVolume += v;
 
 				if (minContributionUpperBound > process->totalVolume - process->lowerBoundVolume) {
@@ -302,7 +302,7 @@ namespace moda {
 						partNadirPoint.ObjectiveValues[j] = std::min(subProblems[iSP].IdealPoint.ObjectiveValues[j],
 							(*indexSet)[iPivot]->ObjectiveValues[j]);
 
-						DType v = Hypervolume(&partNadirPoint, &partIdealPoint, numberOfObjectives);
+						DType v = Backend::Hypervolume(&partNadirPoint, &partIdealPoint, numberOfObjectives);
 						process->upperBoundVolume += v;
 
 						int newISP = process->subProblemsStack.subProblems->getNew();
@@ -411,14 +411,14 @@ namespace moda {
 				ProcessData* process = new ProcessData(maxlevel);
 				int newId = pool->reserveContext(numberOfSolutions, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::QEHCContext, true);
 				QEHCExecutionContext* newContext = (QEHCExecutionContext*)pool->getContext(newId);
-				newContext->subProblemsPool = &subProblems;
+				newContext->subProblemsPool = std::make_shared<moda::SubproblemsPool<SubProblem>>(subProblems);
 				int iSP = subProblems.getNew();
 				//int iSP = subProblems.getNew();
 				subProblems[iSP].IdealPoint = *(*indexSet)[ip];
 				subProblems[iSP].NadirPoint = newNadirPoint;
 				subProblems[iSP].start = 0;//pos;
 				subProblems[iSP].end = numberOfSolutions - 2;//pos + numberOfSolutions - 2;
-				DType v = Hypervolume(&subProblems[iSP].NadirPoint, &subProblems[iSP].IdealPoint, numberOfObjectives);
+				DType v = Backend::Hypervolume(&subProblems[iSP].NadirPoint, &subProblems[iSP].IdealPoint, numberOfObjectives);
 				subProblems[iSP].volume = v;
 				process->lowerBoundVolume = 0;
 				process->upperBoundVolume = v;
@@ -427,7 +427,7 @@ namespace moda {
 				process->subProblemsStack.push_back(iSP);
 				process->id = ip;
 
-				newContext->process = process;
+				newContext->process = std::make_shared<ProcessData>(process);
 				contexts.push_back(newId);
 
 				int i3 = 0;

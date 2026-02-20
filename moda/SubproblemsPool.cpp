@@ -6,7 +6,7 @@ namespace moda {
 	{
 		clock_t t0 = clock();
 		this->reserve(10000000); // original value: 1000000000
-		this->resize(100000); // original value: 10000000
+		this->resize(1); // original value: 10000000
 	}
 	template<class T> int SubproblemsPool<T>::getNew()
 	{
