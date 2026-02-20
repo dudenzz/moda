@@ -12,3 +12,6 @@ moda/python-wrap/.venv
 moda/python-wrap/.venv-windows
 moda/python-wrap/build
 VisualStudioProjects/
+/SampleModaApp/Moda/x64/Release
+/SampleModaApp/SampleModaApp/x64/Release
+/SampleModaApp/x64/Release
