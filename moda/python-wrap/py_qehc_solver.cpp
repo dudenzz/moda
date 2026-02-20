@@ -1,5 +1,5 @@
 // qehc_solver_wrap.h
-#include "../QEHCSolver.h"        // Zawiera definicję moda::QEHCSolver
+#include "../QEHCSolver.h"  
 #include "../Result.h"
 #include "moda_types.h"
 
@@ -7,17 +7,17 @@
 
 
 
-// Konstruktor/Alokator dla QEHCSolver
+
 PyObject *QEHCSolver_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
 
     QEHCSolverObject *self;
     
-    // Używamy tp_alloc typu bazowego SolverObject, ponieważ QEHCSolverObject to rozszerzenie
+
     self = (QEHCSolverObject *)SolverType.tp_new(type, args, kwds);
     if (self != NULL) {
-        // Alokacja obiektu C++ QEHCSolver
+
         try {
-            // Używamy pola 'solver' z odziedziczonej struktury SolverObject
+
             self->super.solver = new moda::QEHCSolver(); 
         } catch (const std::bad_alloc &e) {
             Py_DECREF(self);
@@ -84,7 +84,7 @@ PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
         params->iterationsLimit = static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->iterationsLimit;
         params->shuffle = static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->shuffle;
         params->offset= static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->offset;
-        params->SearchSubject= static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->SearchSubject;
+        // params->SearchSubject= static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->SearchSubject;
         params->sort= static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->sort;
         params->maxlevel= static_cast<moda::QEHCParameters*>(params_wrapper->base.params)->maxlevel;
         // params->WorseReferencePointCalculationStyle = static_cast<moda::SolverParameters*>(base_params_wrapper->params)->WorseReferencePointCalculationStyle;

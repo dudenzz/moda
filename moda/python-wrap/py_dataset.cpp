@@ -212,40 +212,25 @@ PyObject* DataSet_add(DataSetObject *self, PyObject *args) {
     PointObject *point_wrapper;
     moda::Point *point_to_add;
 
-    // --- 1. Parsowanie argumentów: oczekujemy JEDEN argument typu obiektowego ---
+    // Parse
     if (!PyArg_ParseTuple(args, "O", &py_point_obj)) {
         return NULL; // PyArg_ParseTuple ustawi błąd
     }
 
-    // --- 2. Walidacja typu: Sprawdzenie, czy to jest obiekt moda.Point ---
-    // Używamy PyObject_TypeCheck, aby upewnić się, że to jest dokładnie PointType
+    // Validate
     if (!PyObject_TypeCheck(py_point_obj, &PointType)) {
         PyErr_SetString(PyExc_TypeError, 
                         "Argument must be an instance of moda.Point.");
         return NULL;
     }
-    
-    // Rzutowanie PyObject na PointObject
+
     point_wrapper = (PointObject *)py_point_obj;
 
-    // --- 3. Przekazanie własności (Ownership Transfer) ---
-    
-    // Kluczowy krok: C++ DataSet przejmuje wskaźnik. 
-    // Musimy "wyjąć" wskaźnik z obiektu Pythona, aby uniknąć podwójnego zwalniania pamięci.
-
-    // A) Pobieramy wskaźnik C++
+    // --- Ownership Transfer ---
     point_to_add = point_wrapper->point;
     
-    // B) Zerujemy wskaźnik w obiekcie Pythona (PointObject), aby jego destruktor (dealloc)
-    //    nie próbował zwolnić tego samego miejsca w pamięci.
-    //point_wrapper->point = NULL;
-    
-    // C) Py_DECREF (obniżamy licznik referencji) na obiekcie PointObject.
-    //    Jeśli to była ostatnia referencja (co jest pożądane), obiekt Pythona zostanie zniszczony,
-    //    ale jego dealloc nie usunie pamięci C++ Point*, ponieważ ustawiliśmy ją na NULL.
-    //Py_DECREF(point_wrapper); 
-    
-    // --- 4. Wywołanie metody C++ ---
+
+    // --- Call 
     if (!point_to_add) {
          PyErr_SetString(PyExc_ValueError, "Internal C++ Point pointer was NULL.");
          return NULL;
@@ -254,7 +239,7 @@ PyObject* DataSet_add(DataSetObject *self, PyObject *args) {
     try {
         bool success = self->data_set->add(point_to_add);
         
-        // Zwracamy bool Pythona odpowiadający wartości zwracanej przez C++
+        // Python booleans
         if (success) {
             Py_RETURN_TRUE;
         } else {
@@ -269,29 +254,25 @@ PyObject* DataSet_add(DataSetObject *self, PyObject *args) {
     }
 }
 PyObject* DataSet_normalize(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
-    // Py_UNUSED(ignored) to konwencja dla funkcji C-API, która jest wywoływana
-    // bez argumentów Pythona (METH_NOARGS).
+
 
     try {
-        // Wywołanie metody C++
+        // Call
         self->data_set->normalize();
 
     } catch (const std::exception &e) {
-        // Obsługa wyjątków C++
         PyErr_SetString(PyExc_RuntimeError, e.what());
         return NULL;
     } catch (...) {
         PyErr_SetString(PyExc_RuntimeError, "Unknown error during DataSet::normalize.");
         return NULL;
     }
-
-    // Metoda C++ zwraca void, więc w Pythonie zwracamy None
+// it's a procedure, does not have any return value
     Py_RETURN_NONE;
 }
 
 PyObject* DataSet_reverse(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
-    // Py_UNUSED(ignored) to konwencja dla funkcji C-API, która jest wywoływana
-    // bez argumentów Pythona (METH_NOARGS).
+
 
     try {
         
@@ -315,43 +296,32 @@ PyObject* DataSet_get_ideal(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
     PointObject *py_point_wrapper = NULL;
 
     try {
-        // --- 1. Wywołanie metody C++ ---
-        // DataSet::getIdeal() zwraca wskaźnik do wewnętrznego punktu.
+        // Call
         cpp_ideal_point = self->data_set->getIdeal();
         
         if (!cpp_ideal_point) {
-            // Jeżeli punkt jest NULL (np. DataSet nie został zainicjowany lub jest pusty)
             Py_RETURN_NONE; 
         }
 
-        // --- 2. Utworzenie nowego obiektu Python (Kopia) ---
-        
-        // Alokacja pamięci dla nowego obiektu PointObject
+        // Copy
         py_point_wrapper = (PointObject *)PyObject_CallObject((PyObject *)&PointType, NULL);
         if (!py_point_wrapper) {
-            // W przypadku błędu alokacji
             return NULL; 
         }
 
-        // 3. Skopiowanie danych z wewnętrznego C++ Point* do nowego Python PointObject
-        
-        // Sprawdzamy, czy konstruktor PointType nie utworzył już defaultowego punktu.
-        // Jeśli tak, musimy go usunąć, aby zrobić miejsce na kopię.
+        // Check if default constructor was called, if so delete the point to prevent mem-leaks
         if (py_point_wrapper->point) {
             delete py_point_wrapper->point;
         }
 
-        // Kopiowanie danych: NOWY Point* jest tworzony na stercie (heap) C++.
-        // Ten nowy obiekt C++ jest teraz zarządzany przez Python (przez py_point_wrapper's dealloc).
+        // Copy a new point to a wrapped object
         py_point_wrapper->point = new moda::Point(*cpp_ideal_point);
 
-        // --- 4. Zwrot obiektu Pythona ---
+        // return
         return (PyObject *)py_point_wrapper;
 
     } catch (const std::exception &e) {
-        // Upewnij się, że jeśli alokacja py_point_wrapper się powiodła, ale dalszy kod rzucił
-        // wyjątek, musimy zwolnić wrapper. W tym przypadku, PyObject_CallObject
-        // zwraca obiekt z licznikiem referencji 1, więc wystarczy DECREF.
+        // DECREF handling 
         if (py_point_wrapper) {
             Py_DECREF(py_point_wrapper);
         }
@@ -368,19 +338,16 @@ PyObject* DataSet_get_ideal(DataSetObject *self, PyObject *Py_UNUSED(ignored)) {
 PyObject* DataSet_str(DataSetObject *self) {
     std::string cpp_string;
     
-    // Sprawdzenie, czy obiekt C++ w ogóle istnieje
+    // Check if the object exists
     if (!self->data_set) {
         return PyUnicode_FromString("<moda.DataSet object (uninitialized C++ pointer)>");
     }
 
     try {
-        // --- 1. Wywołanie metody C++ ---
+        // Call
         cpp_string = self->data_set->to_string();
 
-        // --- 2. Konwersja std::string na PyUnicode (Python string) ---
-        
-        // Używamy PyUnicode_FromStringAndSize, która jest bezpieczna i efektywna
-        // dla konwersji std::string zawierającego dane tekstowe (char*).
+        // Convert and return
         return PyUnicode_FromStringAndSize(cpp_string.c_str(), cpp_string.length());
 
     } catch (const std::exception &e) {

@@ -12,8 +12,10 @@ if sys.platform == 'win32':
     link_args = ['/DEBUG']
 else:
     # GCC/Clang Flags (Linux/WSL)
-    compile_args = ['-std=c++17', '-fsanitize=address', '-fno-omit-frame-pointer', '-g']
-    link_args = ['-fsanitize=address']
+    # compile_args = ['-std=c++17', '-fsanitize=address', '-fno-omit-frame-pointer', '-g']
+    compile_args = ['-std=c++17']
+    # link_args = ['-fsanitize=address']
+    link_args = []
     
 modamodule = Extension(
     'moda',  # The name of the compiled module
@@ -39,8 +41,8 @@ modamodule = Extension(
             ], 
     include_dirs=[np.get_include(), '.'], # Include numpy headers and local headers
     language='c++',
-    extra_compile_args=compile_args, # Use modern C++ standard
-    extra_link_args=link_args
+    extra_compile_args=compile_args # Use modern C++ standard
+    # extra_link_args=link_args
 )
 
 setup(

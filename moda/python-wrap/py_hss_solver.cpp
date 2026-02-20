@@ -69,7 +69,7 @@ PyObject *HSSSolver_Solve(HSSSolverObject *self, PyObject *args) {
 
     
     HSSParametersObject *params_wrapper = (HSSParametersObject *)py_params_obj;   
-    // SolverParametersObject *base_params_wrapper = (SolverParametersObject *)py_params_obj;   
+    SolverParametersObject *base_params_wrapper = (SolverParametersObject *)py_params_obj;   
 
     // pointers validation
     if (!self->super.solver || !dataset_wrapper->data_set || !params_wrapper->base.params) {
@@ -81,33 +81,34 @@ PyObject *HSSSolver_Solve(HSSSolverObject *self, PyObject *args) {
     moda::HSSParameters* params =  new moda::HSSParameters(moda::HSSParameters::ReferencePointCalculationStyle::zeroone, moda::HSSParameters::ReferencePointCalculationStyle::zeroone);
     try {
 
-        fprintf(stderr, "DEBUG: params pointer: %p\n", (void*)params_wrapper->base.params);
-        fflush(stderr); 
+        // fprintf(stderr, "DEBUG: params pointer: %p\n", (void*)params_wrapper->base.params);
+        // fflush(stderr); 
         params->Strategy = static_cast<moda::HSSParameters*>(params_wrapper->base.params)->Strategy;
         params->StoppingCriteria = static_cast<moda::HSSParameters*>(params_wrapper->base.params)->StoppingCriteria;
         params->StoppingSubsetSize = static_cast<moda::HSSParameters*>(params_wrapper->base.params)->StoppingSubsetSize;
         params->StoppingTime = static_cast<moda::HSSParameters*>(params_wrapper->base.params)->StoppingTime;
         // params->WorseReferencePointCalculationStyle = static_cast<moda::SolverParameters*>(base_params_wrapper->params)->WorseReferencePointCalculationStyle;
         // params->BetterReferencePointCalculationStyle = static_cast<moda::SolverParameters*>(base_params_wrapper->params)->BetterReferencePointCalculationStyle;
-        fprintf(stderr, "DEBUG: solver strategy: %d\n", params->Strategy);
-        fprintf(stderr, "DEBUG: solver criteria: %d\n", params->StoppingCriteria);
-        fprintf(stderr, "DEBUG: solver subsetsize: %d\n", params->StoppingSubsetSize);
-        fprintf(stderr, "DEBUG: solver stoptime: %d\n", params->StoppingTime);
+        // fprintf(stderr, "DEBUG: solver strategy: %d\n", params->Strategy);
+        // fprintf(stderr, "DEBUG: solver criteria: %d\n", params->StoppingCriteria);
+        // fprintf(stderr, "DEBUG: solver subsetsize: %d\n", params->StoppingSubsetSize);
+        // fprintf(stderr, "DEBUG: solver stoptime: %d\n", params->StoppingTime);
         
         //static cast
         moda::HSSSolver* hss_ptr = static_cast<moda::HSSSolver*>(self->super.solver);
-        fprintf(stderr, "DEBUG: solver pointer: %p\n", (void*)hss_ptr);
-        fprintf(stderr, "DEBUG: dataset pointer: %p\n", (void*)dataset_wrapper->data_set);
-        fprintf(stderr, "DEBUG: number of points: %d\n", dataset_wrapper->data_set->points.size());
+        // fprintf(stderr, "DEBUG: solver pointer: %p\n", (void*)hss_ptr);
+        // fprintf(stderr, "DEBUG: dataset pointer: %p\n", (void*)dataset_wrapper->data_set);
+        // fprintf(stderr, "DEBUG: number of points: %d\n", (int)dataset_wrapper->data_set->points.size());
 
-        fflush(stderr);
+        // fflush(stderr);
         // calling the method
         result_ptr = hss_ptr->Solve(
             dataset_wrapper->data_set, 
             *params
         );
-        fprintf(stderr, "DEBUG: results pointer: %p\n", (void*)result_ptr);
-        fflush(stderr);
+        // fprintf(stderr, "DEBUG: results pointer: %p\n", (void*)result_ptr);
+        // fprintf(stderr, "DEBUG: results size: %d\n", (int)result_ptr->selectedPoints.size());
+        // fflush(stderr);
         delete params;
     } catch (const std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -118,17 +119,17 @@ PyObject *HSSSolver_Solve(HSSSolverObject *self, PyObject *args) {
     // ---- convert vector<int> to Python list ----
     const std::vector<int>& pts = result_ptr->selectedPoints;
 
-    // PyObject* pyList = PyList_New(pts.size());
-    // for (size_t i = 0; i < pts.size(); ++i) {
-    //     PyObject* val = PyLong_FromLong(pts[i]);
-    //     PyList_SetItem(pyList, i, val); 
-    // }
+    PyObject* pyList = PyList_New(pts.size());
+    for (size_t i = 0; i < pts.size(); ++i) {
+        PyObject* val = PyLong_FromLong(pts[i]);
+        PyList_SetItem(pyList, i, val); 
+    }
 
     // Create a tuple of size 2
     PyObject* pyTuple = PyTuple_New(2);
 
-    // PyTuple_SetItem(pyTuple, 0, pyList);
-    PyTuple_SetItem(pyTuple, 0, PyFloat_FromDouble(result_ptr->HyperVolume));
+    PyTuple_SetItem(pyTuple, 0, pyList);
+    // PyTuple_SetItem(pyTuple, 0, PyFloat_FromDouble(result_ptr->HyperVolume));
     PyTuple_SetItem(pyTuple, 1, PyFloat_FromDouble(result_ptr->HyperVolume));
     delete result_ptr;
     return pyTuple;
