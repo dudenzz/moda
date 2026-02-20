@@ -31,55 +31,57 @@
 
 namespace moda {
     namespace backend {
-        short off(short offset, short j, int numberOfObjectives)
-        {
-            return (j + offset) % numberOfObjectives;
-        }
 
-        DType Hypervolume(const Point* nadirPoint, const Point* p2, const Point* idealPoint, int numberOfObjectives)
-        {
-
-            DType s = 1;
-            short j;
-            for (j = 0; j < numberOfObjectives; j++)
+            short Backend::off(short offset, short j, int numberOfObjectives)
             {
-                if (p2->ObjectiveValues[j] > idealPoint->ObjectiveValues[j])
-                    s *= idealPoint->ObjectiveValues[j] - nadirPoint->ObjectiveValues[j];
-                else
-                    s *= p2->ObjectiveValues[j] - nadirPoint->ObjectiveValues[j];
-                
+                return (j + offset) % numberOfObjectives;
             }
-            return s;
-        }
-        DType Hypervolume(const Point* nadirPoint, const Point* idealPoint, int numberOfObjectives) {
-            DType s = 1;
-            short j;
-            for (j = 0; j < numberOfObjectives; j++) {
 
-                s *= (idealPoint->ObjectiveValues[j] - nadirPoint->ObjectiveValues[j]);
+            DType Backend::Hypervolume(const Point* nadirPoint, const Point* p2, const Point* idealPoint, int numberOfObjectives)
+            {
+
+                DType s = 1;
+                short j;
+                for (j = 0; j < numberOfObjectives; j++)
+                {
+                    if (p2->ObjectiveValues[j] > idealPoint->ObjectiveValues[j])
+                        s *= idealPoint->ObjectiveValues[j] - nadirPoint->ObjectiveValues[j];
+                    else
+                        s *= p2->ObjectiveValues[j] - nadirPoint->ObjectiveValues[j];
+
+                }
+                return s;
             }
-            return s;
-        }
+            DType Backend::Hypervolume(const Point* nadirPoint, const Point* idealPoint, int numberOfObjectives) {
+                DType s = 1;
+                short j;
+                for (j = 0; j < numberOfObjectives; j++) {
+
+                    s *= (idealPoint->ObjectiveValues[j] - nadirPoint->ObjectiveValues[j]);
+                }
+                return s;
+            }
 
 
-        void Normalize(std::vector <DType>& p, int numberOfObjectives) {
-            DType nrm = Norm(p, numberOfObjectives);
-            DType s = 0;
-            int j;
-            for (j = 0; j < numberOfObjectives; j++) {
-                p[j] /= nrm;
+            void Backend::Normalize(std::vector <DType>& p, int numberOfObjectives) {
+                DType nrm = Norm(p, numberOfObjectives);
+                DType s = 0;
+                int j;
+                for (j = 0; j < numberOfObjectives; j++) {
+                    p[j] /= nrm;
+                }
+            }
+
+            DType Backend::Norm(std::vector <DType>& p, int numberOfObjectives) {
+                DType s = 0;
+                int j;
+                for (j = 0; j < numberOfObjectives; j++) {
+                    s += p[j] * p[j];
+                }
+                return sqrt(s);
             }
         }
 
-        DType Norm(std::vector <DType>& p, int numberOfObjectives) {
-            DType s = 0;
-            int j;
-            for (j = 0; j < numberOfObjectives; j++) {
-                s += p[j] * p[j];
-            }
-            return sqrt(s);
-        }
+    
 
-
-    }
 }

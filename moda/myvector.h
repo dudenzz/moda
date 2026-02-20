@@ -21,7 +21,6 @@ namespace moda {
 
 	public:
 		myvector();
-		~myvector();
 		void reserve(int newsize);
 
 		int size();

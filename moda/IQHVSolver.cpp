@@ -27,9 +27,9 @@ namespace moda {
 
         
         delete currentSettings;
-        //delete currentlySolvedProblem;
-        delete betterPoint;
-        delete worsePoint;
+        //delete currentlySolvedProblem; do not remove problem like that, it's a pointer to an existing dataset
+        //delete betterPoint; removing those points prohibits from using that dataset any further, those are references; the points should be removed with dataset not with solver. comment left on purpose so noone adds this line for sake of handling memory leaks
+        //delete worsePoint;
         //return the result
         return r;
     }
@@ -54,7 +54,7 @@ namespace moda {
         maxIndexUsed = numberOfSolutions - 1;
         context->maxIndexUsed = maxIndexUsed;
         context->maxIndexUsedOverall = maxIndexUsed;
-        double result = backend::IQHV(0, numberOfSolutions - 1, contextId, idealPoint, nadirPoint, 0, currentSettings->NumberOfObjectives, 0, numberOfSolutions);
+        double result = backend::IQHV(0, numberOfSolutions - 1, contextId, idealPoint, nadirPoint, 0, currentSettings->NumberOfObjectives, 0, numberOfSolutions, true);
         //std::cout << currentSettings->name << "\t" << currentSettings->NumberOfObjectives << "\t" << currentSettings->nPoints << "\t" <<memoryManager->maxIndexUsedNumbers[contextId]  << "\t" << memoryManager->maxMaxIndexUsedNumbers[contextId];
         pool->releaseContext(contextId);
         pool->cleanMemory();

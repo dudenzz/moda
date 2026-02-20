@@ -1244,10 +1244,10 @@ namespace moda {
 		Point partIdealPoint = idealPoint;
 
 		for (jj = 0; jj < currentSettings->NumberOfObjectives; jj++) {
-			j = backend::off(offset, jj, currentSettings->NumberOfObjectives);
+			j = backend::Backend::off(offset, jj, currentSettings->NumberOfObjectives);
 
 			if (jj > 0) {
-				short j2 = backend::off(offset, jj - 1, currentSettings->NumberOfObjectives);
+				short j2 = backend::Backend::off(offset, jj - 1, currentSettings->NumberOfObjectives);
 				partIdealPoint.ObjectiveValues[j2] = std::min(idealPoint.ObjectiveValues[j2], currentlySolvedProblem->points[iPivot]->ObjectiveValues[j2]);
 				partNadirPoint.ObjectiveValues[j2] = nadirPoint.ObjectiveValues[j2];
 			}
@@ -1347,10 +1347,10 @@ namespace moda {
 		Point partIdealPoint = idealPoint;
 
 		for (jj = 0; jj < currentSettings->NumberOfObjectives; jj++) {
-			j = backend::off(offset, jj, currentSettings->NumberOfObjectives);
+			j = backend::Backend::off(offset, jj, currentSettings->NumberOfObjectives);
 
 			if (jj > 0) {
-				short j2 = backend::off(offset, jj - 1, currentSettings->NumberOfObjectives);
+				short j2 = backend::Backend::off(offset, jj - 1, currentSettings->NumberOfObjectives);
 				partIdealPoint.ObjectiveValues[j2] = std::min(idealPoint.ObjectiveValues[j2], currentlySolvedProblem->points[iPivot]->ObjectiveValues[j2]);
 				partNadirPoint.ObjectiveValues[j2] = nadirPoint.ObjectiveValues[j2];
 			}

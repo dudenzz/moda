@@ -38,7 +38,7 @@ namespace moda {
         /// <summary>
         /// types of worse reference points estimation; gap: worse = nadir - epislon; tenpercent: worse = worse - 0.1(better-worse); zeroone: worse = {0,0,0...,0}; userdefined: worse = undefined; exact: worse = nadir
         /// </summary>
-        enum ReferencePointCalculationStyle {epsilon, tenpercent, zeroone, userdefined, exact };
+        enum ReferencePointCalculationStyle {epsilon, tenpercent, zeroone, userdefined, exact , pymoo};
         
         ReferencePointCalculationStyle BetterReferencePointCalculationStyle;
         ReferencePointCalculationStyle WorseReferencePointCalculationStyle;

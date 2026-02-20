@@ -43,7 +43,7 @@
 namespace moda {
 	namespace backend {
         DType dummy(DType test, Point& NadirPoint ) { return test+1.0; };
-        DType IQHV(int start, int end, int contextId, Point IdealPoint, Point NadirPoint, int recursion, int numberOfObjectives, int outerIteratorValue,  int fullSize)
+        DType IQHV(int start, int end, int contextId, Point IdealPoint, Point NadirPoint, int recursion, int numberOfObjectives, int outerIteratorValue,  int fullSize, bool topLevelExecution)
         {
             ExecutionService* service = &(ExecutionService::getInstance());
             ExecutionPool* pool = &(service->getPool());
@@ -65,6 +65,7 @@ namespace moda {
             points = context->points;
 
             std::vector<std::future<DType>> threads;
+            std::vector<std::function<std::future<DType>()>> tasks;
             std::vector<int> memorySlots;
 
             if (end < start) {
@@ -82,41 +83,42 @@ namespace moda {
 
             // If there is just one point
             if (end == start) {
-                DType totalVolume = Hypervolume(&NadirPoint, (*points)[start], &IdealPoint, numberOfObjectives);
+                DType totalVolume = Backend::Hypervolume(&NadirPoint, (*points)[start], &IdealPoint, numberOfObjectives);
 
                 return totalVolume;
             }
 
             // If there are just two points
             if (end - start == 1) {
-                DType totalVolume = Hypervolume(&NadirPoint, (*points)[start], &IdealPoint, numberOfObjectives);
-                totalVolume += Hypervolume(&NadirPoint, (*points)[end], &IdealPoint, numberOfObjectives);
+                DType totalVolume = Backend::Hypervolume(&NadirPoint, (*points)[start], &IdealPoint, numberOfObjectives);
+                totalVolume += Backend::Hypervolume(&NadirPoint, (*points)[end], &IdealPoint, numberOfObjectives);
                 Point* point2 = new Point(*((*points)[start]));
                 unsigned j;
                 for (j = 0; j < numberOfObjectives; j++) {
                     if (point2->ObjectiveValues[j] > (*points)[end]->ObjectiveValues[j])
                         point2->ObjectiveValues[j] = (*points)[end]->ObjectiveValues[j];
                 }
-                totalVolume -= Hypervolume(&NadirPoint, point2, &IdealPoint, numberOfObjectives);
+                totalVolume -= Backend::Hypervolume(&NadirPoint, point2, &IdealPoint, numberOfObjectives);
                 delete point2; // no delete here causes heavy memory leaks
                 return totalVolume;
             }
 
             int iPivot = start;
             DType maxVolume;
-            maxVolume = Hypervolume(&NadirPoint, (*points)[iPivot], &IdealPoint, numberOfObjectives);
+            maxVolume = Backend::Backend::Hypervolume(&NadirPoint, (*points)[iPivot], &IdealPoint, numberOfObjectives);
 
             // Find the pivot point
             unsigned i;
             for (i = start + 1; i <= end; i++) {
                 DType volumeCurrent;
-                volumeCurrent = Hypervolume(&NadirPoint, (*points)[i], &IdealPoint, numberOfObjectives);
+                Point* cp = (*points)[i];
+                volumeCurrent = Backend::Hypervolume(&NadirPoint, cp, &IdealPoint, numberOfObjectives);
                 if (maxVolume < volumeCurrent) {
                     maxVolume = volumeCurrent;
                     iPivot = i;
                 }
             }
-            DType totalVolume = Hypervolume(&NadirPoint, (*points)[iPivot], &IdealPoint, numberOfObjectives);
+            DType totalVolume = Backend::Hypervolume(&NadirPoint, (*points)[iPivot], &IdealPoint, numberOfObjectives);
 
 #ifdef callbacks
             HypervolumeResult tempResult;
@@ -190,16 +192,16 @@ namespace moda {
                         partNadirPoint.ObjectiveValues[j] = (*points)[iPivot]->ObjectiveValues[j];
                     else
                         partNadirPoint.ObjectiveValues[j] = IdealPoint.ObjectiveValues[j];
-                    if (PARALLEL == 0 || (partEnd - partStart) < fullSize*0.25)
+                    if (PARALLEL == 0 || (partEnd - partStart) < fullSize*0.2)
                     {
-                        totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize);
+                        totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false);
                     }
                     else {
                         int points_to_reserve = 4 * (partEnd - partStart) * pow(2, numberOfObjectives / 2) + 1;
-                        int newSlot = service->getPool().reserveContext(points_to_reserve, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::IQHVContext, true);
+                        int newSlot = service->getPool().reserveContext(points_to_reserve*10, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::IQHVContext, true);
                         if (newSlot == -1)
                         {
-                            totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize);
+                            totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false);
                         }
                         else
                         {
@@ -217,7 +219,14 @@ namespace moda {
                             //Point* pide = new Point(partIdealPoint);
 
                             //threads[jj] = std::async(dummy, 1.0, std::ref(pnad));
-                            threads.push_back(std::async(IQHV, 0, no_sol - 1, newSlot, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize));
+         /*                   tasks.push_back([=]() {
+                                return std::async(std::launch::async, IQHV, 0, no_sol - 1, newSlot,
+                                    partIdealPoint, partNadirPoint, recursion + 1,
+                                    numberOfObjectives, jj, fullSize, false);
+                                });*/
+                            threads.push_back(std::async(std::launch::async, IQHV, 0, no_sol - 1, newSlot,
+                                partIdealPoint, partNadirPoint, recursion + 1,
+                                numberOfObjectives, jj, fullSize, false));
                             //delete pnad;
                             //delete pide;
                         }
@@ -243,6 +252,9 @@ namespace moda {
 #endif
             }
 
+            //for (auto& task : tasks) {
+            //    threads.push_back(task());
+            //}
             for (std::future<DType>& thread : threads)
             {
                 thread.wait();

@@ -72,20 +72,9 @@ namespace moda {
 		}
 		ExecutionPool::~ExecutionPool()
 		{
-			//for (int i = 0; i < MEMORY_POOL_SIZE; i++)
-			//{
-			//	if(contexts[i] != nullptr)
-			//		delete contexts[i];
-			//}
 		}
 		ExecutionPool::ExecutionPool()
 		{
-			//ExecutionPool::mutex.lock();
-			//for (int i = 0; i < MEMORY_POOL_SIZE; i++)
-			//{
-			//	contexts[i] = new ExecutionContext(0, 0, 0);
-			//}
-			//ExecutionPool::mutex.unlock();
 		}
 
     }

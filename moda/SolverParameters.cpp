@@ -37,8 +37,8 @@ namespace moda
 	{
 		this->Strategy = SubsetSelectionQHVIncremental;
 		this->StoppingCriteria = StoppingCriteria;
-		this->StoppingSubsetSize = StopTime;
-		this->StoppingTime = StopSize;
+		this->StoppingSubsetSize = StopSize;
+		this->StoppingTime = StopTime;
 	}
 	QEHCParameters::QEHCParameters(ReferencePointCalculationStyle worseReferencePointCalculationStyle, ReferencePointCalculationStyle betterReferencePointCalculationStyle,
 		int MaxEstimationTime, bool callbacks, unsigned long int iterationsLimit, bool sort,
@@ -62,9 +62,12 @@ namespace moda
 
 		case ReferencePointCalculationStyle::zeroone:
 			return new Point(Point::ones(dataset->getParameters()->NumberOfObjectives));
+		case ReferencePointCalculationStyle::pymoo:
+			return new Point(Point::elevens(dataset->getParameters()->NumberOfObjectives));
 		case ReferencePointCalculationStyle::exact:
 			ide = dataset->getIdeal();
 			return new Point(*ide);
+	
 		case ReferencePointCalculationStyle::epsilon:
 		default:
 			Point t =  *(dataset->getIdeal()) + EPSILON;
@@ -86,6 +89,8 @@ namespace moda
 			return new Point(Point::zeroes(dataset->getParameters()->NumberOfObjectives));
 		case ReferencePointCalculationStyle::exact:
 			return new Point(*dataset->getNadir());
+		case ReferencePointCalculationStyle::pymoo:
+			return new Point(Point::negElevens(dataset->getParameters()->NumberOfObjectives));
 		case ReferencePointCalculationStyle::epsilon:
 		default:
 			Point t = *(dataset->getNadir()) - EPSILON;
