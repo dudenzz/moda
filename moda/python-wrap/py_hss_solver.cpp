@@ -78,7 +78,7 @@ PyObject *HSSSolver_Solve(HSSSolverObject *self, PyObject *args) {
     }
 
     moda::HSSResult* result_ptr = NULL;
-    moda::HSSParameters* params =  new moda::HSSParameters(moda::HSSParameters::ReferencePointCalculationStyle::pymoo, moda::HSSParameters::ReferencePointCalculationStyle::pymoo);
+    moda::HSSParameters* params =  new moda::HSSParameters(moda::HSSParameters::ReferencePointCalculationStyle::zeroone, moda::HSSParameters::ReferencePointCalculationStyle::zeroone);
     try {
 
         fprintf(stderr, "DEBUG: params pointer: %p\n", (void*)params_wrapper->base.params);
@@ -97,6 +97,9 @@ PyObject *HSSSolver_Solve(HSSSolverObject *self, PyObject *args) {
         //static cast
         moda::HSSSolver* hss_ptr = static_cast<moda::HSSSolver*>(self->super.solver);
         fprintf(stderr, "DEBUG: solver pointer: %p\n", (void*)hss_ptr);
+        fprintf(stderr, "DEBUG: dataset pointer: %p\n", (void*)dataset_wrapper->data_set);
+        fprintf(stderr, "DEBUG: number of points: %d\n", dataset_wrapper->data_set->points.size());
+
         fflush(stderr);
         // calling the method
         result_ptr = hss_ptr->Solve(
