@@ -10,6 +10,9 @@
 #define TEST_EPSILON 0.002
 #define IDENTITY_EPSILON 0.000001
 #define SLOWDOWN 3
+#ifndef DATASET_PATH
+#define DATASET_PATH "C://Users//kubad//hypervolume//hypervolume//MODA//ModaAutomatedTests//Datasets//" 
+#endif
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace moda;
 
@@ -21,7 +24,7 @@ namespace TimeTests
 
 		TEST_METHOD(TimeIQHVTest1)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10");
+			auto ds = DataSet::LoadFromFilename(std::string(DATASET_PATH) + "unit_tests_d4n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			//ds->normalize();
 			OriginalIQHV::NumberOfObjectives = 4;
@@ -32,7 +35,7 @@ namespace TimeTests
 			HypervolumeResult* result2 = solver.Solve(ds, *params);
 			std::vector <OriginalIQHV::TPoint*> allSolutions;
 			std::ostringstream fileName;
-			fileName << "../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10";
+			fileName << std::string(DATASET_PATH) + "unit_tests_d4n100_10";
 			std::fstream Stream(fileName.str(), std::ios::in);
 			allSolutions.clear();
 			OriginalIQHV::Load(allSolutions, Stream);
@@ -86,7 +89,7 @@ namespace TimeTests
 
 		TEST_METHOD(TimeIQHVTest2)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n200_10");
+			auto ds = DataSet::LoadFromFilename(std::string(DATASET_PATH) + "unit_tests_d4n200_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			OriginalIQHV::NumberOfObjectives = 4;
 			int nSol = 200;
@@ -98,7 +101,7 @@ namespace TimeTests
 			clock_t t1 = clock() - start1;
 			std::vector <OriginalIQHV::TPoint*> allSolutions;
 			std::ostringstream fileName;
-			fileName << "../../ModaAutomatedTests/Datasets/unit_tests_d4n200_10";
+			fileName << std::string(DATASET_PATH) + "unit_tests_d4n200_10";
 			std::fstream Stream(fileName.str(), std::ios::in);
 			allSolutions.clear();
 			Load(allSolutions, Stream);
@@ -152,7 +155,7 @@ namespace TimeTests
 
 		TEST_METHOD(TimeIQHVTest3)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n400_10");
+			auto ds = DataSet::LoadFromFilename(std::string(DATASET_PATH) + "unit_tests_d7n400_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 			OriginalIQHV::NumberOfObjectives = 7;
@@ -163,7 +166,7 @@ namespace TimeTests
 			HypervolumeResult* result2 = solver.Solve(ds, *params);
 			std::vector <OriginalIQHV::TPoint*> allSolutions;
 			std::ostringstream fileName;
-			fileName << "../../ModaAutomatedTests/Datasets/unit_tests_d7n400_10";
+			fileName << std::string(DATASET_PATH) + "unit_tests_d7n400_10";
 			std::fstream Stream(fileName.str(), std::ios::in);
 			allSolutions.clear();
 			Load(allSolutions, Stream);
@@ -216,7 +219,7 @@ namespace TimeTests
 
 		TEST_METHOD(TimeIQHVTest4)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d7n500_10");
+			auto ds = DataSet::LoadFromFilename(std::string(DATASET_PATH) + "unit_tests_d7n500_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 			OriginalIQHV::NumberOfObjectives = 7;
@@ -227,7 +230,7 @@ namespace TimeTests
 			HypervolumeResult* result2 = solver.Solve(ds, *params);
 			std::vector <OriginalIQHV::TPoint*> allSolutions;
 			std::ostringstream fileName;
-			fileName << "../../ModaAutomatedTests/Datasets/unit_tests_d7n500_10";
+			fileName << std::string(DATASET_PATH) + "unit_tests_d7n500_10";
 			std::fstream Stream(fileName.str(), std::ios::in);
 			allSolutions.clear();
 			Load(allSolutions, Stream);
@@ -283,7 +286,7 @@ namespace TimeTests
 
 		TEST_METHOD(TimeHVETest1)
 		{
-			auto ds = DataSet::LoadFromFilename("../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10");
+			auto ds = DataSet::LoadFromFilename(std::string(DATASET_PATH) + "unit_tests_d4n100_10");
 			ds->typeOfOptimization = DataSet::OptimizationType::maximization;
 			ds->normalize();
 			OriginalHVE::NumberOfObjectives = 4;
@@ -301,7 +304,7 @@ namespace TimeTests
 			DBHVEResult* result2 = solver.Solve(ds, *params);
 			std::vector <OriginalHVE::TPoint*> allSolutions;
 			std::ostringstream fileName;
-			fileName << "../../ModaAutomatedTests/Datasets/unit_tests_d4n100_10";
+			fileName << std::string(DATASET_PATH) + "unit_tests_d4n100_10";
 			std::fstream Stream(fileName.str(), std::ios::in);
 			allSolutions.clear();
 			OriginalHVE::Load(allSolutions, Stream);

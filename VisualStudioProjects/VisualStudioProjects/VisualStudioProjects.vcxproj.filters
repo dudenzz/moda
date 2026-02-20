@@ -239,9 +239,6 @@
     <ClCompile Include="..\..\moda\QEHC_parallel_take2.cpp">
       <Filter>Backend\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\moda\IQHVSolver.cpp">
-      <Filter>Backend\source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\moda\MCHV.cpp">
       <Filter>Backend\source</Filter>
     </ClCompile>
@@ -304,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="..\..\moda\TreeNode.cpp">
       <Filter>Data Structures\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\moda\IQHVSolver.cpp">
+      <Filter>Solvers\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
