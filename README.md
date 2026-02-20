@@ -68,40 +68,40 @@ The MODA library follows a Data-Solver-Result pattern. DataSets hold the objecti
 This example demonstrates loading a sample dataset, configuring the IQHVSolver (Improved Quick Hypervolume), and calculating the resulting hypervolume.
 ```cpp
 
-    // 1. Load Data
+       // 1. Load Data
     // Loads sample data from file (file must be accessible in execution directory)
-    moda::DataSet* ds = moda::DataSet::LoadFromFilename("data_6_500_convex_triangular_1"); 
-    
+    DataSet* ds = moda::DataSet::LoadFromFilename("../../sample-file/data_6_500_convex_triangular_1");
+
     // Display data points one by one
     std::cout << "Loaded Data Points:\n";
     for (auto p : ds->points)
     {
-        for(int i = 0; i < p->ObjectiveValues.size(); i++) 
+        for (int i = 0; i < ds->getParameters()->NumberOfObjectives; i++)
             std::cout << p->ObjectiveValues[i] << " ";
         std::cout << "\n";
     }
     std::cout << "---------------------------------\n";
-    
+
     // 2. Prepare Data and Solver
     ds->typeOfOptimization = moda::DataSet::minimization; // Set optimization type
     ds->normalize();                                      // Apply normalization
-    
-    moda::IQHVSolver solver; 
+
+    moda::IQHVSolver solver;
     moda::IQHVParameters params;
-    
+
     // 3. Set Solver Parameters
     // Sets calculation formulas for the reference points (zeroone substitues zeroes and ones vectors for reference points)
     using RefStyle = moda::IQHVParameters::ReferencePointCalculationStyle;
     params.BetterReferencePointCalculationStyle = RefStyle::zeroone;
     params.WorseReferencePointCalculationStyle = RefStyle::zeroone;
-    
+
     // 4. Run Solve and Display Result
     // Solve returns a pointer to a HypervolumeResult
-    moda::HypervolumeResult * result = solver.Solve(ds, params);
-    
+    moda::HypervolumeResult* result = solver.Solve(ds, params);
+
     std::cout << "Calculated Hypervolume: " << result->HyperVolume << std::endl;
     std::cout << "Elapsed Time (ms): " << result->ElapsedTime << std::endl;
-    
+
     // Cleanup (optional but recommended)
     delete ds;
     delete result;
