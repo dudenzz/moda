@@ -4,7 +4,7 @@
 #include "ProcessData.h"
 #include "SubproblemsPool.h"
 #include "SubProblem.h"
-#define UNDERLYING_TYPE 2
+#define UNDERLYING_TYPE 4
 namespace moda {
     namespace backend {
         class ExecutionContext
@@ -40,7 +40,7 @@ namespace moda {
                     if (points != nullptr && !shallow) {
                         // We need a way to clean up the Point* objects managed by the array.
                         // Assuming you add a function like `deleteContainedObjects` to SemiDynamicArray:
-                        points->deleteContainedPoints(initialSize); // <-- Cleans up Point objects AND NULLED THEM
+                        //points->deleteContainedPoints(initialSize); // <-- Cleans up Point objects AND NULLED THEM
                     }
                     delete points;
                     // Always delete the SemiDynamicArray object itself, as the Context owns the container pointer.
@@ -54,8 +54,8 @@ namespace moda {
         {
         public:
             ~IQHVExecutionContext() {
-                delete idealPoint;
-                delete nadirPoint;
+                //delete idealPoint;
+                //delete nadirPoint;
                 //delete points;
                 objectivesOrder.clear();
             }

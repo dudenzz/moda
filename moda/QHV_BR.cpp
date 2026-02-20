@@ -56,7 +56,7 @@ namespace moda {
 
 		this->maxIndexUsed = numberOfSolutions - 1;
 
-		DType subProblemVolume = backend::Hypervolume(&NadirPoint, &IdealPoint, &IdealPoint, currentSettings->NumberOfObjectives);
+		DType subProblemVolume = backend::Backend::Hypervolume(&NadirPoint, &IdealPoint, &IdealPoint, currentSettings->NumberOfObjectives);
 		lowerBoundVolume = 0;
 		upperBoundVolume = subProblemVolume;
 
@@ -104,7 +104,7 @@ namespace moda {
 
 		// If there is just one point
 		if (end == start) {
-			DType totalVolume = backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[start], &IdealPoint, currentSettings->NumberOfObjectives);
+			DType totalVolume = backend::Backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[start], &IdealPoint, currentSettings->NumberOfObjectives);
 
 			lowerBoundVolume += totalVolume;
 			upperBoundVolume -= thisVolume - totalVolume;
@@ -114,14 +114,14 @@ namespace moda {
 
 		// If there are just two points
 		if (end - start == 1) {
-			DType totalVolume = backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[start], &IdealPoint, currentSettings->NumberOfObjectives);
-			totalVolume += backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[end], &IdealPoint, currentSettings->NumberOfObjectives);
+			DType totalVolume = backend::Backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[start], &IdealPoint, currentSettings->NumberOfObjectives);
+			totalVolume += backend::Backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[end], &IdealPoint, currentSettings->NumberOfObjectives);
 			*this->point2 = *(currentlySolvedProblem->points[start]);
 			unsigned j;
 			for (j = 0; j < currentSettings->NumberOfObjectives; j++) {
 				this->point2->ObjectiveValues[j] = std::min(this->point2->ObjectiveValues[j], currentlySolvedProblem->points[end]->ObjectiveValues[j]);
 			}
-			totalVolume -= backend::Hypervolume(&NadirPoint, point2, &IdealPoint, currentSettings->NumberOfObjectives);
+			totalVolume -= backend::Backend::Hypervolume(&NadirPoint, point2, &IdealPoint, currentSettings->NumberOfObjectives);
 
 			lowerBoundVolume += totalVolume;
 			upperBoundVolume -= thisVolume - totalVolume;
@@ -131,20 +131,20 @@ namespace moda {
 
 		int iPivot = start;
 		DType maxVolume;
-		maxVolume = backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[iPivot], &IdealPoint, currentSettings->NumberOfObjectives);
+		maxVolume = backend::Backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[iPivot], &IdealPoint, currentSettings->NumberOfObjectives);
 
 		// Find the pivot point
 		unsigned i;
 		for (i = start + 1; i <= end; i++) {
 			DType volumeCurrent;
-			volumeCurrent = backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[i], &IdealPoint, currentSettings->NumberOfObjectives);
+			volumeCurrent = backend::Backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[i], &IdealPoint, currentSettings->NumberOfObjectives);
 			if (maxVolume < volumeCurrent) {
 				maxVolume = volumeCurrent;
 				iPivot = i;
 			}
 		}
 
-		DType totalVolume = backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[iPivot], &IdealPoint, currentSettings->NumberOfObjectives);
+		DType totalVolume = backend::Backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[iPivot], &IdealPoint, currentSettings->NumberOfObjectives);
 
 		lowerBoundVolume += totalVolume;
 
@@ -228,7 +228,7 @@ namespace moda {
 
 		// If there is just one point
 		if (end == start) {
-			DType totalVolume = backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[start], &IdealPoint, currentSettings->NumberOfObjectives);
+			DType totalVolume = backend::Backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[start], &IdealPoint, currentSettings->NumberOfObjectives);
 
 			lowerBoundVolume += totalVolume;
 			upperBoundVolume -= thisVolume - totalVolume;
@@ -238,14 +238,14 @@ namespace moda {
 
 		// If there are just two points
 		if (end - start == 1) {
-			DType totalVolume = backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[start], &IdealPoint, currentSettings->NumberOfObjectives);
-			totalVolume += backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[end], &IdealPoint, currentSettings->NumberOfObjectives);
+			DType totalVolume = backend::Backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[start], &IdealPoint, currentSettings->NumberOfObjectives);
+			totalVolume += backend::Backend::Hypervolume(&NadirPoint, currentlySolvedProblem->points[end], &IdealPoint, currentSettings->NumberOfObjectives);
 			*this->point2 = *(currentlySolvedProblem->points[start]);
 			unsigned j;
 			for (j = 0; j < currentSettings->NumberOfObjectives; j++) {
 				this->point2->ObjectiveValues[j] = std::min(this->point2->ObjectiveValues[j], currentlySolvedProblem->points[end]->ObjectiveValues[j]);
 			}
-			totalVolume -= backend::Hypervolume(&NadirPoint, point2, &IdealPoint, currentSettings->NumberOfObjectives);
+			totalVolume -= backend::Backend::Hypervolume(&NadirPoint, point2, &IdealPoint, currentSettings->NumberOfObjectives);
 
 			lowerBoundVolume += totalVolume;
 			upperBoundVolume -= thisVolume - totalVolume;
@@ -255,20 +255,20 @@ namespace moda {
 
 		int iPivot = start;
 		DType maxVolume;
-		maxVolume = backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[iPivot], &IdealPoint, currentSettings->NumberOfObjectives);
+		maxVolume = backend::Backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[iPivot], &IdealPoint, currentSettings->NumberOfObjectives);
 
 		// Find the pivot point
 		unsigned i;
 		for (i = start + 1; i <= end; i++) {
 			DType volumeCurrent;
-			volumeCurrent = backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[i], &IdealPoint, currentSettings->NumberOfObjectives);
+			volumeCurrent = backend::Backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[i], &IdealPoint, currentSettings->NumberOfObjectives);
 			if (maxVolume < volumeCurrent) {
 				maxVolume = volumeCurrent;
 				iPivot = i;
 			}
 		}
 
-		DType totalVolume = backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[iPivot], &IdealPoint, currentSettings->NumberOfObjectives);
+		DType totalVolume = backend::Backend::Hypervolume(&NadirPoint, (currentlySolvedProblem->points)[iPivot], &IdealPoint, currentSettings->NumberOfObjectives);
 
 		lowerBoundVolume += totalVolume;
 

@@ -10,8 +10,45 @@
 using namespace moda;
 int main()
 {
+    /*
+    // 1. Load Data
+    // Loads sample data from file (file must be accessible in execution directory)
+    DataSet* ds = moda::DataSet::LoadFromFilename("../../sample-file/data_6_500_convex_triangular_1");
 
+    // Display data points one by one
+    std::cout << "Loaded Data Points:\n";
+    for (auto p : ds->points)
+    {
+        for (int i = 0; i < ds->getParameters()->NumberOfObjectives; i++)
+            std::cout << p->ObjectiveValues[i] << " ";
+        std::cout << "\n";
+    }
+    std::cout << "---------------------------------\n";
 
+    // 2. Prepare Data and Solver
+    ds->typeOfOptimization = moda::DataSet::minimization; // Set optimization type
+    ds->normalize();                                      // Apply normalization
+
+    moda::IQHVSolver solver;
+    moda::IQHVParameters params;
+
+    // 3. Set Solver Parameters
+    // Sets calculation formulas for the reference points (zeroone substitues zeroes and ones vectors for reference points)
+    using RefStyle = moda::IQHVParameters::ReferencePointCalculationStyle;
+    params.BetterReferencePointCalculationStyle = RefStyle::zeroone;
+    params.WorseReferencePointCalculationStyle = RefStyle::zeroone;
+
+    // 4. Run Solve and Display Result
+    // Solve returns a pointer to a HypervolumeResult
+    moda::HypervolumeResult* result = solver.Solve(ds, params);
+
+    std::cout << "Calculated Hypervolume: " << result->HyperVolume << std::endl;
+    std::cout << "Elapsed Time (ms): " << result->ElapsedTime << std::endl;
+
+    // Cleanup (optional but recommended)
+    delete ds;
+    delete result;
+    */
     double** vals = new double* [16] {
         new double[2] { 0.23284221, 0.32681638 },
             new double[2] { 0.22963942, 0.32911968 },
@@ -39,29 +76,32 @@ int main()
         (*p)[1] = vals[i][1];
         ds->add(p);
     }
+    ds->typeOfOptimization = DataSet::minimization;
     //ds->normalize();
     for (int i = 0; i < 16; i++)
     {
         Point p = (*ds)[i];
-        (*ds)[i][0] = -p[0];
-        (*ds)[i][1] = -p[1];
+        (*ds)[i][0] = p[0];
+        (*ds)[i][1] = p[1];
 
     }
 
     Point* nadir = new Point(2);
-    (*nadir)[0] = -2.0;
-    (*nadir)[1] = -2.0;
+    (*nadir)[0] = -2;
+    (*nadir)[1] = -2;
     Point* ideal = new Point(2);
-    (*ideal)[0] = 11.0;
-    (*ideal)[1] = 11.0;
+    (*ideal)[0] = 1000;
+    (*ideal)[1] = 1000;
     QEHCParameters* params = new QEHCParameters(SolverParameters::ReferencePointCalculationStyle::userdefined, SolverParameters::ReferencePointCalculationStyle::userdefined);
     params->worseReferencePoint = nadir;
     params->betterReferencePoint = ideal;
+ 
     QEHCSolver solver;
     //ds->typeOfOptimization = ds->minimization;
     IQHVParameters* hvparams = new IQHVParameters(SolverParameters::ReferencePointCalculationStyle::userdefined, SolverParameters::ReferencePointCalculationStyle::userdefined);
     hvparams->worseReferencePoint = nadir;
     hvparams->betterReferencePoint = ideal;
+    
     IQHVSolver hsolver;
     HSSSolver hsssolver;
     HSSParameters* hssparams = new HSSParameters(SolverParameters::ReferencePointCalculationStyle::userdefined, SolverParameters::ReferencePointCalculationStyle::userdefined);
@@ -69,7 +109,6 @@ int main()
     hssparams->betterReferencePoint = ideal;
     hssparams->StoppingSubsetSize = 10;
     auto res = hsssolver.Solve(ds, *hssparams);
-
     double* py_hvcs = new double[16] {
         6.76920703e-05, 1.88971388e-04, 1.93556007e-03, 1.10670045e-02,
             6.69092328e-03, 4.65240351e-05, 9.05157353e-05, 2.38866579e-01,
@@ -82,8 +121,10 @@ int main()
     {
         Point p = (*ds)[0];
         ds->remove(0);
-        auto hvc = hv->HyperVolume - hsolver.Solve(ds, *hvparams)->HyperVolume;
-        std::cout << i << ":" << hvc << " " << py_hvcs[i] << std::endl;
+        double hvn = hsolver.Solve(ds, *hvparams)->HyperVolume;
+        auto hvc = hv->HyperVolume - hvn;
+        //std::cout << i << ":" << hv->HyperVolume << " - " << hvn << " = " << hvc << " " << py_hvcs[i] << std::endl;
+        std::cout << hv->HyperVolume <<std::endl;
         ds->add(new Point(p));
     }
     auto r = solver.Solve(ds, *params);

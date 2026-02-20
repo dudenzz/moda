@@ -111,6 +111,16 @@ namespace moda {
         }
         return newPoint;
     }
+    Point& Point::operator-()
+    {
+        Point* newPoint = new Point(*this);
+
+        for (int i = 0; i < NumberOfObjectives; i++)
+        {
+            (*newPoint)[i] = -ObjectiveValues[i];
+        }
+        return *newPoint;
+    }
     Point& Point::operator+(DType value)
     {
         Point newPoint = Point(*this);
