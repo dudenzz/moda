@@ -1,7 +1,20 @@
 # MODA
-A comprehensive suite of hypervolume-related algorithms designed for efficient multi-objective optimization
+**MODA** stands for Multi-objective Optimisation Data structures and Algorithms. It provides a comprehensive suite of hypervolume-related algorithms designed for efficient multi-objective optimization. The library includes:
+
+Incremental Quick Hypervolume (IQHV): Efficiently computes the hypervolume of a set of points in a multidimensional space.
+
+Hypervolume Subset Selection (HSS): Optimized for identifying a subset of points that maximizes the hypervolume within a given selection.
+
+Quick Extreme Hypervolume Contribution (QEHC): Quickly identifies the point with either the smallest or largest contribution to the overall hypervolume.
+
+Optimized Hypervolume Estimators (HVE): Includes multiple implementations for fast and accurate hypervolume estimation.
+
+Quick R2 Calculation (QR2): Efficiently computes the R2 indicator value for a given set of points.
 
 ## Installation guide
+
+### VCPKG
+
 The library is going to be availiable via packet managers PyPi (python wrap) and VCPKG (C++ original library). Additionally, the library makes use of the CMake for Windows and the Make for Linux based operating systems. 
 
 Currently the library is under pull request review for VCPKG, hence we provide an ad-hoc installation guideline. Note that this is work in progress, and this process should be used with necessary care.
