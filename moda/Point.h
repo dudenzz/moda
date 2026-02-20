@@ -28,6 +28,7 @@ namespace moda
 		Point& operator=(Point& Point);
 		Point& operator=(const Point& Point);
 		Point& operator-(DType value);
+		Point& operator-();
 		Point& operator+(DType value);
 		/** Comparator */
 		

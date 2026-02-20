@@ -70,7 +70,7 @@ namespace moda {
                         randomDirectionVector[j] = 0.00000000001;
                     }
                 }
-                Normalize(randomDirectionVector, numberOfObjectives);
+                Backend::Normalize(randomDirectionVector, numberOfObjectives);
 
                 for (j = 0; j < numberOfObjectives; j++) {
 

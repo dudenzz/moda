@@ -20,7 +20,7 @@ namespace moda
 				newIdealPoint.ObjectiveValues[j] = points[pointIndex]->ObjectiveValues[j];
 			}
 
-			DType largeHV = Hypervolume(&nadirPoint, &newIdealPoint, numberOfObjectives);
+			DType largeHV = Backend::Hypervolume(&nadirPoint, &newIdealPoint, numberOfObjectives);
 			DType complement = solveIQHV(tmpPoints, newIdealPoint, nadirPoint, numberOfObjectives);
 			return largeHV - complement;
 		}
@@ -46,7 +46,7 @@ namespace moda
 			//DType result = IQHV_for_hss(0, numberOfPoints - 1, idealPoint, nadirPoint, 0, numberOfObjectives, memoryKey, maxIndexKey);
 			int maxIndexMem = numberOfPoints - 1;
 			context->maxIndexUsed = maxIndexMem;
-			DType result = IQHV(0, numberOfPoints - 1, memoryKey, idealPoint, nadirPoint, 0, numberOfObjectives, 0,  numberOfPoints);
+			DType result = IQHV(0, numberOfPoints - 1, memoryKey, idealPoint, nadirPoint, 0, numberOfObjectives, 0,  numberOfPoints, false);
 			pool->releaseContext(memoryKey);
 			// release memory
 			//indexSetVec.clear();
