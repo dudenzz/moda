@@ -85,15 +85,13 @@ class LeastHypervolumeContributionSurvival(Survival):
                 data = front.get("F")
                 new_size = len(survivors) + len(front) - n_survive
                 if new_size > 0.4 * len(data):
-                    params.Strategy = SubsetSelectionStrategy.Incremental
+                    params.Strategy = moda.SubsetSelectionStrategy.Incremental
                 else:
-                    params.Strategy = SubsetSelectionStrategy.Decremental
-                params.StoppingCriteria = StoppingCriteriaType.SubsetSize
+                    params.Strategy = moda.SubsetSelectionStrategy.Decremental
+                params.StoppingCriteria = moda.StoppingCriteriaType.SubsetSize
                 params.StoppingSubsetSize = new_size
-                data = front.get("F")
-                data = -data
-                data = data - np.min(data, axis=0) + 1
                 ds = moda.DataSet(data) 
+                ds.typeOfOptimization = moda.OptimizationType.minimization
                 subset = solver.Solve(ds, params)[0]
                 front = np.delete(front, subset, axis=0)
 

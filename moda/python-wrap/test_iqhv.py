@@ -1,6 +1,6 @@
 import numpy as np
 import moda
-from moda import QEHCParameters, QEHCSolver, OptimizationType
+from moda import IQHVParameters, IQHVSolver, OptimizationType
 data = np.array([[2.31883029e-02,4.98014985e-03,1.70077123e-03,3.32375225e-0,1.54664600e-01,4.56366560e-01]
 ,[3.23425272e-03,2.77086978e-03,2.36103692e-02,7.06677650e-0,6.29288055e-02,7.90365721e-01]
 ,[8.74913478e-03,2.41530462e-02,5.75820731e-03,6.54964234e-0,1.01088636e-02,1.77907908e-01]
@@ -50,11 +50,11 @@ data = np.array([[2.31883029e-02,4.98014985e-03,1.70077123e-03,3.32375225e-0,1.5
 ,[1.84074383e-02,1.80429687e-02,1.60629797e-02,4.42225513e-0,6.73597791e-02,4.70632073e-01]
 ,[9.06998218e-03,3.69940806e-02,5.36038561e-03,1.16861968e-0,7.55941030e-02,5.44440105e-01]])
 
-solver = QEHCSolver()
-params = QEHCParameters()
+solver = IQHVSolver()
+params = IQHVParameters()
 data = data               
-ds = moda.DataSet('linear_d4n100_1') # this takes virtually no time compared to Solve
-ds.typeOfOptimization = OptimizationType.maximization
+ds = moda.DataSet('linear_d8n400_7')
+ds.typeOfOptimization = moda.OptimizationType.minimization
 r = solver.Solve(ds,params) 
 print(r)
 

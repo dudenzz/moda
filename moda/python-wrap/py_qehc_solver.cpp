@@ -2,12 +2,6 @@
 #include "../QEHCSolver.h"  
 #include "../Result.h"
 #include "moda_types.h"
-
-
-
-
-
-
 PyObject *QEHCSolver_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
 
     QEHCSolverObject *self;
@@ -75,7 +69,7 @@ PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
         PyErr_SetString(PyExc_RuntimeError, "Internal C++ object or parameters were not initialized.");
         return NULL;
     }
-
+    
     moda::QEHCResult* result_ptr = NULL;
     moda::QEHCParameters* params =  new moda::QEHCParameters(moda::QEHCParameters::ReferencePointCalculationStyle::pymoo, moda::QEHCParameters::ReferencePointCalculationStyle::pymoo);
     params->SearchSubject = moda::QEHCParameters::SearchSubjectOption::MinimumContribution;
@@ -95,7 +89,7 @@ PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
             dataset_wrapper->data_set, 
             *params
         );
-
+        std::cout << "here";
         delete params;
 
 

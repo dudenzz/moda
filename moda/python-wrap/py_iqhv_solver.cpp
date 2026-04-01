@@ -80,8 +80,8 @@ PyObject *IQHVSolver_Solve(IQHVSolverObject *self, PyObject *args) {
     moda::IQHVParameters* params =  new moda::IQHVParameters(moda::IQHVParameters::ReferencePointCalculationStyle::pymoo, moda::IQHVParameters::ReferencePointCalculationStyle::pymoo);
     try {
 
-        // params->WorseReferencePointCalculationStyle = static_cast<moda::IQHVParameters*>(params_wrapper->base.params)->WorseReferencePointCalculationStyle;
-        // params->BetterReferencePointCalculationStyle = static_cast<moda::IQHVParameters*>(params_wrapper->base.params)->BetterReferencePointCalculationStyle;
+        params->WorseReferencePointCalculationStyle = static_cast<moda::IQHVParameters*>(params_wrapper->base.params)->WorseReferencePointCalculationStyle;
+        params->BetterReferencePointCalculationStyle = static_cast<moda::IQHVParameters*>(params_wrapper->base.params)->BetterReferencePointCalculationStyle;
       
         //static cast
         moda::IQHVSolver* iqhv_ptr = static_cast<moda::IQHVSolver*>(self->super.solver);
@@ -101,6 +101,7 @@ PyObject *IQHVSolver_Solve(IQHVSolverObject *self, PyObject *args) {
 
     // Create a tuple of size 2
     PyObject* pyTuple = PyTuple_New(2);
+    std::cout << result_ptr->HyperVolume;
     PyTuple_SetItem(pyTuple, 0, PyFloat_FromDouble(result_ptr->HyperVolume));
     PyTuple_SetItem(pyTuple, 1, PyLong_FromLong(result_ptr->ElapsedTime));
     delete result_ptr;
