@@ -19,9 +19,18 @@ namespace moda
 			for (short j = 0; j < numberOfObjectives; j++) {
 				newIdealPoint.ObjectiveValues[j] = points[pointIndex]->ObjectiveValues[j];
 			}
-
+			std::ofstream debugFile("C://debugging/debug.txt", std::ios_base::out | std::ios_base::trunc);
+			for(auto p : tmpPoints) {
+				for (short j = 0; j < numberOfObjectives; j++) {
+					debugFile << p->ObjectiveValues[j] << ' ';
+				}
+				debugFile << std::endl;
+			}
+			debugFile.close();
 			DType largeHV = Backend::Hypervolume(&nadirPoint, &newIdealPoint, numberOfObjectives);
 			DType complement = solveIQHV(tmpPoints, newIdealPoint, nadirPoint, numberOfObjectives);
+			
+			std::cout << "Complement for point " << pointIndex << ": " << complement << std::endl;
 			return largeHV - complement;
 		}
 
@@ -47,7 +56,9 @@ namespace moda
 			int maxIndexMem = numberOfPoints - 1;
 			context->maxIndexUsed = maxIndexMem;
 			DType result = IQHV(0, numberOfPoints - 1, memoryKey, idealPoint, nadirPoint, 0, numberOfObjectives, 0,  numberOfPoints, false);
+			//std::cout << "Releasing memory for IQHV with key " << memoryKey << std::endl;
 			pool->releaseContext(memoryKey);
+			//std::cout << "Memory released for IQHV with key " << memoryKey << std::endl;
 			// release memory
 			//indexSetVec.clear();
 			//indexSetVec.shrink_to_fit();
@@ -219,7 +230,6 @@ namespace moda
 					while (queueUBHC.size() > 0) {
 						BHC lBHC = queueUBHC.top();
 						prevContribution = lBHC.contribution;
-
 						if (lBHC.contribution > minContribution) {
 							break;
 						}

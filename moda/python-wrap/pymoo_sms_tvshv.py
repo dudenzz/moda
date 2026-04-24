@@ -12,12 +12,17 @@ from pymoo.algorithms.moo.moda.sms_moda_hss_decremental import SMSEMOA_HSS_DEC
 from pymoo.algorithms.moo.sms_exact import SMSEMOA_EXACT
 from pymoo.algorithms.moo.sms_approx import SMSEMOA_APPROX
 from pymoo.core.termination import TerminateIfAny
-ptypes = ['dtlz2']
-n_objs = [3,4]
-ref_point_value = 1
-t1 = get_termination("n_gen", 100)
+ptypes = ['dtlz1','dtlz2','dtlz5','dtlz7','wfg1','wfg2','wfg3']
+n_objs = [4,5,6,7]
+ref_point_value = 11
+# t1 = get_termination("n_gen", 100)
 t2 = get_termination("time", "00:01:00")
-termination = TerminateIfAny(t1, t2)
+
+#tylko adaptive
+#tylko kryterium czasowe (60s)
+#wywalić 3 kryteria
+#interfejs do metody adaptacyjnej w c++
+termination = TerminateIfAny(t2)
 class PerformanceCallback(Callback):
     def __init__(self, metric):
         super().__init__()
@@ -33,9 +38,9 @@ class PerformanceCallback(Callback):
         self.data["runtime"].append(max(elapsed, 1e-6))
 
 for problem_type in ptypes:
-    algos_to_test = [("HSS-Adaptive", SMSEMOA_HSS_ADA),("HSS-Incremental", SMSEMOA_HSS_INC),("HSS-Decremental", SMSEMOA_HSS_DEC), ("EXACT", SMSEMOA_EXACT), ("APPROX", SMSEMOA_APPROX)]
+    algos_to_test = [("HSS-Decremental", SMSEMOA_HSS_DEC), ("EXACT", SMSEMOA_EXACT), ("APPROX", SMSEMOA_APPROX)]
 
-    fig, axes = plt.subplots(3, len(n_objs), figsize=(15, 15))
+    fig, axes = plt.subplots(1, len(n_objs), figsize=(30, 5))
 
     for i, n_obj in enumerate(n_objs):
         problem = get_problem(problem_type, 14, n_obj=n_obj)
@@ -49,7 +54,7 @@ for problem_type in ptypes:
             res = minimize(problem, 
                         algo_type(), 
                         termination, 
-                        seed=4, 
+                        seed=420, 
                         callback=callback,
                         copy_algorithm=False)
             
@@ -57,21 +62,21 @@ for problem_type in ptypes:
             runtimes = callback.data["runtime"]
             gens = np.arange(len(hvs))
 
-            axes[0][i].plot(gens, hvs, label=name, lw=2)
-            axes[1][i].plot(runtimes, hvs, label=name, lw=2)
-            axes[2][i].plot(gens, runtimes, label=name, lw=2)
+            # axes[i].plot(gens, hvs, label=name, lw=2)
+            axes[i].plot(runtimes, hvs, label=name, lw=2)
+            # axes[2][i].plot(gens, runtimes, label=name, lw=2)
 
         # Formatting
-        axes[0][i].set_title(f"HV vs Gen ({n_obj} Objs)")
-        axes[1][i].set_title(f"HV vs Time - LOG ({n_obj} Objs)")
-        axes[1][i].set_xscale('log')
-        axes[2][i].set_title(f"Time vs Gen ({n_obj} Objs)")
-        axes[2][i].set_yscale('log')
+        # axes[0][i].set_title(f"HV vs Gen ({n_obj} Objs)")
+        axes[i].set_title(f"HV vs Time - LOG ({n_obj} Objs)")
+        axes[i].set_xscale('log')
+        # axes[2][i].set_title(f"Time vs Gen ({n_obj} Objs)")
+        # axes[2][i].set_yscale('log')
         
-        for row in range(3):
-            axes[row][i].legend()
-            axes[row][i].grid(True, alpha=0.3)
+        for row in range(1):
+            axes[i].legend()
+            axes[i].grid(True, alpha=0.3)
 
-    plt.tight_layout()
-    plt.savefig(f'ctermination_benchmark_{problem_type}_multihss_1.png')
-    
+        plt.tight_layout()
+        plt.savefig(f'ctermination_benchmark_{problem_type}_multihss_1.png')
+        
