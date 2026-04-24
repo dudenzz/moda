@@ -1,40 +1,7 @@
 # MODA
-**MODA** stands for Multi-objective Optimisation Data structures and Algorithms. It provides a comprehensive suite of hypervolume-related algorithms designed for efficient multi-objective optimization. The library includes:
-
-Incremental Quick Hypervolume (IQHV): Efficiently computes the hypervolume of a set of points in a multidimensional space.
-
-Hypervolume Subset Selection (HSS): Optimized for identifying a subset of points that maximizes the hypervolume within a given selection.
-
-Quick Extreme Hypervolume Contribution (QEHC): Quickly identifies the point with either the smallest or largest contribution to the overall hypervolume.
-
-Optimized Hypervolume Estimators (HVE): Includes multiple implementations for fast and accurate hypervolume estimation.
-
-Quick R2 Calculation (QR2): Efficiently computes the R2 indicator value for a given set of points.
+A comprehensive suite of hypervolume-related algorithms designed for efficient multi-objective optimization
 
 ## Installation guide
-
-### Basic Visual Studio Installation
-
-**Prerequisities:**
-1. Visual Studio 2018+
-
-The basic installation guide constitues of three very simple steps:
-
-1. Navigate to the repository website: https://github.com/dudenzz/moda
-2. Use the interface to "Open with Visual Studio" (Code -> Open with Visual Studio)
-
-| ![](docs/images/vs-installation.png) | 
-|:----------------------------------------:|
-
-3. In both projects preferences, set the platform toolset to  an installed one.
-
-| ![](docs/images/toolset.png) | 
-|:----------------------------------------:|
-
-
-
-### VCPKG
-
 The library is going to be availiable via packet managers PyPi (python wrap) and VCPKG (C++ original library). Additionally, the library makes use of the CMake for Windows and the Make for Linux based operating systems. 
 
 Currently the library is under pull request review for VCPKG, hence we provide an ad-hoc installation guideline. Note that this is work in progress, and this process should be used with necessary care.
@@ -46,6 +13,15 @@ Currently the library is under pull request review for VCPKG, hence we provide a
 4. From this repository, the `vcpkg-moda` directory, download the `portfile.cmake` and `vcpkg.json`. Paste those files into the newly created `vcpkg/ports/moda` directory.
 5. Direct to main vcpkg directory and install moda library with the `.\vcpkg.exe install moda` command (by default it installs for x64 architecture, if you wish to use any other architecture, use additional triplet, such as `.\vcpkg.exe install moda:x86-windows-static`)
 6. Run the `.\vcpkg.exe integrate install`
+
+### Installing the python package
+
+Make sure that you have numpy installed (tested for >=1.18.0, preferred >=2.2.6).
+
+0. Set up the Python 3 kernel (at this stage it is preferred to use the library in a controlled virtual environment - `python -m venv .venv` + `source .venv/bin/activate`) 
+1. Clone the repository
+2. Navigate to moda/python-wrap
+3. Install the library with `pip install .`
 
 ## Consuming the library
 
