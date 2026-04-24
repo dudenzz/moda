@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\moda\BestSolution.h" />
+    <ClInclude Include="..\..\moda\DataSet.h" />
+    <ClInclude Include="..\..\moda\DataSetParameters.h" />
+    <ClInclude Include="..\..\moda\DBHVE.h" />
+    <ClInclude Include="..\..\moda\DBHVESolver.h" />
+    <ClInclude Include="..\..\moda\DynamicStructures.h" />
+    <ClInclude Include="..\..\moda\ExecutionContext.h" />
+    <ClInclude Include="..\..\moda\ExecutionPool.h" />
+    <ClInclude Include="..\..\moda\ExecutionService.h" />
+    <ClInclude Include="..\..\moda\Helpers.h" />
+    <ClInclude Include="..\..\moda\HSS.h" />
+    <ClInclude Include="..\..\moda\HSSSolver.h" />
+    <ClInclude Include="..\..\moda\Hypervolume.h" />
+    <ClInclude Include="..\..\moda\include.h" />
+    <ClInclude Include="..\..\moda\IQHV.h" />
+    <ClInclude Include="..\..\moda\IQHVSolver.h" />
+    <ClInclude Include="..\..\moda\ListSet.h" />
+    <ClInclude Include="..\..\moda\MCHV.h" />
+    <ClInclude Include="..\..\moda\MCHVESolver.h" />
+    <ClInclude Include="..\..\moda\MemoryManager.h" />
+    <ClInclude Include="..\..\moda\myvector.h" />
+    <ClInclude Include="..\..\moda\NDTree.h" />
+    <ClInclude Include="..\..\moda\ObjectivesTransformer.h" />
+    <ClInclude Include="..\..\moda\Point.h" />
+    <ClInclude Include="..\..\moda\ProcessData.h" />
+    <ClInclude Include="..\..\moda\QEHC.h" />
+    <ClInclude Include="..\..\moda\QEHCSolver.h" />
+    <ClInclude Include="..\..\moda\QEHC_parallel.h" />
+    <ClInclude Include="..\..\moda\QEHC_parallel_take2.h" />
+    <ClInclude Include="..\..\moda\QHV_BQ.h" />
+    <ClInclude Include="..\..\moda\QHV_BQSolver.h" />
+    <ClInclude Include="..\..\moda\QHV_BR.h" />
+    <ClInclude Include="..\..\moda\QR2.h" />
+    <ClInclude Include="..\..\moda\Result.h" />
+    <ClInclude Include="..\..\moda\SolutionContainer.h" />
+    <ClInclude Include="..\..\moda\Solver.h" />
+    <ClInclude Include="..\..\moda\SolverParameters.h" />
+    <ClInclude Include="..\..\moda\SPData.h" />
+    <ClInclude Include="..\..\moda\SubProblem.h" />
+    <ClInclude Include="..\..\moda\SubproblemParam.h" />
+    <ClInclude Include="..\..\moda\SubproblemsPool.h" />
+    <ClInclude Include="..\..\moda\SubProblemsStackLevel.h" />
+    <ClInclude Include="..\..\moda\SubProblemsStackPriorityQueue.h" />
+    <ClInclude Include="..\..\moda\TestClass.h" />
+    <ClInclude Include="..\..\moda\TreeNode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\moda\DataSet.cpp" />
+    <ClCompile Include="..\..\moda\DataSetParameters.cpp" />
+    <ClCompile Include="..\..\moda\DBHVE.cpp" />
+    <ClCompile Include="..\..\moda\DBHVESolver.cpp" />
+    <ClCompile Include="..\..\moda\DynamicStructures.cpp" />
+    <ClCompile Include="..\..\moda\ExecutionContext.cpp" />
+    <ClCompile Include="..\..\moda\ExecutionPool.cpp" />
+    <ClCompile Include="..\..\moda\ExecutionService.cpp" />
+    <ClCompile Include="..\..\moda\Helpers.cpp" />
+    <ClCompile Include="..\..\moda\HSS.cpp" />
+    <ClCompile Include="..\..\moda\HSSSolver.cpp" />
+    <ClCompile Include="..\..\moda\Hypervolume.cpp" />
+    <ClCompile Include="..\..\moda\IQHV.cpp" />
+    <ClCompile Include="..\..\moda\IQHVSolver.cpp" />
+    <ClCompile Include="..\..\moda\ListSet.cpp" />
+    <ClCompile Include="..\..\moda\MCHV.cpp" />
+    <ClCompile Include="..\..\moda\MCHVESolver.cpp" />
+    <ClCompile Include="..\..\moda\MemoryManager.cpp" />
+    <ClCompile Include="..\..\moda\myvector.cpp" />
+    <ClCompile Include="..\..\moda\NDTree.cpp" />
+    <ClCompile Include="..\..\moda\ObjectivesTransformer.cpp" />
+    <ClCompile Include="..\..\moda\Point.cpp" />
+    <ClCompile Include="..\..\moda\QEHC.cpp" />
+    <ClCompile Include="..\..\moda\QEHCSolver.cpp" />
+    <ClCompile Include="..\..\moda\QEHC_parallel.cpp" />
+    <ClCompile Include="..\..\moda\QEHC_parallel_take2.cpp" />
+    <ClCompile Include="..\..\moda\QHV_BQ.cpp" />
+    <ClCompile Include="..\..\moda\QHV_BQSolver.cpp" />
+    <ClCompile Include="..\..\moda\QHV_BR.cpp" />
+    <ClCompile Include="..\..\moda\QR2.cpp" />
+    <ClCompile Include="..\..\moda\Result.cpp" />
+    <ClCompile Include="..\..\moda\Solver.cpp" />
+    <ClCompile Include="..\..\moda\SolverParameters.cpp" />
+    <ClCompile Include="..\..\moda\SubProblem.cpp" />
+    <ClCompile Include="..\..\moda\SubproblemsPool.cpp" />
+    <ClCompile Include="..\..\moda\SubProblemsStackLevel.cpp" />
+    <ClCompile Include="..\..\moda\SubProblemsStackPriorityQueue.cpp" />
+    <ClCompile Include="..\..\moda\TreeNode.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{b00d3169-6958-4ceb-8e88-8cf28e10cd52}</ProjectGuid>
+    <RootNamespace>Moda</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

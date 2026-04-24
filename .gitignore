@@ -82,5 +82,22 @@ moda/python-wrap/build/temp.win-amd64-cpython-312/moda.cp312-win_amd64.exp
 moda/python-wrap/build/lib.win-amd64-cpython-312/moda.cp312-win_amd64.pyd
 moda/python-wrap/moda.egg-info/*
 to_zip/*
-moda/python-wrap/build/lib.win-amd64-cpython-313/moda.cp313-win_amd64.pyd
-moda/python-wrap/moda.egg-info/PKG-INFO
+﻿################################################################################
+# Ten plik .gitignore został utworzony automatycznie przez Microsoft(R) Visual Studio.
+################################################################################
+
+/out/build/x64-Debug
+/.vs
+/SampleModaApp/.vs
+/SampleModaApp/Moda/x64/Debug
+/SampleModaApp/SampleModaApp/x64/Debug
+/SampleModaApp/x64/Debug
+moda/python-wrap/venv
+moda/python-wrap/.venv
+moda/python-wrap/.venv-windows
+moda/python-wrap/build
+VisualStudioProjects/
+/SampleModaApp/Moda/x64/Release
+/SampleModaApp/SampleModaApp/x64/Release
+/SampleModaApp/x64/Release
+/to_zip
