@@ -12,10 +12,10 @@ from pymoo.algorithms.moo.moda.sms_moda_hss_decremental import SMSEMOA_HSS_DEC
 from pymoo.algorithms.moo.sms_exact import SMSEMOA_EXACT
 from pymoo.algorithms.moo.sms_approx import SMSEMOA_APPROX
 from pymoo.core.termination import TerminateIfAny
-ptypes = ['dtlz1','dtlz2','dtlz5','dtlz7','wfg1','wfg2','wfg3']
+ptypes = ['dtlz2','dtlz5','dtlz7','wfg1','wfg2','wfg3']
 n_objs = [4,5,6,7]
 ref_point_value = 11
-# t1 = get_termination("n_gen", 100)
+# t1 = get_termination("n_gen", 300)
 t2 = get_termination("time", "00:01:00")
 
 #tylko adaptive
@@ -68,8 +68,10 @@ for problem_type in ptypes:
 
         # Formatting
         # axes[0][i].set_title(f"HV vs Gen ({n_obj} Objs)")
-        axes[i].set_title(f"HV vs Time - LOG ({n_obj} Objs)")
+        axes[i].set_title(f"{problem_type.upper()} {n_obj} Objectives")
         axes[i].set_xscale('log')
+        axes[i].set_xlabel("Time (s)")
+        axes[i].set_ylabel("Hypervolume")
         # axes[2][i].set_title(f"Time vs Gen ({n_obj} Objs)")
         # axes[2][i].set_yscale('log')
         

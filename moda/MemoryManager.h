@@ -6,7 +6,7 @@
 #include <mutex>
 
 #define UNDERLYING_TYPE 4
-#define MEMORY_POOL_SIZE 1024
+#define MEMORY_POOL_SIZE 100000
 namespace moda {
 	namespace backend {
 		class ContextPool {

@@ -19,18 +19,46 @@ namespace moda
 			for (short j = 0; j < numberOfObjectives; j++) {
 				newIdealPoint.ObjectiveValues[j] = points[pointIndex]->ObjectiveValues[j];
 			}
-			std::ofstream debugFile("C://debugging/debug.txt", std::ios_base::out | std::ios_base::trunc);
+			// std::ofstream debugFile("C://debugging/debug.txt", std::ios_base::out | std::ios_base::trunc);
+			// for(auto p : tmpPoints) {
+			// 	for (short j = 0; j < numberOfObjectives; j++) {
+			// 		debugFile << p->ObjectiveValues[j] << ' ';
+			// 	}
+			// 	debugFile << std::endl;
+			// }
+			// debugFile.close();
+			DType largeHV = Backend::Hypervolume(&nadirPoint, &newIdealPoint, numberOfObjectives);
+			// std::cout << "Calculation start";
+			// std::ofstream debugFile("C://debugging/debug.txt", std::ios_base::out | std::ios_base::trunc);
 			for(auto p : tmpPoints) {
 				for (short j = 0; j < numberOfObjectives; j++) {
-					debugFile << p->ObjectiveValues[j] << ' ';
+					if(p->ObjectiveValues[j] < nadirPoint.ObjectiveValues[j])
+						p->ObjectiveValues[j] = nadirPoint.ObjectiveValues[j];
+					// debugFile << p->ObjectiveValues[j] << ' ';
 				}
-				debugFile << std::endl;
+				// debugFile << std::endl;
 			}
-			debugFile.close();
-			DType largeHV = Backend::Hypervolume(&nadirPoint, &newIdealPoint, numberOfObjectives);
+			// debugFile << "---------------" << std::endl;
+			for (short j = 0; j < numberOfObjectives; j++)
+			{
+				if(newIdealPoint.ObjectiveValues[j] <= nadirPoint.ObjectiveValues[j])
+					newIdealPoint.ObjectiveValues[j] = nadirPoint.ObjectiveValues[j] + 1;
+				// debugFile << newIdealPoint.ObjectiveValues[j] << " ";
+			}
+			// debugFile << std::endl;
+			// debugFile << "---------------" << std::endl;
+			// for (short j = 0; j < numberOfObjectives; j++)
+			// {
+			// 	debugFile << nadirPoint.ObjectiveValues[j] << " ";
+			// }
+			// debugFile << std::endl;
+			// debugFile.close();
 			DType complement = solveIQHV(tmpPoints, newIdealPoint, nadirPoint, numberOfObjectives);
+			// std::cout << " Complement for point " << pointIndex << ": " << complement << " "<<std::endl;
+
+
 			
-			std::cout << "Complement for point " << pointIndex << ": " << complement << std::endl;
+			// std::cout << " Calculation end" << std::endl;
 			return largeHV - complement;
 		}
 
@@ -43,9 +71,11 @@ namespace moda
 				numberOfPoints = points.size();
 			}
 			int reserve_size = 4 * numberOfPoints * pow(2, numberOfObjectives / 2);
+			// std::cout << " reserving context ";
 			ExecutionService* service = &(ExecutionService::getInstance());
 			ExecutionPool* pool = &(service->getPool());
 			int memoryKey = pool->reserveContext(reserve_size,numberOfPoints,numberOfObjectives,ExecutionContext::ExecutionContextType::IQHVContext);
+			// std::cout << " getting context ";
 			auto context = (IQHVExecutionContext*)pool->getContext(memoryKey);
 			for (int i = 0; i < numberOfPoints; i++) {
 				(*context->points)[i] = new Point(*points[i]);
@@ -55,13 +85,16 @@ namespace moda
 			//DType result = IQHV_for_hss(0, numberOfPoints - 1, idealPoint, nadirPoint, 0, numberOfObjectives, memoryKey, maxIndexKey);
 			int maxIndexMem = numberOfPoints - 1;
 			context->maxIndexUsed = maxIndexMem;
+			// std::cout << " starting IQHV ";
 			DType result = IQHV(0, numberOfPoints - 1, memoryKey, idealPoint, nadirPoint, 0, numberOfObjectives, 0,  numberOfPoints, false);
 			//std::cout << "Releasing memory for IQHV with key " << memoryKey << std::endl;
+			// std::cout << " releasing context ";
 			pool->releaseContext(memoryKey);
 			//std::cout << "Memory released for IQHV with key " << memoryKey << std::endl;
 			// release memory
 			//indexSetVec.clear();
 			//indexSetVec.shrink_to_fit();
+			// std::cout << " returning result ";
 			return result;
 		}
 		

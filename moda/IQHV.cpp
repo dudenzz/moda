@@ -35,7 +35,7 @@
       In Proceedings of the 
       Companion Conference on Genetic and Evolutionary Computation (GECCO '23 Companion). 
       Association for Computing Machinery, 
-      New York, NY, USA, 371–374. https://doi.org/10.1145/3583133.3590650
+      New York, NY, USA, 371ï¿½374. https://doi.org/10.1145/3583133.3590650
 
  
 
@@ -45,6 +45,8 @@ namespace moda {
         DType dummy(DType test, Point& NadirPoint ) { return test+1.0; };
         DType IQHV(int start, int end, int contextId, Point IdealPoint, Point NadirPoint, int recursion, int numberOfObjectives, int outerIteratorValue,  int fullSize, bool topLevelExecution)
         {
+            // std::cout << std::endl <<start << "|" << end;
+
             ExecutionService* service = &(ExecutionService::getInstance());
             ExecutionPool* pool = &(service->getPool());
     

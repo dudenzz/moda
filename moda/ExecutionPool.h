@@ -3,7 +3,6 @@
 #include<vector>
 #include <mutex>
 #include "ExecutionContext.h"
-
 #define MEMORY_POOL_SIZE 100000
 
 namespace moda {
