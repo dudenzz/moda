@@ -57,16 +57,10 @@ namespace moda {
              * @note This should ONLY be called by the owning context.
              */
             void deleteContainedPoints(int initialSize) {
-
-                // Iterate up to the deep memory total size, or maxCall if it is smaller.
-                int max = maxCall + 1 < initialSize ? maxCall + 1 : initialSize;
-                for (int i = 0; i < max; i++) 
+                for (int i = 0; i < initialSize; i++) 
                 {
                     delete data[i];
                 }
-                //Reset maxCall/size
-                maxCall = 0; 
-                size = 0;
             }
             SemiDynamicArray(const SemiDynamicArray&) = delete;
             SemiDynamicArray& operator=(const SemiDynamicArray&) = delete;
@@ -107,6 +101,9 @@ namespace moda {
                 if (newSize > capacity) {
                     // Case 1: Grow AND Reallocate
                     reserve(newSize);
+                }
+                else {
+                    capacity = newSize;
                 }
 
                 // Case 2: Shrink (newSize < size)

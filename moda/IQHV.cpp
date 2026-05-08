@@ -9,7 +9,7 @@
 #include "ObjectivesTransformer.h"
 // 0 = switched off
 // 1 = switched on
-#define PARALLEL 1
+#define PARALLEL 0
 
 /*************************************************************************
 
@@ -35,7 +35,7 @@
       In Proceedings of the 
       Companion Conference on Genetic and Evolutionary Computation (GECCO '23 Companion). 
       Association for Computing Machinery, 
-      New York, NY, USA, 371�374. https://doi.org/10.1145/3583133.3590650
+      New York, NY, USA, 371–374. https://doi.org/10.1145/3583133.3590650
 
  
 
@@ -45,8 +45,6 @@ namespace moda {
         DType dummy(DType test, Point& NadirPoint ) { return test+1.0; };
         DType IQHV(int start, int end, int contextId, Point IdealPoint, Point NadirPoint, int recursion, int numberOfObjectives, int outerIteratorValue,  int fullSize, bool topLevelExecution)
         {
-            // std::cout << std::endl <<start << "|" << end;
-
             ExecutionService* service = &(ExecutionService::getInstance());
             ExecutionPool* pool = &(service->getPool());
     
@@ -77,7 +75,10 @@ namespace moda {
             for (int i = 0; i < numberOfObjectives; i++)
             {
                 if (IdealPoint[i] < NadirPoint[i])
-                    int k = 0;
+                {
+					//std::cout << "Ideal point should be better than nadir point in all objectives." << std::endl;
+                    //throw new _exception();
+                }
             }
 
 
@@ -199,8 +200,9 @@ namespace moda {
                         totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false);
                     }
                     else {
+						std::cout << "Spawning thread for objective " << j << " with " << (partEnd - partStart + 1) << " points.\n";
                         int points_to_reserve = 4 * (partEnd - partStart) * pow(2, numberOfObjectives / 2) + 1;
-                        int newSlot = service->getPool().reserveContext(points_to_reserve*10, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::IQHVContext, true);
+                        int newSlot = service->getPool().reserveContext(points_to_reserve, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::IQHVContext, true);
                         if (newSlot == -1)
                         {
                             totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false);

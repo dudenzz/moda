@@ -30,21 +30,21 @@ namespace moda
 			DType largeHV = Backend::Hypervolume(&nadirPoint, &newIdealPoint, numberOfObjectives);
 			// std::cout << "Calculation start";
 			// std::ofstream debugFile("C://debugging/debug.txt", std::ios_base::out | std::ios_base::trunc);
-			for(auto p : tmpPoints) {
-				for (short j = 0; j < numberOfObjectives; j++) {
-					if(p->ObjectiveValues[j] < nadirPoint.ObjectiveValues[j])
-						p->ObjectiveValues[j] = nadirPoint.ObjectiveValues[j];
+			// for(auto p : tmpPoints) {
+			// 	for (short j = 0; j < numberOfObjectives; j++) {
+			// 		if(p->ObjectiveValues[j] < nadirPoint.ObjectiveValues[j])
+			// 			p->ObjectiveValues[j] = nadirPoint.ObjectiveValues[j];
 					// debugFile << p->ObjectiveValues[j] << ' ';
-				}
+				// }
 				// debugFile << std::endl;
-			}
+			// }
 			// debugFile << "---------------" << std::endl;
-			for (short j = 0; j < numberOfObjectives; j++)
-			{
-				if(newIdealPoint.ObjectiveValues[j] <= nadirPoint.ObjectiveValues[j])
-					newIdealPoint.ObjectiveValues[j] = nadirPoint.ObjectiveValues[j] + 1;
+			// for (short j = 0; j < numberOfObjectives; j++)
+			// {
+			// 	if(newIdealPoint.ObjectiveValues[j] <= nadirPoint.ObjectiveValues[j])
+			// 		newIdealPoint.ObjectiveValues[j] = nadirPoint.ObjectiveValues[j] + 1;
 				// debugFile << newIdealPoint.ObjectiveValues[j] << " ";
-			}
+			// }
 			// debugFile << std::endl;
 			// debugFile << "---------------" << std::endl;
 			// for (short j = 0; j < numberOfObjectives; j++)
@@ -79,6 +79,13 @@ namespace moda
 			auto context = (IQHVExecutionContext*)pool->getContext(memoryKey);
 			for (int i = 0; i < numberOfPoints; i++) {
 				(*context->points)[i] = new Point(*points[i]);
+				for(int j = 0; j<numberOfObjectives; j++)
+				{
+					if((*context->points)[i]->ObjectiveValues[j] > idealPoint[j])
+						(*context->points)[i]->ObjectiveValues[j] = idealPoint[j];
+					if((*context->points)[i]->ObjectiveValues[j] < nadirPoint[j])
+						(*context->points)[i]->ObjectiveValues[j] = nadirPoint[j];
+				}
 			}
 
 
@@ -87,10 +94,12 @@ namespace moda
 			context->maxIndexUsed = maxIndexMem;
 			// std::cout << " starting IQHV ";
 			DType result = IQHV(0, numberOfPoints - 1, memoryKey, idealPoint, nadirPoint, 0, numberOfObjectives, 0,  numberOfPoints, false);
-			//std::cout << "Releasing memory for IQHV with key " << memoryKey << std::endl;
+			// std::cout << "Releasing memory for IQHV with key " << memoryKey << std::endl;
 			// std::cout << " releasing context ";
+			
+
 			pool->releaseContext(memoryKey);
-			//std::cout << "Memory released for IQHV with key " << memoryKey << std::endl;
+			// std::cout << "Memory released for IQHV with key " << memoryKey << std::endl;
 			// release memory
 			//indexSetVec.clear();
 			//indexSetVec.shrink_to_fit();
