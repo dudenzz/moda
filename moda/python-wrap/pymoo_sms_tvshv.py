@@ -27,18 +27,18 @@ class PerformanceCallback(Callback):
 
 # Parameters
 N_RUNS = 3
-PTYPES = [ 'dtlz2', 'dtlz5', 'dtlz7', 'wfg1', 'wfg2', 'wfg3']
+PTYPES = ['dtlz1','dtlz2', 'dtlz5', 'dtlz7', 'wfg1', 'wfg2', 'wfg3']
 N_OBJS = [4, 5, 6, 7]
 REF_POINT_VALUE = 11
 TIME_LIMIT = "00:01:00"
-CONVERGENCE_TIME = "00:02:00"
+CONVERGENCE_TIME = "00:03:00"
 CONVERGENCE_FACTOR = 0.98 
 
 results_table = []
 
 for problem_type in PTYPES:
     # 1. Define algorithms. Ensure HSS-Decremental is available for the baseline.
-    algos_to_test = [("HSS-Decremental", SMSEMOA_HSS_DEC), ("EXACT", SMSEMOA_EXACT), ("APPROX", SMSEMOA_APPROX)]
+    algos_to_test = [("MODA-HSS", SMSEMOA_HSS_DEC), ("PyMOO-EXACT", SMSEMOA_EXACT), ("PyMOO-APPROX", SMSEMOA_APPROX)]
     fig, axes = plt.subplots(1, len(N_OBJS), figsize=(20, 5))
 
     for i, n_obj in enumerate(N_OBJS):
