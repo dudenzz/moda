@@ -1,26 +1,67 @@
-Usage
+Installation on MacOS
 =====
 
 .. _installation:
 
-Visual Studio
+Compiling the files on local machine
 ------------
 
-This is a guide for installing the library with Visual Studio
+Create a working directory. Within this directory create a virtual environment.
 
-CMake
+``python -m venv venv`` (Windows)
+
+or 
+
+``python3 -m venv venv`` (Linux/MacOS)
+
+Activate the environment. 
+
+``./bin/Scripts/activate`` (Windows)
+
+or
+
+``source venv/bin/activate``(Linux/MacOS)
+
+Clone the MODA repository (main branch).
+
+``git clone https://github.com/dudenzz/moda``
+
+Navigate to the python wrapper source directory.
+
+``cd moda/moda/python-wrap``.
+
+Install the library. As the library uses C-API make sure you are forcing the reinstallation with new binary files created for every installation instance.
+
+``pip install . --force-reinstall --no-binaries moda``
+
+Congratulations! You have successfully installed python wrapper for MODA library in your current virtual environment.
+
+
+Installation with pip
 ----------------
 
-This is a guide for installing the library with CMake
+Work in progress
 
-VCPKG
+
+Basic usage 
 ----------------
 
-This is a guide for installing the library with VCPKG
+In order to test the installed library. Run the following python script within the virtual environment:
 
-CMake
-----------------
+``import numpy as np
+import moda
+from moda import IQHVParameters, IQHVSolver
+data = np.random.random((10,2))
+solver = IQHVSolver()
+params = IQHVParameters()
+params.WorseReferencePointCalculationStyle = moda.ReferencePointCalculationStyle.tenpercent
+params.BetterReferencePointCalculationStyle = moda.ReferencePointCalculationStyle.tenpercent           
+ds = moda.DataSet(data)
+ds.typeOfOptimization = moda.OptimizationType.maximization
+r = solver.Solve(ds,params) 
+print(r)
+``
 
-This is a guide for installing the library with CMake
+
 
 

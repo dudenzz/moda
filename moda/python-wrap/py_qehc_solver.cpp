@@ -89,7 +89,7 @@ PyObject *QEHCSolver_Solve(QEHCSolverObject *self, PyObject *args) {
             dataset_wrapper->data_set, 
             *params
         );
-        std::cout << "here";
+        // std::cout << "here";
         delete params;
 
 

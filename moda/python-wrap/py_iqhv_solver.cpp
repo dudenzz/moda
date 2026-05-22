@@ -101,7 +101,7 @@ PyObject *IQHVSolver_Solve(IQHVSolverObject *self, PyObject *args) {
 
     // Create a tuple of size 2
     PyObject* pyTuple = PyTuple_New(2);
-    std::cout << result_ptr->HyperVolume;
+    // std::cout << result_ptr->HyperVolume;
     PyTuple_SetItem(pyTuple, 0, PyFloat_FromDouble(result_ptr->HyperVolume));
     PyTuple_SetItem(pyTuple, 1, PyLong_FromLong(result_ptr->ElapsedTime));
     delete result_ptr;
