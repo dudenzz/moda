@@ -26,13 +26,11 @@ class PerformanceCallback(Callback):
         self.data["runtime"].append(max(elapsed, 1e-6))
 
 # Parameters
-N_RUNS = 3
-PTYPES = [ 'dtlz2', 'dtlz5', 'dtlz7', 'wfg1', 'wfg2', 'wfg3']
+N_RUNS = 10
+PTYPES = ['dtlz7']
 N_OBJS = [4, 5, 6, 7]
 REF_POINT_VALUE = 11
-TIME_LIMIT = "00:01:00"
-CONVERGENCE_TIME = "00:02:00"
-CONVERGENCE_FACTOR = 0.98 
+TIME_LIMIT = "00:02:00"
 
 results_table = []
 
@@ -48,42 +46,39 @@ for problem_type in PTYPES:
         
         # --- BASELINE CALCULATION ---
         # We run HSS-Decremental first to find the 100% HV baseline
-        print(f"\nEstablishing baseline with HSS-Decremental for {problem_type} ({n_obj} objs)...")
-        baseline_final_hvs = []
+        print(f"\n{problem_type} ({n_obj} objs)...")
         
-        
-        res_base = minimize(problem, SMSEMOA_HSS_DEC(), get_termination("time", CONVERGENCE_TIME), seed=42)
-        target_hv = metric.do(res_base.pop.get("F"))
-        print(f"Target HV set to: {target_hv:.4f} ({CONVERGENCE_FACTOR*100}% of baseline)")
+
 
         # --- EVALUATION ---
         for name, algo_type in algos_to_test:
+            debug_file = open(f'debug_{name}_{problem_type}_{n_obj}.tsv','w+')
             all_hvs = []
             all_times = []
             conv_moments = []
-
+            for run in range(N_RUNS):
+                debug_file.write(f'Iter{run} t(s)\tIter{run} HV\t')
+            debug_file.write('\n')
             print(f"Running {name}({n_obj} objectives)...")
 
             for run in range(N_RUNS):
                 print(f'Iteration {run+1}/{N_RUNS}', end = '\r')
                 callback = PerformanceCallback(metric)
                 minimize(problem, algo_type(), get_termination("time", TIME_LIMIT), 
-                         seed=run * 15, callback=callback, copy_algorithm=False)
+                         seed=run * 2, callback=callback, copy_algorithm=False)
                 
                 hvs = np.array(callback.data["hv"])
                 runtimes = np.array(callback.data["runtime"])
-                
-                # Find the moment the algorithm crossed the baseline target
-                reached_target = np.where(hvs >= target_hv)[0]
-                
-                if len(reached_target) > 0:
-                    conv_moments.append(runtimes[reached_target[0]])
-                else:
-                    # If it never reached the target within the time limit
-                    conv_moments.append(float(TIME_LIMIT.split(':')[-1])) 
-
                 all_hvs.append(hvs)
                 all_times.append(runtimes)
+            for j, _ in enumerate(all_hvs[0]):
+                for k, _ in enumerate(all_hvs):
+                    try:
+                        debug_file.write(f'{all_times[k][j]}\t{all_hvs[k][j]}\t')
+                    except:
+                        debug_file.write('\t\t')
+                debug_file.write('\n')
+            debug_file.close()
             print('\n')
             # Table Storage
             results_table.append([
@@ -98,10 +93,10 @@ for problem_type in PTYPES:
             common_time_grid = np.linspace(0.1, 60, 100)
             interp_hvs = [np.interp(common_time_grid, t, h) for t, h in zip(all_times, all_hvs)]
             axes[i].plot(common_time_grid, np.mean(interp_hvs, axis=0), label=name)
-            # Visual indicator of the target line
-            axes[i].axhline(y=target_hv, color='r', linestyle='--', alpha=0.3)
-
+            
         axes[i].set_title(f"{problem_type.upper()} - {n_obj} Objs")
+        axes[i].set_xlabel('Time [s] (log)')
+        axes[i].set_ylabel('Hypervolume')
         axes[i].set_xscale('log')
         axes[i].legend()
     plt.tight_layout()
