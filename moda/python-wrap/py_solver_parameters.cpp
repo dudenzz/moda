@@ -288,7 +288,47 @@ int SolverParameters_set_BetterStyle(SolverParametersObject *self, PyObject *val
     return 0;
 }
 
+int SolverParameters_set_betterRefPoint(SolverParametersObject *self, PyObject *value, void *closure) {
+    if(value == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "Cannot delete the betterReferencePoint attribute");
+        return -1;
+    }
+    PyErr_SetString(PyExc_AttributeError, "Setting betterReferencePoint is not supported due to ownership complexity. Please set the attributes of the existing betterReferencePoint object instead.");
+    return -1;
+}
 
+int SolverParameters_set_worseRefPoint(SolverParametersObject *self, PyObject *value, void *closure) {
+    if(value == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "Cannot assign empty value to worseReferencePoint");
+        return -1;
+    }
+    PyObject *inputValue;
+    if(!PyArg_Parse(value, "|O", &inputValue)) {
+        PyErr_SetString(PyExc_TypeError, "Expected a Point object for worseReferencePoint.");
+        return -1;
+    }
+    PyArrayObject *np_array = (PyArrayObject *)PyArray_FROM_OTF(inputValue, NPY_DOUBLE, NPY_ARRAY_IN_ARRAY);
+    if(!np_array) {
+        PyErr_SetString(PyExc_TypeError, "Expected a NumPy array for worseReferencePoint.");
+        return -1;
+    }
+    if(PyArray_NDIM(np_array) != 1) {
+        PyErr_SetString(PyExc_ValueError, "Input array for worseReferencePoint must be 1-dimensional.");
+        return -1;
+    }
+    Py_ssize_t size = PyArray_SIZE(np_array);
+    if(size > MAXOBJECTIVES) {
+        PyErr_SetString(PyExc_ValueError, "Input array for worseReferencePoint exceeds maximum number of objectives.");
+        return -1;
+    }
+    self->params->worseReferencePoint = new moda::Point((int)size);
+    double *data_ptr = (double *)PyArray_DATA(np_array);
+    for (Py_ssize_t i = 0; i < size; ++i)
+    {
+        (*self->params->worseReferencePoint)[i] = data_ptr[i];
+    }
+    return 0;
+}
 PyObject *SolverParameters_get_betterRefPoint(SolverParametersObject *self, void *closure) {
     if (!self->params->betterReferencePoint) {
         Py_RETURN_NONE;
@@ -308,8 +348,10 @@ PyObject *SolverParameters_get_betterRefPoint(SolverParametersObject *self, void
     }
 }
 
+
+
 PyObject *SolverParameters_get_worseRefPoint(SolverParametersObject *self, void *closure) {
-    if (!self->params->betterReferencePoint) {
+    if (!self->params->worseReferencePoint) {
         Py_RETURN_NONE;
     }
     // Wywołanie funkcji pomocniczej do opakowania Point* w PointObject
@@ -334,14 +376,14 @@ PyGetSetDef SolverParameters_getsetters[] = {
 
        {"BetterReferencePointCalculationStyle", 
      (getter)SolverParameters_get_BetterStyle, (setter)SolverParameters_set_BetterStyle,
-     "ReferencePointCalculationStyle for the worse reference point.", NULL},
+     "ReferencePointCalculationStyle for the better reference point.", NULL},
     
     {"betterReferencePoint",
-     (getter)SolverParameters_get_betterRefPoint, NULL, // Na razie brak settera (złożoność własności)
+     (getter)SolverParameters_get_betterRefPoint, (setter)SolverParameters_set_betterRefPoint,
      "User defined better reference point (Point*). Returns copy.", NULL},
          {"worseReferencePoint",
-     (getter)SolverParameters_get_worseRefPoint, NULL, // Na razie brak settera (złożoność własności)
-     "User defined better reference point (Point*). Returns copy.", NULL},
+     (getter)SolverParameters_get_worseRefPoint, (setter)SolverParameters_set_worseRefPoint,
+     "User defined worse reference point (Point*). Returns copy.", NULL},
 
     {NULL}  /* Sentinel */
 };

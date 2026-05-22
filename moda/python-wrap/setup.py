@@ -47,7 +47,7 @@ modamodule = Extension(
 
 setup(
     name='moda',
-    version='1.0.0',
+    version='1.0.1',
     packages=['moda'], # This creates the moda package folder/structure
     ext_modules=[modamodule],
     install_requires=[
