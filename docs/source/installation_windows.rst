@@ -1,7 +1,7 @@
 Installation on Windows
 =====
 
-.. _installation:
+.. _installation_win:
 
 Visual Studio
 ------------

@@ -1,7 +1,7 @@
 Installation on MacOS
 =====
 
-.. _installation:
+.. _installation_macos:
 
 Make
 ----------------

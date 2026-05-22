@@ -1,7 +1,7 @@
 Installation on Linux
 =====
 
-.. _installation:
+.. _installation_linux:
 
 
 Make

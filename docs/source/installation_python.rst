@@ -1,7 +1,7 @@
 Installation with Python
 =====
 
-.. _installation:
+.. _installation_python:
 
 Compiling from repository
 ------------
