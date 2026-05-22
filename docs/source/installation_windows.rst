@@ -25,7 +25,7 @@ In the project properties under "C/C++" Language tab, change the "C++ Language S
    :width: 600
    :align: center
 
-   Figure 1: High-level overview of the MODA library architecture.
+   Pick the proper C++ version. 
 
 CMake
 ----------------
