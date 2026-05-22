@@ -1,10 +1,8 @@
-Welcome to Lumache's documentation!
+Welcome to MODA's documentation!
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+**MODA** is a comprehensive suite of hypervolume-related algorithms designed for efficient multi-objective optimization. The library is written in C++.
+
 
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
@@ -18,5 +16,7 @@ Contents
 
 .. toctree::
 
-   usage
-   api
+   installation_windows
+   installation_macos
+   installation_python
+   installation_ubuntu
