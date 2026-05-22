@@ -1,4 +1,4 @@
-Installation on Ubuntu
+Installation on Linux
 =====
 
 .. _installation:

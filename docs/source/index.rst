@@ -14,9 +14,20 @@ how to :ref:`installation` the project.
 Contents
 --------
 
+
 .. toctree::
+   :maxdepth: 2
+   :caption: Installation
 
    installation_windows
    installation_macos
    installation_python
    installation_ubuntu
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Tutorials
+
+   datasets
+   solvers
+   samples

@@ -1,4 +1,4 @@
-Installation on Ubuntu
+Installation on Windows
 =====
 
 .. _installation:
@@ -6,7 +6,7 @@ Installation on Ubuntu
 Visual Studio
 ------------
 
-This is a guide for installing the library with Visual Studio
+
 
 CMake
 ----------------
