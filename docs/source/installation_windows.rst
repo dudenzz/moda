@@ -34,6 +34,7 @@ In the project's properties, add:
 
 The path to the MODA headers (<moda-install-path>/moda) to C/C++ > General > Additional Include Directories
 The path to the MODA libraries (<moda-install-path>) to Linker > General > Additional Library Directories
+
 .. figure:: images/include_directories.png
    :width: 600
    :align: center
