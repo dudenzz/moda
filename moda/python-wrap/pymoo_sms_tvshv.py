@@ -36,7 +36,7 @@ results_table = []
 
 for problem_type in PTYPES:
     # 1. Define algorithms. Ensure HSS-Decremental is available for the baseline.
-    algos_to_test = [("HSS-Decremental", SMSEMOA_HSS_DEC), ("EXACT", SMSEMOA_EXACT), ("APPROX", SMSEMOA_APPROX)]
+    algos_to_test = [("MODA-HSS", SMSEMOA_HSS_DEC), ("PyMOO-EXACT", SMSEMOA_EXACT), ("PyMOO-APPROX", SMSEMOA_APPROX)]
     fig, axes = plt.subplots(1, len(N_OBJS), figsize=(20, 5))
 
     for i, n_obj in enumerate(N_OBJS):
