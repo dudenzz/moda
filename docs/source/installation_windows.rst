@@ -28,7 +28,7 @@ In the project properties under "C/C++" Language tab, change the "C++ Language S
 
    Pick the proper C++ version. 
 
-Now we need to tell the compiler where to find the SFML headers (.hpp files), and the linker where to find the SFML libraries (.lib files).
+Now we need to tell the compiler where to find the MODA headers (.h files), and the linker where to find the MODA library (.lib file).
 
 In the project's properties, add:
 
