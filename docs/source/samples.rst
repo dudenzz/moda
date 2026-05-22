@@ -1,4 +1,4 @@
 Code samples
 =====
 
-.. _tutorials:
+.. _tutorials_samples:

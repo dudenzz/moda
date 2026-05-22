@@ -1,4 +1,4 @@
 Problem solvers
 =====
 
-.. _tutorials:
+.. _tutorials_solvers:
