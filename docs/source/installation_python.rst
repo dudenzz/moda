@@ -1,9 +1,9 @@
-Installation on MacOS
+Installation with Python
 =====
 
 .. _installation:
 
-Compiling the files on local machine
+Compiling from repository
 ------------
 
 Create a working directory. Within this directory create a virtual environment.

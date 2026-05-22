@@ -1,4 +1,4 @@
-Usage
+Installation on Ubuntu
 =====
 
 .. _installation:
@@ -11,16 +11,13 @@ This is a guide for installing the library with Visual Studio
 CMake
 ----------------
 
-This is a guide for installing the library with CMake
+Work in progress
 
 VCPKG
 ----------------
 
-This is a guide for installing the library with VCPKG
+Work in progress
 
-CMake
-----------------
 
-This is a guide for installing the library with CMake
 
 
