@@ -46,22 +46,23 @@ Work in progress
 Basic usage 
 ----------------
 
-In order to test the installed library. Run the following python script within the virtual environment:
+In order to test the installed library, run the following Python script within the virtual environment:
 
-``import numpy as np
-import moda
-from moda import IQHVParameters, IQHVSolver
-data = np.random.random((10,2))
-solver = IQHVSolver()
-params = IQHVParameters()
-params.WorseReferencePointCalculationStyle = moda.ReferencePointCalculationStyle.tenpercent
-params.BetterReferencePointCalculationStyle = moda.ReferencePointCalculationStyle.tenpercent           
-ds = moda.DataSet(data)
-ds.typeOfOptimization = moda.OptimizationType.maximization
-r = solver.Solve(ds,params) 
-print(r)
-``
+.. code-block:: python
 
+    import numpy as np
+    import moda
+    from moda import IQHVParameters, IQHVSolver
+
+    data = np.random.random((10,2))
+    solver = IQHVSolver()
+    params = IQHVParameters()
+    params.WorseReferencePointCalculationStyle = moda.ReferencePointCalculationStyle.tenpercent
+    params.BetterReferencePointCalculationStyle = moda.ReferencePointCalculationStyle.tenpercent
+    ds = moda.DataSet(data)
+    ds.typeOfOptimization = moda.OptimizationType.maximization
+    r = solver.Solve(ds,params)
+    print(r)
 
 
 
