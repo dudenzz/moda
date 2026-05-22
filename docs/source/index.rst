@@ -31,3 +31,9 @@ Contents
    datasets
    solvers
    samples
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Downloads
+
+   downloads
