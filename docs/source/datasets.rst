@@ -1,7 +1,11 @@
 DataSet management
 =====
 
+.. figure:: images/datasets.png
+   :width: 600
+   :align: center
 
+   Solvers Hierarchy.
 
 .. _tutorials_datasets:
 
