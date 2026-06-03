@@ -79,21 +79,47 @@ Base Solver Parameters Class
 
       .. cpp:enumerator:: epsilon 
         
-        For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-(min(x_i) - \epsilon)\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-(max(x_i) + \epsilon)\}$. The $\epsilon$ value is arbitrarily set to 0.001, this value can be adjusted by modyfiing `include.h` file. 
+For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as an extension of the data range by an epsilon value :math:`\epsilon`:
+
+.. math::
+
+   \text{min\_ref}_i = \min_{x \in X} (x_i) - \epsilon
+
+   \text{max\_ref}_i = \max_{x \in X} (x_i) + \epsilon
+
+where :math:`0 < i \le n`.
+
+.. note::
+   The parameter :math:`\epsilon` is currently set to a default value of **0.001**. 
+   You can modify this value by updating the corresponding constant in the ``include.h`` file.
 
       .. cpp:enumerator:: tenpercent
 
-For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-(min(x_i) - 0.1 \cdot \lvert min(x_i) - max(x_i) \rvert )\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-(max(x_i) + 0.1 \cdot \lvert min(x_i) - max(x_i) \rvert )\}$.
+For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
+
+.. math::
+
+   m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i)
+
+The adjusted reference points are defined as:
+
+.. math::
+
+   \text{min\_ref}_i = m_i - 0.1 \cdot |m_i - M_i|
+
+   \text{max\_ref}_i = M_i + 0.1 \cdot |m_i - M_i|
+
+where :math:`0 < i \le n`.
 
       .. cpp:enumerator:: zeroone
 
-For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{x \in X}
-(0)\}$ and $\{\forall_{x \in X}
-(0)\}$.
+For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
+
+.. math::
+
+   \{ 0 \mid 0 < i \le n \}
+
+   \{ 1 \mid 0 < i \le n \}
 
       .. cpp:enumerator:: userdefined
 The reference points are defined by user prior to the solver execution. In order to use this setting declare the worseReferencePoint and betterReferencePoint values.
@@ -102,9 +128,10 @@ For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defin
 
 .. math::
 
-   \text{min\_ref} = \{ \min_{x \in X} (x_i) \mid 0 < i \le n \}
+   \{ \min_{x \in X} (x_i) \mid 0 < i \le n \}
 
-   \text{max\_ref} = \{ \max_{x \in X} (x_i) \mid 0 < i \le n \}
+   \{ \max_{x \in X} (x_i) \mid 0 < i \le n \}
+
       .. cpp:enumerator:: pymoo
 For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
 (min(x_i) - 10)\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
