@@ -1,6 +1,8 @@
 DataSet management
 =====
 
+
+
 .. _tutorials_datasets:
 
 .. cpp:namespace:: moda
@@ -45,7 +47,7 @@ DataSet Class
 
    .. cpp:function:: DataSet(const std::string filename, bool normalizedName)
 
-      Reads data from a file. If `normalizedName` is true, properties are inferred from the filename 
+      Reads data from a file. If `normalizedName` is true, meta properties are inferred from the filename 
       (e.g., ``name_of_experiment_dXXX_nXXX_ZZ``).
 
    .. cpp:function:: DataSet(const std::string filename, DataSetParameters settings)
@@ -60,12 +62,19 @@ DataSet Class
 
    .. cpp:function:: Point* getIdeal()
 
-    Gets the value of ideal point.
+      Gets the value of ideal point.
+
    .. cpp:function:: Point* getNadir()
+
+      Gets the value of nadir point.
+
    .. cpp:function:: void setIdeal(Point*)
+
+      Aribtrarily sets the ideal point.
+
    .. cpp:function:: void setNadir(Point*)
 
-      Getters and setters for the ideal and nadir points.
+      Aribtrarily sets the nadir point.
 
    .. cpp:function:: void setParameters(DataSetParameters settings)
    .. cpp:function:: void setDimensionality(int dim)
@@ -121,11 +130,205 @@ DataSet Class
 
    .. cpp:function:: void RemoveDominated()
 
-      
+       
       Removes all dominated points from the dataset.
+      
+   .. cpp:function:: DataSetParameters getParameters()
+      
+      This function returns hyperparameters of the dataset (such as filename, number of objectives) encapsulated as :cpp:class:`DataSetParameters` object.
 
    .. rubric:: Grouping
 
    .. cpp:function:: static std::vector<std::vector<DataSet>> BulkGroup(std::vector<DataSet> problems, ProblemGrouping grouping)
 
-      Groups a vector of datasets according to a given criteria.
+      Groups a set of datasets according to a given criteria. (enum ProblemGrouping { Name, Dimensionality, NameDimensionality };)
+
+DatasetPArameters
+~~~~~~~~~~~~~~~~~~
+
+.. cpp:class:: DataSetParameters
+
+   Configuration parameters for defining and identifying datasets within the experiments.
+
+   .. cpp:member:: OptimizationType optType
+
+      .. deprecated:: 1.0
+         This member is currently unused.
+
+   .. cpp:member:: std::string filename
+
+      The path or filename associated with the dataset.
+
+   .. cpp:member:: std::string name
+
+      The descriptive name of the experiment.
+
+   .. cpp:member:: int NumberOfObjectives
+
+      The dimensionality (number of objectives) of the dataset.
+
+   .. cpp:member:: int nPoints
+
+      The total number of points contained in the dataset.
+
+   .. cpp:member:: int sampleNumber
+
+      The specific sample index for the experiment.
+
+   .. cpp:function:: DataSetParameters()
+
+      Non-parameterized constructor.
+
+   .. cpp:function:: DataSetParameters(std::string name, int dimensions, int nPoints, int sampleNumber)
+
+      Parameterized constructor to initialize dataset properties.
+
+   .. cpp:function:: DataSetParameters(std::string filename)
+
+      Constructs the object by parsing metadata directly from the provided filename.
+
+   .. cpp:function:: ~DataSetParameters()
+
+      Destructor for the class.
+
+   .. cpp:enum:: OptimizationType
+
+      Defines the optimization goal.
+
+      .. cpp:enumerator:: max
+
+         Maximization problem.
+
+      .. cpp:enumerator:: min
+
+         Minimization problem.
+NDTree class
+------------
+.. cpp:class:: template<class Solution> NDTree
+
+   A tree-based data structure used for maintaining a non-dominated set of solutions.
+
+   .. cpp:member:: std::vector<Solution*> listSet
+
+      Internal storage for solutions contained within the archive.
+
+   .. cpp:member:: Point NadirPoint
+
+      The nadir point of the current non-dominated set.
+
+   .. cpp:member:: Point IdealPoint
+
+      The ideal point of the current non-dominated set.
+
+   .. cpp:member:: int NumberOfObjectives
+
+      The dimensionality of the objective space.
+
+   .. cpp:member:: bool maximization
+
+      Determines if the tree is configured for maximization (true) or minimization (false).
+
+   .. cpp:member:: TreeNode<Solution>* root
+
+      Pointer to the root node of the :cpp:class:`TreeNode` structure.
+
+   .. cpp:function:: void saveToList()
+
+      Synchronizes the tree structure to the :cpp:member:`listSet`.
+
+   .. cpp:function:: std::string listToString()
+
+      Serializes the contents of the non-dominated set to a string.
+
+   .. cpp:function:: long numberOfSolutions()
+
+      Returns the total count of non-dominated solutions stored.
+
+   .. cpp:function:: virtual bool isDominated(Point& ComparedSolution)
+
+      Checks if the provided solution is dominated by any point currently in the archive.
+
+   .. cpp:function:: virtual bool update(Point& NewSolution, bool checkDominance)
+
+      Attempts to insert a new solution into the archive, optionally performing a dominance check.
+
+   .. cpp:function:: virtual bool update(Point& NewSolution)
+
+      Standard update method to insert or reject a solution based on current archive state.
+
+   .. cpp:function:: void Save(char* FileName)
+
+      Persists the non-dominated set to a file.
+
+   .. cpp:function:: void DeleteAll()
+
+      Clears all stored solutions and resets the tree.
+
+   .. cpp:function:: DataSet* toDataSet()
+
+      Converts the archive into a :cpp:class:`DataSet` object.
+
+   .. cpp:function:: NDTree(bool maximization = true)
+
+      Constructs an empty NDTree.
+
+   .. cpp:function:: NDTree(DataSet dataset, bool maximization = true)
+
+      Constructs an NDTree initialized with an existing :cpp:class:`DataSet`.
+
+   .. cpp:function:: ~NDTree()
+
+      Destructor for resource cleanup.
+
+Code Snippets
+=============
+
+
+Creating Dataset Ad-hoc
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: cpp 
+
+   #include <moda\DataSet.h>
+   #include <iostream>
+   int main()
+   {
+      moda::DataSet* dataSet = new moda::DataSet(2);
+      for (int i = 0; i < 10; i++)
+      {
+         moda::Point* newPoint = new moda::Point(2);
+         newPoint->ObjectiveValues[0] = i * 0.1;
+         newPoint->ObjectiveValues[1] = i * 0.1;
+         dataSet->add(newPoint);
+      }
+   }
+
+Loading dataset from file
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: cpp
+   
+   #include <moda\DataSet.h>
+   #include <iostream>
+   int main()
+   {
+      moda::DataSet* dataSet = moda::DataSet::LoadFromFilename("C://Users//kubad//moda//moda//sample-file//linear_d4n100_1");
+      std::cout << "DataSet loaded. Number of points: " << dataSet->getParameters()->nPoints;
+      std::cout << ", Number of objectives: " << dataSet->getParameters()->NumberOfObjectives << std::endl;
+   }
+
+Loading multiple datasets from a single directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: cpp
+
+   #include <moda\DataSet.h>
+   #include <iostream>
+   int main()
+   {
+      std::vector<moda::DataSet*> datasets = moda::DataSet::LoadBulk("C://Users//kubad//Downloads//HVE//HVE//source-code//data//data");
+      for (moda::DataSet* dataset : datasets)
+      {
+         std::cout << "Dataset: " << dataset->getParameters()->filename << std::endl;
+      }
+   }
+
+   

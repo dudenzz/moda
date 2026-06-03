@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'MODA'
+copyright = '2026, Andrzej Jaszkiewicz, Piotr Zielniewicz, Jakub Dutkiewicz'
+author = 'Jakub Dutkiewicz'
 
 release = '0.1'
 version = '0.1.0'
@@ -28,7 +28,7 @@ intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
 
-# -- Options for HTML output
+# # -- Options for HTML output
 
 html_theme = 'sphinx_rtd_theme'
 

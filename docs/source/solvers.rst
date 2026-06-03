@@ -3,16 +3,20 @@ Problem solvers
 
 .. _tutorials_solvers:
 
-.. figure:: images/solvers_umls.png
-   :width: 600
-   :align: center
 
-   Solvers Class Diagram.
 
 .. _moda-solver:
 
-Solver Class
+
+Once we have our data prepared for analysis and processing, we can employ a set of Solvers for the task. The MODA library implements variety of hypervolume centered methods. This section lists all the solvers and provides simple code snippets for each of the algorithms.
+
+Solvers
 ============
+
+Let's start by listing all the base types. The library uses a hierarchical structure, each task is executed with a dedficated solver. The solver accepts a set of hyperparameters and returns a result embedded in an object of a dedicated type. Before we move onto the detailed solvers, let's describe the base classes.
+
+Base Solver Class
+-----------------
 
 .. cpp:namespace:: moda
 
@@ -27,11 +31,6 @@ Solver Class
    .. cpp:member:: DataSetParameters* currentSettings
 
       Pointer to the configuration settings for the current problem.
-
-   Callbacks
-   ---------
-
-   The class supports hooks for monitoring the execution process.
 
    .. cpp:member:: void (*StartCallback)(DataSetParameters problemSettings, std::string SolverMessage)
 
@@ -50,7 +49,7 @@ Solver Class
 
    .. cpp:function:: virtual Result* Solve(DataSet* problem, SolverParameters settings)
 
-      Abstract function. Each solver implements it to solve the problem and return a result.
+      Abstract Solve function. Each solver implements it to solve the problem and return a result.
 
    Protected Methods
    -----------------
@@ -59,15 +58,12 @@ Solver Class
 
       Prepares operational data structures before starting the solver.
 
-.. cpp:namespace:: moda
 
-Solver Settings Reference
-=========================
 
-The `moda` library utilizes a hierarchical configuration system for various optimization solvers. All specific solver settings inherit from the base :cpp:class:`SolverParameters` class.
+The `moda` library utilizes a configuration system for various optimization solvers. All specific solver settings inherit from the base :cpp:class:`SolverParameters` class.
 
 Base Solver Parameters Class
------------------
+----------------------------
 
 .. cpp:class:: SolverParameters
 
@@ -77,83 +73,81 @@ Base Solver Parameters Class
 
     Enumeration of all methods for calculating the reference points.
 
-    .. cpp:enumerator:: epsilon 
-        
-        For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
+      .. cpp:enumerator:: epsilon 
+         
+         For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
 
-        .. math::
+         .. math::
+               m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i) .
 
-        m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i)
+         The adjusted reference points are defined as:
 
-        The adjusted reference points are defined as:
+         .. math::
+               \{ m_i - \epsilon \mid 0 < i \le n \}, 
 
-        .. math::
+               \{ M_i + \epsilon \mid 0 < i \le n \} .
 
-        { m_i - \epsilon \mid 0 < i \le n \}
-
-        { M_i + \epsilon \mid 0 < i \le n \}
-
-        .. note::
-        The parameter :math:`\epsilon` is currently set to a default value of **0.001**. 
-        You can modify this value by updating the corresponding constant in the ``include.h`` file.
+         .. note::
+         The parameter :math:`\epsilon` is currently set to a default value of **0.001**. 
+         You can modify this value by updating the corresponding constant in the ``include.h`` file.
 
 
 
-    .. cpp:enumerator:: tenpercent
+      .. cpp:enumerator:: tenpercent
 
-        For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
+         For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
 
-        .. math::
+         .. math::
 
-        m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i)
+               m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i) .
 
-        The adjusted reference points are defined as:
+         The adjusted reference points are defined as:
 
-        .. math::
+         .. math::
 
-        { m_i - 0.1 \cdot |m_i - M_i| \mid 0 < i \le n \}
+               \{ m_i - 0.1 \cdot |m_i - M_i| \mid 0 < i \le n \}, 
 
-        { M_i + 0.1 \cdot |m_i - M_i| \mid 0 < i \le n \}
+               \{ M_i + 0.1 \cdot |m_i - M_i| \mid 0 < i \le n \} .
 
-    .. cpp:enumerator:: zeroone
+      .. cpp:enumerator:: zeroone
 
-        For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
+         For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
 
-        .. math::
+         .. math::
 
-        \{ 0 \mid 0 < i \le n \}
+               \{ 0 \mid 0 < i \le n \}, 
 
-        \{ 1 \mid 0 < i \le n \} .
+               \{ 1 \mid 0 < i \le n \} .
 
-    .. cpp:enumerator:: userdefined
+      .. cpp:enumerator:: userdefined
 
-        The reference points are defined by user prior to the solver execution. In order to use this setting declare the worseReferencePoint and betterReferencePoint values.
+         The reference points are defined by user prior to the solver execution. In order to use this setting declare the worseReferencePoint and betterReferencePoint values.
 
-    .. cpp:enumerator:: exact
+      .. cpp:enumerator:: exact
 
-        For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
+         For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
 
-        .. math::
+         .. math::
 
-        \{ \min_{x \in X} (x_i) \mid 0 < i \le n \}
+               \{ \min_{x \in X} (x_i) \mid 0 < i \le n \}, 
 
-        \{ \max_{x \in X} (x_i) \mid 0 < i \le n \} .
+               \{ \max_{x \in X} (x_i) \mid 0 < i \le n \} .
 
       .. cpp:enumerator:: pymoo
 
-        For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
+         For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
 
-        .. math::
+         .. math::
 
-        m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i)
+            m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i) .
 
-        The adjusted reference points are defined as:
+         The adjusted reference points are defined as:
 
-        .. math::
+         .. math::
 
-        { m_i - 10 \mid 0 < i \le n \}
+            \{ m_i - 10 \mid 0 < i \le n \}, 
 
-        { M_i + 10 \mid 0 < i \le n \}
+            \{ M_i + 10 \mid 0 < i \le n \} .
 
    .. cpp:member:: ReferencePointCalculationStyle BetterReferencePointCalculationStyle
 
@@ -188,8 +182,169 @@ Base Solver Parameters Class
         This function returns the better reference point according to the chosen method.
 
 
-Derived Solver Parameters
--------------------------
+Base Result Class
+-----------------
+
+The base result class is very simple it only denotes the elapsed time and information wether this is the final or intermediate result.
+Additionally it carries meta information on the method name and auxiliary, additional denotion of the result type.
+
+.. cpp:class:: Result
+
+   Represents the output and metadata for a calculation process.
+
+   .. cpp:member:: int ElapsedTime
+
+      Time passed since the beginning of the calculation given in ms.
+
+   .. cpp:member:: bool FinalResult
+
+      Is this the final result of the calculation.
+
+   .. cpp:enum:: ResultType
+
+      Enumeration of all result types.
+
+      .. cpp:enumerator:: Hypervolume
+      .. cpp:enumerator:: Estimation
+      .. cpp:enumerator:: Contribution
+      .. cpp:enumerator:: SubsetSelection
+      .. cpp:enumerator:: R2
+
+   .. cpp:member:: ResultType type
+
+      Additional annotation of the result type (auxiliary).
+
+   .. cpp:member:: std::string methodName
+
+      The name of the method used for the calculation.
+
+
+Dedicated Solvers
+==================
+
+
+
+MODA library uses a hierarchical structure of solvers designated for various tasks. This set of derived classes servers as a programming interface to the library computation kernel. 
+
+.. figure:: images/solvers_umls.png
+   :width: 600
+   :align: center
+
+   Solvers Hierarchy.
+
+Improved Quick Hypervolume
+--------------------------
+
+Classes
+~~~~~~~
+.. cpp:class:: IQHVSolver : public Solver
+
+   This class implements exact hypervolume calculation as described in [Andrzej Jaszkiewicz. 2018. Improved quick hypervolume algorithm. Comput. Oper. Res. 90, C (February 2018), 72–83. https://doi.org/10.1016/j.cor.2017.09.016]
+
+.. cpp:class:: IQHVParameters : public SolverParameters
+   
+   Settings for IQHV - a method of finding exact hypervolume. This class includes no additional parameters.
+
+.. cpp:class:: HypervolumeResult : public Result
+
+   Calculated hypervolume result inheriting from the base :cpp:class:`Result` class.
+
+   .. cpp:member:: float HyperVolume
+
+      The resulting hypervolume value calculated by the process.
+
+Code snippet
+~~~~~~~~~~~~
+.. code-block:: cpp
+
+   #include <moda\DataSet.h>
+   #include <moda\IQHVSolver.h>
+   #include <moda\SolverParameters.h>
+   #include <moda\Point.h>
+   #include <iostream>
+   int main()
+   {
+      moda::DataSet* dataSet;
+      //Load the dataset according to the Datasets section.
+      moda::IQHVSolver solver;
+      moda::IQHVParameters* parameters = new moda::IQHVParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
+      moda::HypervolumeResult* result = solver.Solve(dataSet, *parameters);
+      std::cout << "Hypervolume: " << result->HyperVolume << std::endl;
+      return 0;
+   }
+
+
+Distance based hypevolume estimation
+==========================
+
+Classes
+-------
+.. cpp:class:: DBHVESolver : public Solver
+
+This class implements the hypervolume estimation as described in [Jaszkiewicz, Andrzej & Zielniewicz, Piotr. (2024). Improving the Efficiency of the Distance-Based Hypervolume Estimation Using ND-Tree. IEEE Transactions on Evolutionary Computation. PP. 1-1. 10.1109/TEVC.2024.3391857.]
+
+.. cpp:class:: DBHVEParameters : public SolverParameters
+   
+   Settings for DBHVE - a method of finding hypervolume estimation expressed as a real number.
+
+   .. cpp:member:: unsigned MCIterations
+
+      Number of iterations. 
+   
+
+.. cpp:class:: BoundedResult : public Result
+
+   Result class providing bounded estimation values, inheriting from :cpp:class:`Result`. This class will be used for all "bounded" result types. 
+
+   .. cpp:member:: bool Guaranteed
+
+      Flag indicating if the lower and upper bounds are exact. If true, the precise value is guaranteed to be within these bounds. This is typically false for Monte Carlo methods.
+
+   .. cpp:member:: float LowerBound
+
+      Lower bound of the hypervolume.
+
+   .. cpp:member:: float UpperBound
+
+      Upper bound of the hypervolume.
+
+   .. cpp:member:: float HyperVolumeEstimation
+
+      The estimated hypervolume value.
+
+   Code Snippet
+   ~~~~~~~~~~~~
+
+   .. code-block:: cpp
+
+      #include <moda\DataSet.h>
+      #include <moda\QEHCSolver.h>
+      #include <moda\SolverParameters.h>
+      #include <moda\Point.h>
+      #include <moda\Result.h>
+      #include <iostream>
+      int main()
+      {
+         moda::DataSet* dataSet;
+         //Load the dataset according to the Datasets section.
+         moda::QEHCSolver solver;
+         moda::QEHCParameters* parameters = new moda::QEHCParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
+         parameters->SearchSubject = moda::QEHCParameters::SearchSubjectOption::MaximumContribution;
+         moda::QEHCResult* result = solver.Solve(dataSet, *parameters);
+         std::cout << "Maximum contribution: " << result->MaximumContribution << std::endl;
+         std::cout << "Maximum contributor index: " << result->MaximumContributionIndex << std::endl;
+         return 0;
+      }
+
+Quick Extreme Hypervolume Contributor detection
+------------------------------------------------
+
+Classes
+~~~~~~~
+
+.. cpp:class:: QEHCSolver : public Solver
+
+This class implements an algorithm for finding the extreme hypervolume contributor. It is described in [Andrzej Jaszkiewicz and Piotr Zielniewicz. 2021. Quick extreme hypervolume contribution algorithm. In Proceedings of the Genetic and Evolutionary Computation Conference (GECCO '21). Association for Computing Machinery, New York, NY, USA, 412–420. https://doi.org/10.1145/3449639.3459394]
 
 .. cpp:class:: QEHCParameters : public SolverParameters
 
@@ -208,6 +363,39 @@ Derived Solver Parameters
       .. cpp:enumerator:: Both
 
         The QEHC process will search for both maximum and minimum contributor at once (not implemented). 
+
+.. cpp:class:: QEHCResult : public Result
+
+   Result class specific to Quick Hypervolume Contribution (QEHC) metrics, inheriting from :cpp:class:`Result`.
+
+   .. cpp:member:: float MaximumContribution
+
+      The lowest contribution value for any single point in the set.
+
+   .. cpp:member:: float MinimumContribution
+
+      The highest hypervolume (HV) contribution value for any single point in the set.
+
+   .. cpp:member:: int MaximumContributionIndex
+
+      The index of the point associated with the highest HV contribution value.
+
+   .. cpp:member:: int MinimumContributionIndex
+
+      The index of the point associated with the lowest HV contribution value.
+
+Code snippet
+~~~~~~~~~~~~
+
+Hypervolume Subset Selection
+-----------------------------
+
+Classes
+~~~~~~~~
+
+.. cpp:class:: HSSSolver : public Solver
+
+This class implements a method of finding a subset of points with best estimated hypervolume, according to the algorithm described in [Andrzej Jaszkiewicz, Piotr Zielniewicz: Lazy Hypervolume Subset Selection Algorithm with Contributions Update. GECCO Companion 2025: 223-226]
 
 .. cpp:class:: HSSParameters : public SolverParameters
 
@@ -245,9 +433,38 @@ Derived Solver Parameters
 
         HSS processing strategy.
 
+Code Snippet
+~~~~~~~~~~~~
+
+Quick Hypervolume Bounds Estimation
+-----------------------------------
+
+Classes
+~~~~~~~~
+
+.. cpp:class:: QHV_BRSolver : public Solver
+
+.. cpp:class:: QHV_BRParameters : public SolverParameters
+   
+  Settings for QHV-BR - a method of finding hypervolume estimation expressed as lower and upper bounds. This method requires no additional parameters.
+
+This class uses the :cpp:class:`BoundedResult` class.
+
+
+Code Snippet
+~~~~~~~~~~~~
+
+Quick Hypervolume Bounds Estimation with Priority Queue
+-------------------------------------------------------
+
+Classes
+~~~~~~~~
+
+.. cpp:class:: QHV_BQSolver : public Solver
+
 .. cpp:class:: QHV_BQParameters : public SolverParameters
 
-   Settings for QHV-BQ optimization.
+   Settings for QHV-BQ - a method of finding hypervolume estimation expressed as lower and upper bounds.
 
    .. cpp:member:: SwitchParameters SwitchToMCSettings
 
@@ -255,10 +472,7 @@ Derived Solver Parameters
 
    .. cpp:member:: bool MonteCarlo
 
-      Toggle to turn on/off Monte Carlo estimation.
-
-Utility Structures
-------------------
+      Toggle to turn on/off Monte Carlo estimation. If turned on, the algorithm will switch to Monte Carlo estimation once specific termination criteria are satisfied (look at SwitchToMCSettings).
 
 .. cpp:class:: SwitchParameters
 
@@ -270,4 +484,60 @@ Utility Structures
 
    .. cpp:member:: DType gap
 
-      Minimum gap required between reference points to stop estimation and switch to Monte Carlo.
+      Once the difference between lower and upper bounds of the estimation is lower than this value, switch to Monte Carlo.
+
+This class uses the :cpp:class:`BoundedResult` class.
+
+Code Snippet
+~~~~~~~~~~~~
+
+Monte Carlo Hypervolume Estimation
+----------------------------------
+
+Classes
+~~~~~~~~
+
+.. cpp:class:: MCHVSolver : public Solver
+
+.. cpp:class:: MCHVParameters : public SolverParameters
+   
+  Settings for MCHV - a method of finding hypervolume estimation using the monte carlo process. This method requires no additional parameters.
+
+This class uses the :cpp:class:`BoundedResult` class.
+
+Code Snippet
+~~~~~~~~~~~~
+
+Quick R2 calculation
+--------------------
+
+Classes
+~~~~~~~~
+
+.. cpp:class:: QR2Solver : public Solver
+
+.. cpp:class:: QR2Parameters : public SolverParameters
+   
+   Settings for QR2 - a method of finding exact R2 
+
+   .. cpp:member:: bool CalculateHV
+
+      Toggle to concurrently calculate hypervolume.
+
+.. cpp:class:: R2Result : public Result
+
+   Result class for R2 indicator metrics, inheriting from :cpp:class:`Result`.
+
+   .. cpp:member:: float R2
+
+      The calculated R2 indicator value.
+
+   .. cpp:member:: float Hypervolume
+
+      The associated hypervolume value.
+
+Code Snippet
+~~~~~~~~~~~~
+
+.. cpp:namespace:: moda
+
