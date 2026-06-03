@@ -98,9 +98,13 @@ For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\
       .. cpp:enumerator:: userdefined
 The reference points are defined by user prior to the solver execution. In order to use this setting declare the worseReferencePoint and betterReferencePoint values.
       .. cpp:enumerator:: exact
-For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-(min(x_i))\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-(max(x_i))\}$.
+For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
+
+.. math::
+
+   \text{min\_ref} = \{ \min_{x \in X} (x_i) \mid 0 < i \le n \}
+
+   \text{max\_ref} = \{ \max_{x \in X} (x_i) \mid 0 < i \le n \}
       .. cpp:enumerator:: pymoo
 For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
 (min(x_i) - 10)\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
