@@ -75,67 +75,87 @@ Base Solver Parameters Class
 
    .. cpp:enum:: ReferencePointCalculationStyle
 
-      Defines how reference points are calculated.
+    Defines how reference points are calculated.
 
-      .. cpp:enumerator:: epsilon 
+    .. cpp:enumerator:: epsilon 
         
-For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as an extension of the data range by an epsilon value :math:`\epsilon`:
+        For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
 
-.. math::
+        .. math::
 
-   \text{min\_ref}_i = \min_{x \in X} (x_i) - \epsilon
+        m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i)
 
-   \text{max\_ref}_i = \max_{x \in X} (x_i) + \epsilon
+        The adjusted reference points are defined as:
 
-where :math:`0 < i \le n`.
+        .. math::
 
-.. note::
-   The parameter :math:`\epsilon` is currently set to a default value of **0.001**. 
-   You can modify this value by updating the corresponding constant in the ``include.h`` file.
+        { m_i - \epsilon \mid 0 < i \le n \}
 
-      .. cpp:enumerator:: tenpercent
+        { M_i + \epsilon \mid 0 < i \le n \}
 
-For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
+        .. note::
+        The parameter :math:`\epsilon` is currently set to a default value of **0.001**. 
+        You can modify this value by updating the corresponding constant in the ``include.h`` file.
 
-.. math::
 
-   m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i)
 
-The adjusted reference points are defined as:
+    .. cpp:enumerator:: tenpercent
 
-.. math::
+        For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
 
-   \text{min\_ref}_i = m_i - 0.1 \cdot |m_i - M_i|
+        .. math::
 
-   \text{max\_ref}_i = M_i + 0.1 \cdot |m_i - M_i|
+        m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i)
 
-where :math:`0 < i \le n`.
+        The adjusted reference points are defined as:
 
-      .. cpp:enumerator:: zeroone
+        .. math::
 
-For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
+        { m_i - 0.1 \cdot |m_i - M_i| \mid 0 < i \le n \}
 
-.. math::
+        { M_i + 0.1 \cdot |m_i - M_i| \mid 0 < i \le n \}
 
-   \{ 0 \mid 0 < i \le n \}
+    .. cpp:enumerator:: zeroone
 
-   \{ 1 \mid 0 < i \le n \}
+        For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
 
-      .. cpp:enumerator:: userdefined
-The reference points are defined by user prior to the solver execution. In order to use this setting declare the worseReferencePoint and betterReferencePoint values.
-      .. cpp:enumerator:: exact
-For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
+        .. math::
 
-.. math::
+        \{ 0 \mid 0 < i \le n \}
 
-   \{ \min_{x \in X} (x_i) \mid 0 < i \le n \}
+        \{ 1 \mid 0 < i \le n \} .
 
-   \{ \max_{x \in X} (x_i) \mid 0 < i \le n \}
+    .. cpp:enumerator:: userdefined
+
+        The reference points are defined by user prior to the solver execution. In order to use this setting declare the worseReferencePoint and betterReferencePoint values.
+
+    .. cpp:enumerator:: exact
+
+        For the dataset :math:`X \subseteq \mathbb{R}^n`, the reference points are defined as:
+
+        .. math::
+
+        \{ \min_{x \in X} (x_i) \mid 0 < i \le n \}
+
+        \{ \max_{x \in X} (x_i) \mid 0 < i \le n \} .
 
       .. cpp:enumerator:: pymoo
-For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-(min(x_i) - 10)\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-(max(x_i) + 10)\}$.
+
+        For the dataset :math:`X \subseteq \mathbb{R}^n`, define the minimum and maximum values for each dimension :math:`i` as:
+
+        .. math::
+
+        m_i = \min_{x \in X} (x_i), \quad M_i = \max_{x \in X} (x_i)
+
+        The adjusted reference points are defined as:
+
+        .. math::
+
+        { m_i - 10 \mid 0 < i \le n \}
+
+        { M_i + 10 \mid 0 < i \le n \}
+
+        where :math:`0 < i \le n`.
 
    .. cpp:member:: ReferencePointCalculationStyle BetterReferencePointCalculationStyle
    .. cpp:member:: ReferencePointCalculationStyle WorseReferencePointCalculationStyle
