@@ -4,7 +4,7 @@ Download files
 .. _downloads:
 
 .. list-table:: 
-   :widths: 20 20 20 20
+   :widths: 20 20 20 20 20
    :header-rows: 1
 
    * - Package
