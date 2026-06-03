@@ -66,7 +66,7 @@ Solver Settings Reference
 
 The `moda` library utilizes a hierarchical configuration system for various optimization solvers. All specific solver settings inherit from the base :cpp:class:`SolverParameters` class.
 
-Base Solver Class
+Base Solver Parameters Class
 -----------------
 
 .. cpp:class:: SolverParameters
@@ -75,9 +75,10 @@ Base Solver Class
 
    .. cpp:enum:: ReferencePointCalculationStyle
 
-      Defines how reference points (nadir/ideal) are calculated.
+      Defines how reference points are calculated.
 
-      .. cpp:enumerator:: epsilon
+      .. cpp:enumerator:: epsilon For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
+({min(x_i) - \epsilon)\}}$.
       .. cpp:enumerator:: tenpercent
       .. cpp:enumerator:: zeroone
       .. cpp:enumerator:: userdefined

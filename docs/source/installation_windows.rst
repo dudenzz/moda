@@ -50,7 +50,7 @@ Now, create a new Filter in your project and name it `MODA`.
 
 Add all library source files to that filter. 
 
-.. figure:: images/new_filter.png
+.. figure:: images/add_filter.png
    :width: 600
    :align: center
 
