@@ -77,8 +77,11 @@ Base Solver Parameters Class
 
       Defines how reference points are calculated.
 
-      .. cpp:enumerator:: epsilon For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-({min(x_i) - \epsilon)\}}$.
+      .. cpp:enumerator:: epsilon 
+        
+        For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
+({min(x_i) - \epsilon)\}}$. The $\epsilon$ value is arbitrarily set to 0.001, this value can be adjusted by modyfiing `include.h` file. 
+
       .. cpp:enumerator:: tenpercent
       .. cpp:enumerator:: zeroone
       .. cpp:enumerator:: userdefined
