@@ -281,7 +281,7 @@ Code snippet
 
 
 Distance based hypevolume estimation
-==========================
+------------------------------------
 
 Classes
 -------
