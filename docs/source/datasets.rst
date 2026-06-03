@@ -59,8 +59,10 @@ DataSet Class
    .. rubric:: Accessors & Modifiers
 
    .. cpp:function:: Point* getIdeal()
-   .. cpp:function:: void setIdeal(Point*)
+
+    Gets the value of ideal point.
    .. cpp:function:: Point* getNadir()
+   .. cpp:function:: void setIdeal(Point*)
    .. cpp:function:: void setNadir(Point*)
 
       Getters and setters for the ideal and nadir points.
@@ -106,11 +108,21 @@ DataSet Class
       Reverses the objectives for the points.
 
    .. cpp:function:: bool add(Point* point)
+
+      Adds a single point to the dataset.
+
    .. cpp:function:: bool remove(Point* point)
+
+      Removes a given point from the dataset (value driven).
+
    .. cpp:function:: void clear()
+
+      Clears the dataset.
+
    .. cpp:function:: void RemoveDominated()
 
-      Functions to manipulate the collection of points.
+      
+      Removes all dominated points from the dataset.
 
    .. rubric:: Grouping
 

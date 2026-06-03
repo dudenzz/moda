@@ -80,13 +80,31 @@ Base Solver Parameters Class
       .. cpp:enumerator:: epsilon 
         
         For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
-({min(x_i) - \epsilon)\}}$. The $\epsilon$ value is arbitrarily set to 0.001, this value can be adjusted by modyfiing `include.h` file. 
+(min(x_i) - \epsilon)\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
+(max(x_i) + \epsilon)\}$. The $\epsilon$ value is arbitrarily set to 0.001, this value can be adjusted by modyfiing `include.h` file. 
 
       .. cpp:enumerator:: tenpercent
+
+For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
+(min(x_i) - 0.1 \cdot \lvert min(x_i) - max(x_i) \rvert )\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
+(max(x_i) + 0.1 \cdot \lvert min(x_i) - max(x_i) \rvert )\}$.
+
       .. cpp:enumerator:: zeroone
+
+For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{x \in X}
+(0)\}$ and $\{\forall_{x \in X}
+(0)\}$.
+
       .. cpp:enumerator:: userdefined
+The reference points are defined by user prior to the solver execution. In order to use this setting declare the worseReferencePoint and betterReferencePoint values.
       .. cpp:enumerator:: exact
+For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
+(min(x_i))\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
+(max(x_i))\}$.
       .. cpp:enumerator:: pymoo
+For the dataset $X$ set in $R^n$ space, the reference points are defined as $\{\forall_{0 \lt i \le n}\forall_{x \in X}
+(min(x_i) - 10)\}$ and $\{\forall_{0 \lt i \le n}\forall_{x \in X}
+(max(x_i) + 10)\}$.
 
    .. cpp:member:: ReferencePointCalculationStyle BetterReferencePointCalculationStyle
    .. cpp:member:: ReferencePointCalculationStyle WorseReferencePointCalculationStyle
@@ -99,8 +117,17 @@ Base Solver Parameters Class
 
       Maximum time allowed for the estimation process (in ms).
 
+   .. cpp:member:: Point* worseReferencePoint;
+
+        User defined reference point;for minimization: lower boundary point of the problem; for maximization: upper boundary point of the problem 
+
+   .. cpp:member:: Point* betterReferencePoint;
+
+        User defined reference point; for minimization: upper boundary point of the problem; for maximization: lower boundary point of the problem
+        
    .. cpp:function:: Point* GetWorseReferencePoint(DataSet *set)
    .. cpp:function:: Point* GetBetterReferencePoint(DataSet *set)
+
 
 Derived Solver Parameters
 -------------------------
@@ -125,7 +152,7 @@ Derived Solver Parameters
 
 .. cpp:class:: HSSParameters : public SolverParameters
 
-   Configuration for HSS (Heuristic Subset Selection) solvers.
+   Configuration for HSS solvers.
 
    .. cpp:enum:: StoppingCriteriaType
 
