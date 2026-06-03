@@ -147,7 +147,7 @@ DataSet Class
 
       Groups a set of datasets according to a given criteria. (enum ProblemGrouping { Name, Dimensionality, NameDimensionality };)
 
-DatasetPArameters
+DatasetParameters
 ~~~~~~~~~~~~~~~~~~
 
 .. cpp:class:: DataSetParameters
@@ -283,6 +283,86 @@ NDTree class
    .. cpp:function:: ~NDTree()
 
       Destructor for resource cleanup.
+
+Point class
+===========
+
+.. cpp:class:: Point
+
+   Represents a point in the objective space for multi-objective optimization problems.
+
+   .. cpp:member:: int NumberOfObjectives
+
+      The number of objectives defining the space.
+
+   .. cpp:member:: DType ObjectiveValues[MAXOBJECTIVES]
+
+      The array containing objective values for the point.
+
+   .. cpp:member:: Point()
+
+      Default constructor.
+
+   .. cpp:member:: Point(int NumberOfObjectives)
+
+      Parameterized constructor.
+
+   .. static_method:: Point ones(int NumberOfObjectives)
+
+      Creates a point with all objective values set to 1.
+
+   .. static_method:: Point elevens(int NumberOfObjectives)
+
+      Creates a point with all objective values set to 11.
+
+   .. static_method:: Point negElevens(int NumberOfObjectives)
+
+      Creates a point with all objective values set to -11.
+
+   .. static_method:: Point zeroes(int NumberOfObjectives)
+
+      Creates a point with all objective values set to 0.
+
+   .. cpp:function:: Point(const Point& Point)
+
+      Copy constructor.
+
+   .. cpp:function:: ComparisonResult Compare(Point& point, bool maximization)
+
+      Compares this point with another based on the provided maximization flag.
+
+   .. cpp:function:: DType operator[](int n) const
+
+      Getter operator for objective values.
+
+   .. cpp:function:: DType get(int n) const
+
+      Getter for objective values.
+
+   .. cpp:function:: DType& operator[](int n)
+
+      Setter operator for objective values.
+
+   .. cpp:function:: std::istream& Load(std::istream& Stream)
+
+      Reads the point data from an input stream.
+
+   .. cpp:function:: std::ostream& Save(std::ostream& Stream)
+
+      Saves objective values to an open output stream, separated by tabs.
+
+   .. cpp:function:: DType Distance(Point& ComparedPoint, Point& IdealPoint, Point& NadirPoint)
+
+      Calculates the distance between points, normalized by Ideal and Nadir points.
+
+   .. cpp:function:: DType CleanChebycheffScalarizingFunctionInverse(std::vector<DType>& weightVector, Point& referencePoint)
+
+      Calculates the inverse Clean Chebycheff scalarizing function.
+
+   .. cpp:function:: DType CleanChebycheffScalarizingFunctionOriginal(std::vector<DType>& weightVector, Point& referencePoint)
+
+      Calculates the original Clean Chebycheff scalarizing function.
+
 
 Code Snippets
 =============

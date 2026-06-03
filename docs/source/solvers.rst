@@ -145,9 +145,9 @@ Base Solver Parameters Class
 
          .. math::
 
-            \{ m_i - 10 \mid 0 < i \le n \}, 
+            \{ 0 \mid 0 < i \le n \}, 
 
-            \{ M_i + 10 \mid 0 < i \le n \} .
+            \{ 11 \mid 0 < i \le n \} .
 
    .. cpp:member:: ReferencePointCalculationStyle BetterReferencePointCalculationStyle
 
@@ -231,6 +231,12 @@ MODA library uses a hierarchical structure of solvers designated for various tas
    :align: center
 
    Solvers Hierarchy.
+
+.. figure:: images/results.png
+   :width: 600
+   :align: center
+
+   Results Hierarchy.
 
 Improved Quick Hypervolume
 --------------------------
