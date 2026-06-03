@@ -2,3 +2,163 @@ Problem solvers
 =====
 
 .. _tutorials_solvers:
+
+.. figure:: images/solvers_umls.png
+   :width: 600
+   :align: center
+
+   Solvers Class Diagram.
+
+.. _moda-solver:
+
+Solver Class
+============
+
+.. cpp:namespace:: moda
+
+.. cpp:class:: Solver
+
+   The base class providing an interface and utility methods for solving optimization problems.
+
+   .. cpp:member:: DataSet* currentlySolvedProblem
+
+      Pointer to the dataset currently being processed.
+
+   .. cpp:member:: DataSetParameters* currentSettings
+
+      Pointer to the configuration settings for the current problem.
+
+   Callbacks
+   ---------
+
+   The class supports hooks for monitoring the execution process.
+
+   .. cpp:member:: void (*StartCallback)(DataSetParameters problemSettings, std::string SolverMessage)
+
+      Called when the solver starts execution.
+
+   .. cpp:member:: void (*IterationCallback)(int currentIteration, int totalIterations, Result* stepResult)
+
+      Called at the end of each iteration to report progress.
+
+   .. cpp:member:: void (*EndCallback)(DataSetParameters problemSettings, Result* stepResult)
+
+      Called upon the completion of the solving process.
+
+   Public Methods
+   --------------
+
+   .. cpp:function:: virtual Result* Solve(DataSet* problem, SolverParameters settings)
+
+      Abstract function. Each solver implements it to solve the problem and return a result.
+
+   Protected Methods
+   -----------------
+
+   .. cpp:function:: void prepareData(DataSet* problem, SolverParameters settings)
+
+      Prepares operational data structures before starting the solver.
+
+.. cpp:namespace:: moda
+
+Solver Settings Reference
+=========================
+
+The `moda` library utilizes a hierarchical configuration system for various optimization solvers. All specific solver settings inherit from the base :cpp:class:`SolverParameters` class.
+
+Base Solver Class
+-----------------
+
+.. cpp:class:: SolverParameters
+
+   The foundational class for all solver configurations.
+
+   .. cpp:enum:: ReferencePointCalculationStyle
+
+      Defines how reference points (nadir/ideal) are calculated.
+
+      .. cpp:enumerator:: epsilon
+      .. cpp:enumerator:: tenpercent
+      .. cpp:enumerator:: zeroone
+      .. cpp:enumerator:: userdefined
+      .. cpp:enumerator:: exact
+      .. cpp:enumerator:: pymoo
+
+   .. cpp:member:: ReferencePointCalculationStyle BetterReferencePointCalculationStyle
+   .. cpp:member:: ReferencePointCalculationStyle WorseReferencePointCalculationStyle
+
+   .. cpp:member:: bool callbacks
+
+      Toggle to enable or disable iteration callbacks.
+
+   .. cpp:member:: int MaxEstimationTime
+
+      Maximum time allowed for the estimation process (in ms).
+
+   .. cpp:function:: Point* GetWorseReferencePoint(DataSet *set)
+   .. cpp:function:: Point* GetBetterReferencePoint(DataSet *set)
+
+Derived Solver Parameters
+-------------------------
+
+.. cpp:class:: QEHCParameters : public SolverParameters
+
+   Parameters for the QEHC Solver.
+
+   .. cpp:enum:: SearchSubjectOption
+
+      .. cpp:enumerator:: MinimumContribution
+      .. cpp:enumerator:: MaximumContribution
+      .. cpp:enumerator:: Both
+
+   .. cpp:member:: unsigned long int iterationsLimit
+
+      The maximum number of iterations.
+
+   .. cpp:member:: bool sort
+
+      Flag to allow or disallow sorting.
+
+.. cpp:class:: HSSParameters : public SolverParameters
+
+   Configuration for HSS (Heuristic Subset Selection) solvers.
+
+   .. cpp:enum:: StoppingCriteriaType
+
+      .. cpp:enumerator:: SubsetSize
+      .. cpp:enumerator:: Time
+
+   .. cpp:enum:: SubsetSelectionStrategy
+
+      .. cpp:enumerator:: Incremental
+      .. cpp:enumerator:: Decremental
+
+   .. cpp:member:: StoppingCriteriaType StoppingCriteria
+   .. cpp:member:: SubsetSelectionStrategy Strategy
+
+.. cpp:class:: QHV_BQParameters : public SolverParameters
+
+   Settings for QHV-BQ optimization.
+
+   .. cpp:member:: SwitchParameters SwitchToMCSettings
+
+      Configuration for switching to Monte Carlo methods.
+
+   .. cpp:member:: bool MonteCarlo
+
+      Toggle to turn on/off Monte Carlo estimation.
+
+Utility Structures
+------------------
+
+.. cpp:class:: SwitchParameters
+
+   Internal configuration for algorithm switching logic.
+
+   .. cpp:member:: int switchTime
+
+      Threshold in ms to switch to Monte Carlo.
+
+   .. cpp:member:: DType gap
+
+      Minimum gap required between reference points to stop estimation.
