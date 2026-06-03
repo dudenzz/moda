@@ -75,7 +75,7 @@ Base Solver Parameters Class
 
    .. cpp:enum:: ReferencePointCalculationStyle
 
-    Defines how reference points are calculated.
+    Enumeration of all methods for calculating the reference points.
 
     .. cpp:enumerator:: epsilon 
         
@@ -155,10 +155,13 @@ Base Solver Parameters Class
 
         { M_i + 10 \mid 0 < i \le n \}
 
-        where :math:`0 < i \le n`.
-
    .. cpp:member:: ReferencePointCalculationStyle BetterReferencePointCalculationStyle
+
+      How to calculate the better reference point (see the enum above).
+
    .. cpp:member:: ReferencePointCalculationStyle WorseReferencePointCalculationStyle
+
+      How to calculate the worse reference point (see the enum above).
 
    .. cpp:member:: bool callbacks
 
@@ -177,7 +180,12 @@ Base Solver Parameters Class
         User defined reference point; for minimization: upper boundary point of the problem; for maximization: lower boundary point of the problem
         
    .. cpp:function:: Point* GetWorseReferencePoint(DataSet *set)
+
+        This function returns the worse reference point according to the chosen method.
+
    .. cpp:function:: Point* GetBetterReferencePoint(DataSet *set)
+
+        This function returns the better reference point according to the chosen method.
 
 
 Derived Solver Parameters
@@ -190,16 +198,16 @@ Derived Solver Parameters
    .. cpp:enum:: SearchSubjectOption
 
       .. cpp:enumerator:: MinimumContribution
+
+        The QEHC process will search for minimum contributor. 
+
       .. cpp:enumerator:: MaximumContribution
+
+        The QEHC process will search for maximum contributor. 
+
       .. cpp:enumerator:: Both
 
-   .. cpp:member:: unsigned long int iterationsLimit
-
-      The maximum number of iterations.
-
-   .. cpp:member:: bool sort
-
-      Flag to allow or disallow sorting.
+        The QEHC process will search for both maximum and minimum contributor at once (not implemented). 
 
 .. cpp:class:: HSSParameters : public SolverParameters
 
@@ -207,16 +215,35 @@ Derived Solver Parameters
 
    .. cpp:enum:: StoppingCriteriaType
 
+      Enumeration of various HSS termination criteria. 
+
       .. cpp:enumerator:: SubsetSize
+
+        The process will terminate once a specified size of the set of selected points has been reached.
+
       .. cpp:enumerator:: Time
+
+        The process will terminate once a specific time of execution has been reached (note, the time is checked upon the start of iteration, which selects a point, at least one point will be added/substracted).
 
    .. cpp:enum:: SubsetSelectionStrategy
 
+      Enumeration of HSS processing strategies.
+
       .. cpp:enumerator:: Incremental
+
+        Start with an empty set. In every iteration add a point, which would maximize the hypervolume of the subset.
+
       .. cpp:enumerator:: Decremental
 
+        Start with all points. In every iteration remove a point, which would reduce the hypervolume by the minimal value.
+
    .. cpp:member:: StoppingCriteriaType StoppingCriteria
+
+        HSS termination criteria.
+
    .. cpp:member:: SubsetSelectionStrategy Strategy
+
+        HSS processing strategy.
 
 .. cpp:class:: QHV_BQParameters : public SolverParameters
 
@@ -243,4 +270,4 @@ Utility Structures
 
    .. cpp:member:: DType gap
 
-      Minimum gap required between reference points to stop estimation.
+      Minimum gap required between reference points to stop estimation and switch to Monte Carlo.
