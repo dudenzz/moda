@@ -11,7 +11,7 @@ If you are working with Visual Studio IDE, this is the first tutorial you should
 Installation
 ~~~~~~~~~~~~
 
-First you must download the MODA SDK from the :ref:`downloads` page. Note that the Release package allows you to run the code in both Debug and Release mode, while the Debug mode allows you to run the code in Debug mode only, but allows for detailed debugging. Extract the files anywhere you like. Copying the files into your Visual Studio installation folder is not recommended. Choose a dedicated location, especially if you intend to use several versions of the same library or you intend to use various compilers.
+First you must download the MODA SDK from the :ref:`downloads` page. For this tutorial you should use the `Sources` version. Extract the files anywhere you like. Copying the files into your Visual Studio installation folder is not recommended. Choose a dedicated location, especially if you intend to use several versions of the same library or you intend to use various compilers.
 
 Creating the MODA Visual Studio project. 
 ~~~~~~~~~~~~~
@@ -28,35 +28,33 @@ In the project properties under "C/C++" Language tab, change the "C++ Language S
 
    Pick the proper C++ version. 
 
-Now we need to tell the compiler where to find the MODA headers (.h files), and the linker where to find the MODA library (.lib file).
+Now we need to tell the compiler where to find the MODA headers (.h files), and add source files (.cpp) to the project.
 
 In the project's properties, add:
 
 The path to the MODA headers (<moda-install-path>/moda) to C/C++ > General > Additional Include Directories
-The path to the MODA libraries (<moda-install-path>) to Linker > General > Additional Library Directories
 
-.. figure:: images/include_directories.png
+.. figure:: images/include_directories_sources.png
    :width: 600
    :align: center
 
    Headers directory. 
 
-.. figure:: images/lib_directories.png
+Now, create a new Filter in your project and name it `MODA`.
+
+.. figure:: images/new_filter.png
    :width: 600
    :align: center
 
-   Library directory. 
+   Create a new filter in the project. 
 
+Add all library source files to that filter. 
 
-In the next step we need to tell the compiler, that it is supposed to use the `moda.lib` library. Head to  Linker > Input > Additional Dependencies. Add all the MODA library: "moda.lib".
-
-
-
-.. figure:: images/lib_name.png
+.. figure:: images/new_filter.png
    :width: 600
    :align: center
 
-   Library directory. 
+   Add all files to the filter (note: you can select multiple files in a single dialog). 
 
 Your project is ready, let's write some code now to make sure that it works. Put the following code inside the main.cpp file:
 
