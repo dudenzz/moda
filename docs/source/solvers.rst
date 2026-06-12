@@ -286,7 +286,7 @@ Distance based hypevolume estimation
 ------------------------------------
 
 Classes
--------
+~~~~~~~
 .. cpp:class:: DBHVESolver : public Solver
 
 This class implements the hypervolume estimation as described in [Jaszkiewicz, Andrzej & Zielniewicz, Piotr. (2024). Improving the Efficiency of the Distance-Based Hypervolume Estimation Using ND-Tree. IEEE Transactions on Evolutionary Computation. PP. 1-1. 10.1109/TEVC.2024.3391857.]
@@ -320,27 +320,27 @@ This class implements the hypervolume estimation as described in [Jaszkiewicz, A
 
       The estimated hypervolume value.
 
-   Code Snippet
-   ~~~~~~~~~~~~
-.. code-block:: cpp
-      #include <moda\DataSet.h>
-      #include <moda\DBHVESolver.h>
-      #include <moda\SolverParameters.h>
-      #include <moda\Point.h>
-      #include <iostream>
-      int main()
-      {
-         moda::DataSet* dataSet = moda::DataSet::LoadFromFilename("sample_file");
-         dataSet->normalize();
-         moda::DBHVESolver solver_hve;
-         moda::DBHVEParameters* hveparams = new moda::DBHVEParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
-         hveparams->MaxEstimationTime = 1000;
-         auto hve_res = solver_hve.Solve(dataSet, *hveparams);
-         std::cout << "HVE estimation: " << hve_res->HyperVolumeEstimation << std::endl;
-         return 0;
-      }
-      //Result:
-      //    HVE estimation: 0.860411
+Code Snippet
+~~~~~~~~~~~~
+   .. code-block:: cpp
+         #include <moda\DataSet.h>
+         #include <moda\DBHVESolver.h>
+         #include <moda\SolverParameters.h>
+         #include <moda\Point.h>
+         #include <iostream>
+         int main()
+         {
+            moda::DataSet* dataSet = moda::DataSet::LoadFromFilename("sample_file");
+            dataSet->normalize();
+            moda::DBHVESolver solver_hve;
+            moda::DBHVEParameters* hveparams = new moda::DBHVEParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
+            hveparams->MaxEstimationTime = 1000;
+            auto hve_res = solver_hve.Solve(dataSet, *hveparams);
+            std::cout << "HVE estimation: " << hve_res->HyperVolumeEstimation << std::endl;
+            return 0;
+         }
+         //Result:
+         //    HVE estimation: 0.860411
 
 
 Quick Extreme Hypervolume Contributon
