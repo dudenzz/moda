@@ -71,7 +71,7 @@ Base Solver Parameters Class
 
    .. cpp:enum:: ReferencePointCalculationStyle
 
-    Enumeration of all methods for calculating the reference points.
+    Enumeration of all methods for calculating the reference points. Depending on the optimization direction, the worse and better reference points are set either to the point based on either minimum or maximum values, approprietly
 
       .. cpp:enumerator:: epsilon 
          
@@ -270,14 +270,16 @@ Code snippet
    #include <iostream>
    int main()
    {
-      moda::DataSet* dataSet;
-      //Load the dataset according to the Datasets section.
+      moda::DataSet* dataSet = moda::DataSet::LoadFromFilename("sample_file");
+      dataSet->normalize();
       moda::IQHVSolver solver;
       moda::IQHVParameters* parameters = new moda::IQHVParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
       moda::HypervolumeResult* result = solver.Solve(dataSet, *parameters);
       std::cout << "Hypervolume: " << result->HyperVolume << std::endl;
       return 0;
    }
+   //Result: 
+   //   Hypervolume: 0.859209
 
 
 Distance based hypevolume estimation
@@ -320,29 +322,28 @@ This class implements the hypervolume estimation as described in [Jaszkiewicz, A
 
    Code Snippet
    ~~~~~~~~~~~~
-
-   .. code-block:: cpp
-
+.. code-block:: cpp
       #include <moda\DataSet.h>
-      #include <moda\QEHCSolver.h>
+      #include <moda\DBHVESolver.h>
       #include <moda\SolverParameters.h>
       #include <moda\Point.h>
-      #include <moda\Result.h>
       #include <iostream>
       int main()
       {
-         moda::DataSet* dataSet;
-         //Load the dataset according to the Datasets section.
-         moda::QEHCSolver solver;
-         moda::QEHCParameters* parameters = new moda::QEHCParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
-         parameters->SearchSubject = moda::QEHCParameters::SearchSubjectOption::MaximumContribution;
-         moda::QEHCResult* result = solver.Solve(dataSet, *parameters);
-         std::cout << "Maximum contribution: " << result->MaximumContribution << std::endl;
-         std::cout << "Maximum contributor index: " << result->MaximumContributionIndex << std::endl;
+         moda::DataSet* dataSet = moda::DataSet::LoadFromFilename("sample_file");
+         dataSet->normalize();
+         moda::DBHVESolver solver_hve;
+         moda::DBHVEParameters* hveparams = new moda::DBHVEParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
+         hveparams->MaxEstimationTime = 1000;
+         auto hve_res = solver_hve.Solve(dataSet, *hveparams);
+         std::cout << "HVE estimation: " << hve_res->HyperVolumeEstimation << std::endl;
          return 0;
       }
+      //Result:
+      //    HVE estimation: 0.860411
 
-Quick Extreme Hypervolume Contributor detection
+
+Quick Extreme Hypervolume Contributon
 ------------------------------------------------
 
 Classes
@@ -393,6 +394,30 @@ This class implements an algorithm for finding the extreme hypervolume contribut
 Code snippet
 ~~~~~~~~~~~~
 
+   .. code-block:: cpp
+
+      #include <moda\DataSet.h>
+      #include <moda\QEHCSolver.h>
+      #include <moda\SolverParameters.h>
+      #include <moda\Point.h>
+      #include <moda\Result.h>
+      #include <iostream>
+      int main()
+      {
+         moda::DataSet* dataSet = moda::DataSet::LoadFromFilename("sample_file");
+         dataSet->normalize();
+         moda::QEHCSolver solver;
+         moda::QEHCParameters* parameters = new moda::QEHCParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
+         parameters->SearchSubject = moda::QEHCParameters::SearchSubjectOption::MaximumContribution;
+         moda::QEHCResult* result = solver.Solve(dataSet, *parameters);
+         std::cout << "Maximum contribution: " << result->MaximumContribution << std::endl;
+         std::cout << "Maximum contributor index: " << result->MaximumContributionIndex << std::endl;
+         return 0;
+      }
+      //Result: 
+      //   Maximum contribution: 0.00114615
+      //   Maximum contributor index: 21
+
 Hypervolume Subset Selection
 -----------------------------
 
@@ -441,8 +466,35 @@ This class implements a method of finding a subset of points with best estimated
 
 Code Snippet
 ~~~~~~~~~~~~
+   .. code-block:: cpp
 
-Quick Hypervolume Bounds Estimation
+      #include <moda\DataSet.h>
+      #include <moda\HSSSolver.h>
+      #include <moda\SolverParameters.h>
+      #include <moda\Point.h>
+      #include <moda\Result.h>
+      #include <iostream>
+      int main()
+      {
+         moda::DataSet* dataSet = moda::DataSet::LoadFromFilename("sample_file");
+         dataSet->normalize();
+         moda::HSSSolver solver;
+         moda::HSSParameters* hssparams = new moda::HSSParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
+         hssparams->Strategy = moda::HSSParameters::SubsetSelectionStrategy::Incremental;
+         hssparams->StoppingSubsetSize = 10;
+         hssparams->StoppingCriteria = moda::HSSParameters::StoppingCriteriaType::SubsetSize;         
+         auto result = solver.Solve(dataSet, *hssparams);
+         std::cout << "Selected points: [";
+         for (int i = 0; i < 10; i++)
+         {
+            std::cout << result->selectedPoints[i] << ",";
+         }
+         std::cout << "]";
+         return 0;
+      }
+      //Result:
+      //   Selected points: [48,349,246,217,296,358,376,53,478,7,]
+Quick Hypervolume Guaranteed Bounds Approximation
 -----------------------------------
 
 Classes
@@ -497,53 +549,77 @@ This class uses the :cpp:class:`BoundedResult` class.
 Code Snippet
 ~~~~~~~~~~~~
 
-Monte Carlo Hypervolume Estimation
-----------------------------------
+   .. code-block:: cpp
 
-Classes
-~~~~~~~~
+      #include <moda\DataSet.h>
+      #include <moda\QHV_BQSolver.h>
+      #include <moda\SolverParameters.h>
+      #include <moda\Point.h>
+      #include <moda\Result.h>
+      #include <iostream>
+      int main()
+      {
+         moda::DataSet* dataSet = moda::DataSet::LoadFromFilename("sample_file");
+         dataSet->normalize();
+         moda::QHV_BQSolver solver;
+         moda::QHV_BQParameters* parameters = new moda::QHV_BQParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
+         parameters->MaxEstimationTime = 320;
+         auto result = solver.Solve(dataSet, *parameters);
+         std::cout << "Lower bound: " << result->LowerBound << std::endl;
+         std::cout << "Upper bound: " << result->UpperBound << std::endl;
+         return 0;
+      }
+      //Result:
+      //    Lower bound: 0.825077
+      //    Upper bound: 0.897067
 
-.. cpp:class:: MCHVSolver : public Solver
+.. Monte Carlo Hypervolume Estimation
+.. ----------------------------------
 
-.. cpp:class:: MCHVParameters : public SolverParameters
+.. Classes
+.. ~~~~~~~~
+
+.. .. cpp:class:: MCHVSolver : public Solver
+
+.. .. cpp:class:: MCHVParameters : public SolverParameters
    
-  Settings for MCHV - a method of finding hypervolume estimation using the monte carlo process. This method requires no additional parameters.
+..   Settings for MCHV - a method of finding hypervolume estimation using the monte carlo process. This method requires no additional parameters.
 
-This class uses the :cpp:class:`BoundedResult` class.
+.. This class uses the :cpp:class:`BoundedResult` class.
 
-Code Snippet
-~~~~~~~~~~~~
+.. Code Snippet
+.. ~~~~~~~~~~~~
 
-Quick R2 calculation
---------------------
+.. Quick R2 calculation
+.. --------------------
 
-Classes
-~~~~~~~~
+.. Classes
+.. ~~~~~~~~
 
-.. cpp:class:: QR2Solver : public Solver
+.. .. cpp:class:: QR2Solver : public Solver
 
-.. cpp:class:: QR2Parameters : public SolverParameters
+.. .. cpp:class:: QR2Parameters : public SolverParameters
    
-   Settings for QR2 - a method of finding exact R2 
+..    Settings for QR2 - a method of finding exact R2 
 
-   .. cpp:member:: bool CalculateHV
+..    .. cpp:member:: bool CalculateHV
 
-      Toggle to concurrently calculate hypervolume.
+..       Toggle to concurrently calculate hypervolume.
 
-.. cpp:class:: R2Result : public Result
+.. .. cpp:class:: R2Result : public Result
 
-   Result class for R2 indicator metrics, inheriting from :cpp:class:`Result`.
+..    Result class for R2 indicator metrics, inheriting from :cpp:class:`Result`.
 
-   .. cpp:member:: float R2
+..    .. cpp:member:: float R2
 
-      The calculated R2 indicator value.
+..       The calculated R2 indicator value.
 
-   .. cpp:member:: float Hypervolume
+..    .. cpp:member:: float Hypervolume
 
-      The associated hypervolume value.
+..       The associated hypervolume value.
 
-Code Snippet
-~~~~~~~~~~~~
+.. Code Snippet
+.. ~~~~~~~~~~~~
 
 .. cpp:namespace:: moda
 
