@@ -415,7 +415,7 @@ Loading multiple datasets from a single directory
       }
    }
 
-Pruning datasset with dominated points with ND-Tree
+Filtering out dominated points using ND-Tree
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  .. code-block:: cpp
 
@@ -427,13 +427,13 @@ Pruning datasset with dominated points with ND-Tree
       std::cout << "Loaded dataset with: " << dataSet->points.size() << " points." << std::endl;
       moda::NDTree ndtree = dataSet->toNDTree();
       moda::DataSet* nonDominatedDataSet = ndtree.toDataSet();
-      std::cout << "Dataset size after ND-Tree pruning: " << nonDominatedDataSet->points.size() << " points." << std::endl;
+      std::cout << "Dataset size after ND-Tree based filtering: " << nonDominatedDataSet->points.size() << " points." << std::endl;
       moda::IQHVParameters* parameters = new moda::IQHVParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
       moda::IQHVSolver solver;
       auto result = solver.Solve(dataSet, *parameters);
       auto resultPruned = solver.Solve(nonDominatedDataSet, *parameters);
-      std::cout << "Solution 1: " << result->HyperVolume << " time: " << result->ElapsedTime << "ms" << std::endl;
-      std::cout << "Solution 2: " << resultPruned->HyperVolume << " time: " << resultPruned->ElapsedTime << "ms";
+      std::cout << "Hypervolume of a set with dominated points: " << result->HyperVolume << " time: " << result->ElapsedTime << "ms" << std::endl;
+      std::cout << "Hypervolume of a set without dominated points: " << resultPruned->HyperVolume << " time: " << resultPruned->ElapsedTime << "ms";
       return 0;
    }
    // Result:

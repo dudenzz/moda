@@ -71,7 +71,8 @@ Base Solver Parameters Class
 
    .. cpp:enum:: ReferencePointCalculationStyle
 
-    Enumeration of all methods for calculating the reference points. Depending on the optimization direction, the worse and better reference points are set either to the point based on either minimum or maximum values, approprietly
+    Enumeration of all methods for calculating the reference points. Depending on the optimization direction, the worse and better reference points are set either to the point based on either minimum or maximum values, approprietly, i.e. 
+    for problems with minimized objectives, the worse reference point is based on maximum values, and the better reference point is based on minimum values, and vice versa for problems with maximized objectives.
 
       .. cpp:enumerator:: epsilon 
          

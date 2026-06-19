@@ -31,6 +31,7 @@ Library versions:
      - `Download <https://drive.google.com/file/d/1hZLf1zDNVRgCpKzcH-Kaqzt9Mmdw3ccm/view?usp=sharing>`__
 
 Exemplary problems:
+
 .. list-table:: 
    :widths: 40 30 30
    :header-rows: 1
