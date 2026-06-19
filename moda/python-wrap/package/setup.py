@@ -46,7 +46,7 @@ modamodule = Extension(
 )
 
 setup(
-name='moda',
+name='put-moda',
     version='1.0.21',
     author='Jakub Dutkiewicz',
     author_email='jakub.dutkiewicz@put.poznan.pl',
