@@ -101,3 +101,6 @@ VisualStudioProjects/
 /SampleModaApp/SampleModaApp/x64/Release
 /SampleModaApp/x64/Release
 /to_zip
+/moda/python-wrap/package/build/*
+/moda/python-wrap/package/moda.egg-info/*
+/moda/python-wrap/package/wheelhouse/*
