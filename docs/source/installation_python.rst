@@ -40,8 +40,9 @@ Congratulations! You have successfully installed python wrapper for MODA library
 Installation with pip
 ----------------
 
-Work in progress
+Simply run the command below in your virtual environment to install the library from PyPI. The current version of the library is available on TestPyPI (it will be moved to the main PyPI index in the future), so make sure to use the correct index URL. Currently the library is compiled for Windows platforms.
 
+``!pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ put-moda``
 
 Basic usage 
 ----------------

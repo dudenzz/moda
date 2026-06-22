@@ -8,7 +8,7 @@ Visual Studio
 
 If you are working with Visual Studio IDE, this is the first tutorial you should go through. It explains how to install and configure your MODA library instance within the Visual Studio environment.
 
-Installation
+Downloading MODA library
 ~~~~~~~~~~~~
 
 First you must download the MODA SDK from the :ref:`downloads` page. For this tutorial you should use the `Sources` version. Extract the files anywhere you like. Copying the files into your Visual Studio installation folder is not recommended. Choose a dedicated location, especially if you intend to use several versions of the same library or you intend to use various compilers.
@@ -60,10 +60,10 @@ Your project is ready, let's write some code now to make sure that it works. Put
 
 .. code-block:: cpp
 
-   #include <moda\DataSet.h>
-   #include <moda\IQHVSolver.h>
-   #include <moda\SolverParameters.h>
-   #include <moda\Point.h>
+   #include <DataSet.h>
+   #include <IQHVSolver.h>
+   #include <SolverParameters.h>
+   #include <Point.h>
    #include <iostream>
    int main()
    {
@@ -79,6 +79,7 @@ Your project is ready, let's write some code now to make sure that it works. Put
       moda::IQHVParameters* parameters = new moda::IQHVParameters(moda::SolverParameters::ReferencePointCalculationStyle::zeroone, moda::SolverParameters::ReferencePointCalculationStyle::zeroone);
       auto result = solver.Solve(dataSet, *parameters);
       std::cout << "Hypervolume: " << result->HyperVolume << std::endl;
+      delete dataSet;
       return 0;
    }
 
