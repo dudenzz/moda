@@ -8,8 +8,8 @@ namespace moda {
 		//initialize the problem
 		prepareData(problem, settings);
 		//call the starting callback
-		if (settings.Strategy)
-			StartCallback(*currentSettings, "QHV-II based Incremental Subset Selection Solver");
+		if (!settings.Strategy)
+			StartCallback(*currentSettings, "IQHV based Incremental Subset Selection Solver");
 		else
 			StartCallback(*currentSettings, settings.Experimental ? "QHV-II based Decremental Subset Selection Solver (experimental)" : "QHV-II based Decremental Subset Selection Solver");
 
@@ -25,10 +25,10 @@ namespace moda {
 		std::vector<int> selectedPoints;
 		it0 = clock();
         if(settings.Strategy == HSSParameters::SubsetSelectionStrategy::Incremental)
-            r->HyperVolume = backend::greedyHSSIncLazyIQHV(currentlySolvedProblem->points, selectedPoints, *betterPoint, *worsePoint, settings.StoppingCriteria, settings.StoppingSubsetSize, settings.StoppingTime, settings.callbacks, settings.CalculateHV, currentSettings->NumberOfObjectives)->HyperVolume;
+            r->HyperVolume = backend::greedyHSSIncLazyIQHV(currentlySolvedProblem->points, selectedPoints, *betterPoint, *worsePoint, settings.StoppingCriteria, settings.StoppingSubsetSize, settings.StoppingTime, settings.callbacks, settings.CalculateHV, currentSettings->NumberOfObjectives, IterationCallback)->HyperVolume;
 		else
 		{
-			r->HyperVolume = backend::greedyHSSDecLazyIQHV(currentlySolvedProblem->points, selectedPoints, *betterPoint, *worsePoint, settings.StoppingCriteria, settings.StoppingSubsetSize, settings.StoppingTime, settings.callbacks, settings.CalculateHV, currentSettings->NumberOfObjectives)->HyperVolume;
+			r->HyperVolume = backend::greedyHSSDecLazyIQHV(currentlySolvedProblem->points, selectedPoints, *betterPoint, *worsePoint, settings.StoppingCriteria, settings.StoppingSubsetSize, settings.StoppingTime, settings.callbacks, settings.CalculateHV, currentSettings->NumberOfObjectives, IterationCallback)->HyperVolume;
 		}
 		r->ElapsedTime = clock() - it0;
 		r->selectedPoints = selectedPoints;

@@ -62,6 +62,7 @@ bool verbose = false;
 
 void openFolderDialog(int option)
 {
+
     HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
     if (SUCCEEDED(hr))
     {

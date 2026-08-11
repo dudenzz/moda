@@ -107,7 +107,7 @@ namespace moda
 			return result;
 		}
 		
-		HSSResult* greedyHSSIncLazyIQHV(std::vector <Point*>& wholeSet, std::vector <int>& selectedPoints, Point& idealPoint, Point& nadirPoint, HSSParameters::StoppingCriteriaType stopStyle, int stopSize, int stopTime, bool callbacks, bool calculateVolumeAfterEveryIteration, int numberOfObjectives) {
+		HSSResult* greedyHSSIncLazyIQHV(std::vector <Point*>& wholeSet, std::vector <int>& selectedPoints, Point& idealPoint, Point& nadirPoint, HSSParameters::StoppingCriteriaType stopStyle, int stopSize, int stopTime, bool callbacks, bool calculateVolumeAfterEveryIteration, int numberOfObjectives, void (*IterationCallback)(int, int, Result*)) {
 
 			if (stopStyle == HSSParameters::StoppingCriteriaType::Time) stopSize = 0;
 			if (stopStyle == HSSParameters::StoppingCriteriaType::SubsetSize) stopTime = INT32_MAX;
@@ -192,14 +192,14 @@ namespace moda
 				{
 					totalContribution += maxContribution;
 				}
-				//if (callbacks)
-				//{
-				//	result->type = Result::SubsetSelection;
-				//	result->selectedPoints = selectedPoints;
-				//	result->HyperVolume = totalContribution;
-				//	result->chosenPointIndex = maxContributor;
-				//	IterationCallback(subset.size(), stopSize, result);
-				//}
+				if (callbacks)
+				{
+					result->type = Result::SubsetSelection;
+					result->selectedPoints = selectedPoints;
+					result->HyperVolume = totalContribution;
+					result->chosenPointIndex = maxContributor;
+					IterationCallback(subset.size(), stopSize, result);
+				}
 
 			}
 
@@ -211,7 +211,7 @@ namespace moda
 
 		}
 
-		HSSResult* greedyHSSDecLazyIQHV(std::vector <Point*>& wholeSet, std::vector <int>& selectedPoints, Point& idealPoint, Point& nadirPoint, HSSParameters::StoppingCriteriaType stopStyle, int stopSize, int stopTime, bool callbacks, bool calculateVolumeAfterEveryIteration, int numberOfObjectives) {
+		HSSResult* greedyHSSDecLazyIQHV(std::vector <Point*>& wholeSet, std::vector <int>& selectedPoints, Point& idealPoint, Point& nadirPoint, HSSParameters::StoppingCriteriaType stopStyle, int stopSize, int stopTime, bool callbacks, bool calculateVolumeAfterEveryIteration, int numberOfObjectives, void (*IterationCallback)(int, int, Result*)) {
 			clock_t t0 = clock();
 
 			if (stopStyle == HSSParameters::StoppingCriteriaType::Time) stopSize = 0;
@@ -233,7 +233,7 @@ namespace moda
 
 			DType totalVolume = 0;
 			if (calculateVolumeAfterEveryIteration) {
-				//totalVolume = solveIQHV(subset, idealPoint, nadirPoint);
+				totalVolume = solveIQHV(subset, idealPoint, nadirPoint, numberOfObjectives);
 			}
 
 			while (subset.size() > stopSize) {
@@ -319,14 +319,13 @@ namespace moda
 				{
 					totalVolume -= minContribution;
 				}
-				if (callbacks)
-				{
-					result->type = Result::SubsetSelection;
-					result->selectedPoints = selectedPoints;
-					result->HyperVolume = totalVolume;
-					result->chosenPointIndex = minContributor;
-					//IterationCallback(initialSize - subset.size(), initialSize - stopSize, result);
-				}
+
+				result->type = Result::SubsetSelection;
+				result->selectedPoints = selectedPoints;
+				result->HyperVolume = totalVolume;
+				result->chosenPointIndex = minContributor;
+				IterationCallback(initialSize - subset.size(), initialSize - stopSize, result);
+				
 			}
 
 			result->type = Result::SubsetSelection;

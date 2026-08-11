@@ -25,8 +25,8 @@ namespace moda
 		}
 	};
 	namespace backend {
-		HSSResult* greedyHSSDecLazyIQHV(std::vector <Point*>& wholeSet, std::vector <int>& selectedPoints, Point& idealPoint, Point& nadirPoint, HSSParameters::StoppingCriteriaType stopStyle, int stopSize, int stopTime, bool callbacks, bool calculateVolumeAfterEveryIteration, int numberOfObjectives);
-		HSSResult* greedyHSSIncLazyIQHV(std::vector <Point*>& wholeSet, std::vector <int>& selectedPoints, Point& idealPoint, Point& nadirPoint, HSSParameters::StoppingCriteriaType stopStyle, int stopSize, int stopTime, bool callbacks, bool calculateVolumeAfterEveryIteration, int numberOfObjectives);
+		HSSResult* greedyHSSDecLazyIQHV(std::vector <Point*>& wholeSet, std::vector <int>& selectedPoints, Point& idealPoint, Point& nadirPoint, HSSParameters::StoppingCriteriaType stopStyle, int stopSize, int stopTime, bool callbacks, bool calculateVolumeAfterEveryIteration, int numberOfObjectives, void (*IterationCallback)(int, int, Result*));
+		HSSResult* greedyHSSIncLazyIQHV(std::vector <Point*>& wholeSet, std::vector <int>& selectedPoints, Point& idealPoint, Point& nadirPoint, HSSParameters::StoppingCriteriaType stopStyle, int stopSize, int stopTime, bool callbacks, bool calculateVolumeAfterEveryIteration, int numberOfObjectives, void (*IterationCallback)(int,int, Result*));
 		DType getPointContributionIQHV(int pointIndex, std::vector <Point*>& points, Point& idealPoint, Point& nadirPoint, int numberOfObjectives);
 		DType getPointContributionIQHV(Point* point, std::vector <Point*>& points, Point& idealPoint, Point& nadirPoint, int numberOfObjectives);
 		DType solveIQHV(std::vector<Point*>& points, Point& idealPoint, Point& nadirPoint, int numberOfObjectives, int numberOfPoints = -1);
