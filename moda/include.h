@@ -23,3 +23,4 @@
 #define DTypeN 2 // 1 - float; 2 - DType
 #define VERBOSE 0
 #define PI 3.14159265358979323846
+#define CALLBACKS 1
