@@ -6,7 +6,7 @@ Download files
 Library versions:
 
 .. list-table:: 
-   :widths: 20 20 20 20 20
+   :widths: 20 20 20 10 10 10 10
    :header-rows: 1
 
    * - Package
