@@ -55,8 +55,11 @@ namespace moda {
         maxIndexUsed = numberOfSolutions - 1;
         context->maxIndexUsed = maxIndexUsed;
         context->maxIndexUsedOverall = maxIndexUsed;
-		
+#if CALLBACKS == 1
         double result = backend::IQHV(0, numberOfSolutions - 1, contextId, idealPoint, nadirPoint, 0, currentSettings->NumberOfObjectives, 0, numberOfSolutions, true, it0, IterationCallback);
+#else
+		double result = backend::IQHV(0, numberOfSolutions - 1, contextId, idealPoint, nadirPoint, 0, currentSettings->NumberOfObjectives, 0, numberOfSolutions, true);
+#endif
         //std::cout << currentSettings->name << "\t" << currentSettings->NumberOfObjectives << "\t" << currentSettings->nPoints << "\t" <<memoryManager->maxIndexUsedNumbers[contextId]  << "\t" << memoryManager->maxMaxIndexUsedNumbers[contextId];
         pool->releaseContext(contextId);
         pool->cleanMemory();

@@ -61,7 +61,6 @@
     <ClInclude Include="..\..\moda\SubproblemParam.h" />
     <ClInclude Include="..\..\moda\SubproblemsPool.h" />
     <ClInclude Include="..\..\moda\SubProblemsStackLevel.h" />
-    <ClInclude Include="..\..\moda\SubProblemsStackPriorityQueue.h" />
     <ClInclude Include="..\..\moda\TestClass.h" />
     <ClInclude Include="..\..\moda\TreeNode.h" />
   </ItemGroup>
@@ -102,7 +101,6 @@
     <ClCompile Include="..\..\moda\SubProblem.cpp" />
     <ClCompile Include="..\..\moda\SubproblemsPool.cpp" />
     <ClCompile Include="..\..\moda\SubProblemsStackLevel.cpp" />
-    <ClCompile Include="..\..\moda\SubProblemsStackPriorityQueue.cpp" />
     <ClCompile Include="..\..\moda\TreeNode.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

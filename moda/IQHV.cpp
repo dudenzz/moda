@@ -128,7 +128,7 @@ namespace moda {
             }
             DType totalVolume = Backend::Hypervolume(&NadirPoint, (*points)[iPivot], &IdealPoint, numberOfObjectives);
 
-#ifdef CALLBACKS == 1
+#if CALLBACKS == 1
             HypervolumeResult tempResult;
             if (recursion == 0)
             {
@@ -202,7 +202,11 @@ namespace moda {
                         partNadirPoint.ObjectiveValues[j] = IdealPoint.ObjectiveValues[j];
                     if (PARALLEL == 0 || (partEnd - partStart) < fullSize*0.2)
                     {
+#if CALLBACKS == 1
                         totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false, it0, [](int, int, Result*) {});
+#else
+						totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false);
+#endif
                     }
                     else {
 						//std::cout << "Spawning thread for objective " << j << " with " << (partEnd - partStart + 1) << " points.\n";
@@ -210,7 +214,11 @@ namespace moda {
                         int newSlot = service->getPool().reserveContext(points_to_reserve, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::IQHVContext, true);
                         if (newSlot == -1)
                         {
+#if CALLBACKS == 1
                             totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false, it0, [](int, int, Result*) {});
+#else
+							totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false);
+#endif
                         }
                         else
                         {
@@ -233,13 +241,21 @@ namespace moda {
                                     partIdealPoint, partNadirPoint, recursion + 1,
                                     numberOfObjectives, jj, fullSize, false);
                                 });*/
+#if CALLBACKS == 1
                             threads.push_back(
                                 std::async(
                                     std::launch::async, [=]() {
                                         return IQHV(0, no_sol - 1, newSlot, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false, it0, [](int, int, Result*) {});
                                     }
                                 ));
-                        
+#else
+							threads.push_back(
+								std::async(
+									std::launch::async, [=]() {
+										return IQHV(0, no_sol - 1, newSlot, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false);
+									}
+								));
+#endif
                             //delete pnad;
                             //delete pide;
                         }

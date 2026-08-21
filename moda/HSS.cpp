@@ -94,7 +94,11 @@ namespace moda
 			context->maxIndexUsed = maxIndexMem;
 			// std::cout << " starting IQHV ";
 			clock_t t0 = clock();
+#if CALLBACKS == 1
 			DType result = IQHV(0, numberOfPoints - 1, memoryKey, idealPoint, nadirPoint, 0, numberOfObjectives, 0,  numberOfPoints, false, t0, [](int, int, Result*) {});
+#else
+			DType result = IQHV(0, numberOfPoints - 1, memoryKey, idealPoint, nadirPoint, 0, numberOfObjectives, 0, numberOfPoints, false);
+#endif
 			// std::cout << "Releasing memory for IQHV with key " << memoryKey << std::endl;
 			// std::cout << " releasing context ";
 			

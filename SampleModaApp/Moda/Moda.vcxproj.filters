@@ -141,9 +141,6 @@
     <ClInclude Include="..\..\moda\SubProblemsStackLevel.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\moda\SubProblemsStackPriorityQueue.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\moda\TestClass.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
@@ -258,9 +255,6 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="..\..\moda\SubProblemsStackLevel.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\moda\SubProblemsStackPriorityQueue.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="..\..\moda\TreeNode.cpp">

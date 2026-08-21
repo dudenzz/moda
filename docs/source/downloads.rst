@@ -13,22 +13,72 @@ Library versions:
      - System
      - Platform
      - Version
+     - Callbacks
+     - Parallel IQHV
      - Download
    * - Sources
      - Any
      - Any
      - Any 
-     - `Download <https://drive.google.com/file/d/1_JgPYAKkrZxMkXHAh8ptNmoqLzgstBUb/view?usp=sharing>`__
+     - Any
+     - Any
+     - `Download <https://drive.google.com/file/d/1bj9XMzPr3rQHEIR3Cqhog3EVK_XuOHvv/view?usp=sharing>`__
    * - WindowsX64Debug
      - Windows
      - X64
      - Debug
-     - `Download <https://drive.google.com/file/d/10SewGfSDgprG-S7jIH4k5zGIgLCks2mP/view?usp=sharing>`__
+     - -
+     - -
+     - `Download <https://drive.google.com/file/d/1JzFe16YtABK9ooSlX0W2UzaZqP1_xHzS/view?usp=sharing>`__
+   * - WindowsX64Debug
+     - Windows
+     - X64
+     - Debug
+     - +
+     - +
+     - `Download <https://drive.google.com/file/d/1sOb40cKhDCFjdVTmhH1qaYjRofvtOdHt/view?usp=sharing>`__
+   * - WindowsX64Debug
+     - Windows
+     - X64
+     - Debug
+     - +
+     - -
+     - `Download <https://drive.google.com/file/d/1e8Q43RY87Gw-K-NZkKJcpKQSQgGaqzWC/view?usp=sharing>`__
+   * - WindowsX64Debug
+     - Windows
+     - X64
+     - Debug
+     - -
+     - +
+     - `Download <https://drive.google.com/file/d/1sbCAw5CJsRP9EtBUVCdRDcw6MdIbwzMO/view?usp=sharing>`__
    * - WindowsX64Release
      - Windows
      - X64
      - Release
-     - `Download <https://drive.google.com/file/d/1hZLf1zDNVRgCpKzcH-Kaqzt9Mmdw3ccm/view?usp=sharing>`__
+     - -
+     - -
+     - `Download <https://drive.google.com/file/d/1yIDZSy821KItXGOTwbUTSXWASOxtcWqq/view?usp=sharing>`__
+   * - WindowsX64Release
+     - Windows
+     - X64
+     - Release
+     - +
+     - +
+     - `Download <https://drive.google.com/file/d/1wbWSq7NmYW-yWsug2aIasP8yTUlmYGeb/view?usp=sharing>`__
+   * - WindowsX64Release
+     - Windows
+     - X64
+     - Release
+     - +
+     - -
+     - `Download <https://drive.google.com/file/d/1Psi8bSw0EO3gGY-TwLuMMK85poNSUTcA/view?usp=sharing>`__
+   * - WindowsX64Release
+     - Windows
+     - X64
+     - Release
+     - -
+     - +
+     - `Download <https://drive.google.com/file/d/1D_-a6FNmQiWs9pWJs7NDKim9myRRaruX/view?usp=sharing>`__
 
 Exemplary problems:
 
