@@ -3,8 +3,19 @@ Installation with Python
 
 .. _installation_python:
 
+
+
+Requirements
+------------
+
+Python 3.9 or higher is required.
+
+You can install with either code downloaded from repoitoty or with pip package manager.
+
 Compiling from repository
 ------------
+
+
 
 Create a working directory. Within this directory create a virtual environment.
 
@@ -16,7 +27,7 @@ or
 
 Activate the environment. 
 
-``./bin/Scripts/activate`` (Windows)
+``.\venv\Scripts\activate`` (Windows)
 
 or
 

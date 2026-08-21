@@ -1,6 +1,6 @@
 // iqhv_solver_wrap.h
-#include "../../IQHVSolver.h"        // Zawiera definicję moda::IQHV
-#include "../../Result.h"
+#include "IQHVSolver.h"        // Zawiera definicję moda::IQHV
+#include "Result.h"
 #include "moda_types.h"
 
 

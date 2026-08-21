@@ -1,6 +1,6 @@
 // qehc_solver_wrap.h
-#include "../../QEHCSolver.h"  
-#include "../../Result.h"
+#include "QEHCSolver.h"  
+#include "Result.h"
 #include "moda_types.h"
 PyObject *QEHCSolver_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
 

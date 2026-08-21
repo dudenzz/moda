@@ -1,5 +1,7 @@
 # setup.py (Example for setuptools)
 
+import os
+
 from setuptools import setup, Extension
 import numpy as np
 import sys
@@ -20,23 +22,23 @@ else:
 modamodule = Extension(
     'moda',  # The name of the compiled module
     sources=['moda.cpp', 
-             'py_point.cpp', '../../Point.cpp',
-             'py_dataset.cpp', '../../DataSet.cpp',
-              '../../NDTree.cpp',
-              '../../TreeNode.cpp',
-              '../../DataSetParameters.cpp',
-              '../../ListSet.cpp',
-              '../../Helpers.cpp',
-              '../../myvector.cpp',
-              '../../Result.cpp',
-              '../../ExecutionPool.cpp', '../../ExecutionContext.cpp', '../../ExecutionService.cpp', '../../DynamicStructures.cpp',
-              '../../SubProblemsStackLevel.cpp', '../../SubproblemsPool.cpp', '../../SubproblemsStackPriorityQueue.cpp',
-              'py_solver_parameters.cpp','../../SolverParameters.cpp',
-              'py_solver.cpp', '../../Solver.cpp',
-              'py_qehc_solver.cpp', '../../QEHCSolver.cpp',
-              'py_iqhv_solver.cpp', '../../IQHVSolver.cpp',
-              'py_hss_solver.cpp', '../../HSSSolver.cpp',
-              '../../QEHC.cpp', '../../Hypervolume.cpp', '../../IQHV.cpp', '../../HSS.cpp','../../ObjectivesTransformer.cpp'
+             'py_point.cpp', 'Point.cpp',
+             'py_dataset.cpp', 'DataSet.cpp',
+              'NDTree.cpp',
+              'TreeNode.cpp',
+              'DataSetParameters.cpp',
+              'ListSet.cpp',
+              'Helpers.cpp',
+              'myvector.cpp',
+              'Result.cpp',
+              'ExecutionPool.cpp', 'ExecutionContext.cpp', 'ExecutionService.cpp', 'DynamicStructures.cpp',
+              'SubProblemsStackLevel.cpp', 'SubproblemsPool.cpp',
+              'py_solver_parameters.cpp','SolverParameters.cpp',
+              'py_solver.cpp', 'Solver.cpp',
+              'py_qehc_solver.cpp', 'QEHCSolver.cpp',
+              'py_iqhv_solver.cpp', 'IQHVSolver.cpp',
+              'py_hss_solver.cpp', 'HSSSolver.cpp',
+              'QEHC.cpp', 'Hypervolume.cpp', 'IQHV.cpp', 'HSS.cpp','ObjectivesTransformer.cpp'
              
             ], 
     include_dirs=[np.get_include(), '.'], # Include numpy headers and local headers
@@ -47,7 +49,7 @@ modamodule = Extension(
 
 setup(
 name='put-moda',
-    version='1.0.21',
+    version='1.0.23',
     author='Jakub Dutkiewicz',
     author_email='jakub.dutkiewicz@put.poznan.pl',
     description='Multiobjective Optimization Data structures and Algorithms (MODA) - Python bindings for C++ library',

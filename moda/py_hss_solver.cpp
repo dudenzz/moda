@@ -1,6 +1,6 @@
 // hss_solver_wrap.h
-#include "../../HSSSolver.h"        // Zawiera definicję moda::HSSSolver
-#include "../../Result.h"
+#include "HSSSolver.h"        // Zawiera definicję moda::HSSSolver
+#include "Result.h"
 #include "moda_types.h"
 
 

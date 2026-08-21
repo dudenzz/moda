@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Python.h>
-#include "../../Solver.h" // Zawiera definicję moda::Solver
+#include "Solver.h" // Zawiera definicję moda::Solver
 #include "moda_types.h"
 
 

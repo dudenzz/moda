@@ -1,13 +1,15 @@
 #pragma once
-#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+// #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL moda_ARRAY_API
+#define NO_IMPORT_ARRAY // Use this in all files EXCEPT the one where you call import_array()
 #include <numpy/arrayobject.h>
-#include "../../Point.h"
+#include "Point.h"
 #include <Python.h>
 #include <stdexcept>
 #include <cassert>
 #include <algorithm> // For std::copy
 #include "moda_types.h"
-
+#include <iostream>
 
 
 void Point_dealloc(PointObject *self) {
@@ -20,7 +22,6 @@ void Point_dealloc(PointObject *self) {
 
 int Point_init(PointObject *self, PyObject *args, PyObject *kwds) {
     PyObject *input_array = NULL;
-    
     // --- 1. Allocate C++ object ---
     try {
         // Allocate the C++ object on the heap
@@ -32,7 +33,7 @@ int Point_init(PointObject *self, PyObject *args, PyObject *kwds) {
         PyErr_SetString(PyExc_RuntimeError, "Unknown error during C++ Point allocation.");
         return -1;
     }
-
+    
     // --- 2. Parse Arguments ---
     // The init signature expects one optional argument: the NumPy array
     if (!PyArg_ParseTuple(args, "|O", &input_array)) {
@@ -42,7 +43,7 @@ int Point_init(PointObject *self, PyObject *args, PyObject *kwds) {
         self->point = NULL;
         return -1;
     }
-
+    
     // If no argument was provided, use the default constructor and finish.
     if (input_array == NULL) {
         // The moda::Point() constructor has already been called implicitly
@@ -56,7 +57,8 @@ int Point_init(PointObject *self, PyObject *args, PyObject *kwds) {
         NPY_DOUBLE, // Use the NumPy type corresponding to moda::DType (e.g., NPY_DOUBLE for double)
         NPY_ARRAY_IN_ARRAY // Flags: ensures C contiguous, readable array
     );
-
+    std::cout << "Point_init called with args: " << input_array << std::endl;
+    
     if (!np_array) {
         // PyArray_FROM_OTF sets the appropriate Python exception
         delete self->point;
@@ -68,6 +70,7 @@ int Point_init(PointObject *self, PyObject *args, PyObject *kwds) {
     if (PyArray_NDIM(np_array) != 1) {
         PyErr_SetString(PyExc_ValueError, "Input array must be 1-dimensional.");
         Py_DECREF(np_array);
+        
         delete self->point;
         self->point = NULL;
         return -1;

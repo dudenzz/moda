@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: put-moda
-Version: 1.0.21
+Version: 1.0.23
 Summary: Multiobjective Optimization Data structures and Algorithms (MODA) - Python bindings for C++ library
 Home-page: https://github.com/dudenzz/moda
 Author: Jakub Dutkiewicz
@@ -9,7 +9,7 @@ Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: C++
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
-Requires-Python: >=3.7
+Requires-Python: >=3.3
 Description-Content-Type: text/markdown
 Requires-Dist: numpy>=1.18.0
 Dynamic: author

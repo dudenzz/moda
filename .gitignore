@@ -104,3 +104,6 @@ VisualStudioProjects/
 /moda/python-wrap/package/build/*
 /moda/python-wrap/package/moda.egg-info/*
 /moda/python-wrap/package/wheelhouse/*
+/moda/build/*
+/moda/moda.egg-info/*
+/moda/wheelhouse*

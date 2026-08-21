@@ -1,9 +1,9 @@
 #pragma once
 
 #include <Python.h>
-#include "../../Solver.h" // Actual C++ Solver header
-#include "../../Point.h"
-#include "../../myvector.h"
+#include "Solver.h" // Actual C++ Solver header
+#include "Point.h"
+#include "myvector.h"
 
 // Base Solver
 typedef struct {

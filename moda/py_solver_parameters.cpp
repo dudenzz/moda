@@ -1,6 +1,9 @@
 #pragma once
+#define PY_ARRAY_UNIQUE_SYMBOL moda_ARRAY_API
+#define NO_IMPORT_ARRAY // Use this in all files EXCEPT the one where you call import_array()
+#include <numpy/arrayobject.h>
 #include <Python.h>
-#include "../../SolverParameters.h"
+#include "SolverParameters.h"
 #include <structmember.h>
 #include <numpy/arrayobject.h>
 #include "moda_types.h"
@@ -298,36 +301,56 @@ int SolverParameters_set_betterRefPoint(SolverParametersObject *self, PyObject *
 }
 
 int SolverParameters_set_worseRefPoint(SolverParametersObject *self, PyObject *value, void *closure) {
-    if(value == NULL) {
-        PyErr_SetString(PyExc_AttributeError, "Cannot assign empty value to worseReferencePoint");
+    // 1. Check for attribute deletion (del obj.worseReferencePoint)
+    if (value == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "Cannot delete the worseReferencePoint attribute.");
         return -1;
     }
-    PyObject *inputValue;
-    if(!PyArg_Parse(value, "|O", &inputValue)) {
-        PyErr_SetString(PyExc_TypeError, "Expected a Point object for worseReferencePoint.");
+
+    // 2. Convert input directly to a C-contiguous NPY_DOUBLE NumPy array
+    PyArrayObject *np_array = (PyArrayObject *)PyArray_FROM_OTF(
+        value, 
+        NPY_DOUBLE, 
+        NPY_ARRAY_IN_ARRAY
+    );
+
+    if (!np_array) {
+        // PyArray_FROM_OTF already set a specific TypeError/ValueError
         return -1;
     }
-    PyArrayObject *np_array = (PyArrayObject *)PyArray_FROM_OTF(inputValue, NPY_DOUBLE, NPY_ARRAY_IN_ARRAY);
-    if(!np_array) {
-        PyErr_SetString(PyExc_TypeError, "Expected a NumPy array for worseReferencePoint.");
-        return -1;
-    }
-    if(PyArray_NDIM(np_array) != 1) {
+
+    // 3. Validate dimension
+    if (PyArray_NDIM(np_array) != 1) {
         PyErr_SetString(PyExc_ValueError, "Input array for worseReferencePoint must be 1-dimensional.");
+        Py_DECREF(np_array); // <--- CLEANUP BEFORE RETURN
         return -1;
     }
-    Py_ssize_t size = PyArray_SIZE(np_array);
-    if(size > MAXOBJECTIVES) {
+
+    // 4. Validate size limit
+    npy_intp size = PyArray_SIZE(np_array);
+    if (size > MAXOBJECTIVES) {
         PyErr_SetString(PyExc_ValueError, "Input array for worseReferencePoint exceeds maximum number of objectives.");
+        Py_DECREF(np_array); // <--- CLEANUP BEFORE RETURN
         return -1;
     }
+
+    // 5. Clean up old C++ instance before allocating new one (prevents C++ memory leak)
+    if (self->params->worseReferencePoint != nullptr) {
+        delete self->params->worseReferencePoint;
+        self->params->worseReferencePoint = nullptr;
+    }
+
+    // 6. Allocate and copy data
     self->params->worseReferencePoint = new moda::Point((int)size);
     double *data_ptr = (double *)PyArray_DATA(np_array);
-    for (Py_ssize_t i = 0; i < size; ++i)
-    {
+    for (npy_intp i = 0; i < size; ++i) {
         (*self->params->worseReferencePoint)[i] = data_ptr[i];
     }
-    return 0;
+
+    // 7. CRITICAL: Release the NumPy array reference
+    Py_DECREF(np_array);
+
+    return 0; // Success
 }
 PyObject *SolverParameters_get_betterRefPoint(SolverParametersObject *self, void *closure) {
     if (!self->params->betterReferencePoint) {

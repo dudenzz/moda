@@ -6,8 +6,8 @@
 #include "moda_types.h"
 
 
-#include "../../DataSet.h"
-#include "../../Point.h"
+#include "DataSet.h"
+#include "Point.h"
 #include <Python.h>
 #include "moda_types.h"
 

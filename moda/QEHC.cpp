@@ -450,6 +450,7 @@ namespace moda {
 				ctrResult.MinimumContributionIndex = -1;
 				ctrResult.MaximumContributionIndex = lowerBoundProcessId;
 			}
+			
 			return ctrResult;
 
 		}

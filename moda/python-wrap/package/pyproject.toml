@@ -1,4 +1,0 @@
-[build-system]
-# These are the packages required BEFORE setup.py is even executed
-requires = ["setuptools>=42", "wheel", "numpy>=1.18.0"]
-build-backend = "setuptools.build_meta"
