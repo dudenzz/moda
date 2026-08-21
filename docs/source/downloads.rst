@@ -27,57 +27,57 @@ Library versions:
      - Windows
      - X64
      - Debug
-     - -
-     - -
+     - 0
+     - 0
      - `Download <https://drive.google.com/file/d/1JzFe16YtABK9ooSlX0W2UzaZqP1_xHzS/view?usp=sharing>`__
    * - WindowsX64Debug
      - Windows
      - X64
      - Debug
-     - +
-     - +
+     - 1
+     - 1
      - `Download <https://drive.google.com/file/d/1sOb40cKhDCFjdVTmhH1qaYjRofvtOdHt/view?usp=sharing>`__
    * - WindowsX64Debug
      - Windows
      - X64
      - Debug
-     - +
-     - -
+     - 1
+     - 0
      - `Download <https://drive.google.com/file/d/1e8Q43RY87Gw-K-NZkKJcpKQSQgGaqzWC/view?usp=sharing>`__
    * - WindowsX64Debug
      - Windows
      - X64
      - Debug
-     - -
-     - +
+     - 0
+     - 1
      - `Download <https://drive.google.com/file/d/1sbCAw5CJsRP9EtBUVCdRDcw6MdIbwzMO/view?usp=sharing>`__
    * - WindowsX64Release
      - Windows
      - X64
      - Release
-     - -
-     - -
+     - 0
+     - 0
      - `Download <https://drive.google.com/file/d/1yIDZSy821KItXGOTwbUTSXWASOxtcWqq/view?usp=sharing>`__
    * - WindowsX64Release
      - Windows
      - X64
      - Release
-     - +
-     - +
+     - 1
+     - 1
      - `Download <https://drive.google.com/file/d/1wbWSq7NmYW-yWsug2aIasP8yTUlmYGeb/view?usp=sharing>`__
    * - WindowsX64Release
      - Windows
      - X64
      - Release
-     - +
-     - -
+     - 1
+     - 0
      - `Download <https://drive.google.com/file/d/1Psi8bSw0EO3gGY-TwLuMMK85poNSUTcA/view?usp=sharing>`__
    * - WindowsX64Release
      - Windows
      - X64
      - Release
-     - -
-     - +
+     - 0
+     - 1
      - `Download <https://drive.google.com/file/d/1D_-a6FNmQiWs9pWJs7NDKim9myRRaruX/view?usp=sharing>`__
 
 Exemplary problems:
