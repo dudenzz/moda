@@ -16,7 +16,7 @@ namespace moda
 
 		/** Constructors */
 		Point();
-
+		Point(std::vector<DType> ObjectiveValues);
 		Point(int NumberOfObjectives);
 		static Point ones(int NumberOfObjectives);
 		static Point elevens(int NumberOfObjectives);

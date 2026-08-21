@@ -9,7 +9,7 @@
 #include "ObjectivesTransformer.h"
 // 0 = switched off
 // 1 = switched on
-#define PARALLEL 0
+#define PARALLEL 1
 
 /*************************************************************************
 
@@ -43,7 +43,12 @@
 namespace moda {
 	namespace backend {
         DType dummy(DType test, Point& NadirPoint ) { return test+1.0; };
-        DType IQHV(int start, int end, int contextId, Point IdealPoint, Point NadirPoint, int recursion, int numberOfObjectives, int outerIteratorValue,  int fullSize, bool topLevelExecution)
+#if CALLBACKS == 1
+
+        DType IQHV(int start, int end, int contextId, Point IdealPoint, Point NadirPoint, int recursion, int numberOfObjectives, int outerIteratorValue,  int fullSize, bool topLevelExecution, clock_t it0, void (*IterationCallback)(int, int, Result*))
+#else
+        DType IQHV(int start, int end, int contextId, Point IdealPoint, Point NadirPoint, int recursion, int numberOfObjectives, int outerIteratorValue, int fullSize, bool topLevelExecution)
+#endif
         {
             ExecutionService* service = &(ExecutionService::getInstance());
             ExecutionPool* pool = &(service->getPool());
@@ -51,13 +56,13 @@ namespace moda {
             IQHVExecutionContext* context = (IQHVExecutionContext*) & (*pool->getContext(contextId));
             #if UNDERLYING_TYPE == 1
             myvector<Point*>* points;
-#elif UNDERLYING_TYPE == 2
+            #elif UNDERLYING_TYPE == 2
             SemiDynamicArray<Point*>* points;
-#elif UNDERLYING_TYPE == 3
+            #elif UNDERLYING_TYPE == 3
             SecureVector<Point*>* points;
-#else
+            #else
             std::vector<Point*>* points;
-#endif
+            #endif
             int maxIndexUsed = context->maxIndexUsed;
 
 
@@ -123,7 +128,7 @@ namespace moda {
             }
             DType totalVolume = Backend::Hypervolume(&NadirPoint, (*points)[iPivot], &IdealPoint, numberOfObjectives);
 
-#ifdef callbacks
+#ifdef CALLBACKS == 1
             HypervolumeResult tempResult;
             if (recursion == 0)
             {
@@ -197,15 +202,15 @@ namespace moda {
                         partNadirPoint.ObjectiveValues[j] = IdealPoint.ObjectiveValues[j];
                     if (PARALLEL == 0 || (partEnd - partStart) < fullSize*0.2)
                     {
-                        totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false);
+                        totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false, it0, [](int, int, Result*) {});
                     }
                     else {
-						std::cout << "Spawning thread for objective " << j << " with " << (partEnd - partStart + 1) << " points.\n";
+						//std::cout << "Spawning thread for objective " << j << " with " << (partEnd - partStart + 1) << " points.\n";
                         int points_to_reserve = 4 * (partEnd - partStart) * pow(2, numberOfObjectives / 2) + 1;
                         int newSlot = service->getPool().reserveContext(points_to_reserve, 0, numberOfObjectives, ExecutionContext::ExecutionContextType::IQHVContext, true);
                         if (newSlot == -1)
                         {
-                            totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false);
+                            totalVolume += IQHV(partStart, partEnd, contextId, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false, it0, [](int, int, Result*) {});
                         }
                         else
                         {
@@ -218,7 +223,7 @@ namespace moda {
                                 (*newContext->points)[no_sol++] = (*context->points)[i];
                             }
                             newContext->maxIndexUsed = no_sol - 1;
-                            
+
                             //Point* pnad = new Point(partNadirPoint);
                             //Point* pide = new Point(partIdealPoint);
 
@@ -228,9 +233,13 @@ namespace moda {
                                     partIdealPoint, partNadirPoint, recursion + 1,
                                     numberOfObjectives, jj, fullSize, false);
                                 });*/
-                            threads.push_back(std::async(std::launch::async, IQHV, 0, no_sol - 1, newSlot,
-                                partIdealPoint, partNadirPoint, recursion + 1,
-                                numberOfObjectives, jj, fullSize, false));
+                            threads.push_back(
+                                std::async(
+                                    std::launch::async, [=]() {
+                                        return IQHV(0, no_sol - 1, newSlot, partIdealPoint, partNadirPoint, recursion + 1, numberOfObjectives, jj, fullSize, false, it0, [](int, int, Result*) {});
+                                    }
+                                ));
+                        
                             //delete pnad;
                             //delete pide;
                         }
@@ -241,19 +250,19 @@ namespace moda {
                 }
 
 
-#ifdef callbacks
+                #if CALLBACKS == 1
                 if (recursion == 1)
                 {
-#ifdef _MSC_VER 
+                    #ifdef _MSC_VER 
                     tempResult.ElapsedTime = clock() - it0;
-#else
+                    #else
                     tempResult.ElapsedTime = (clock() - it0) / 1000.0;
-#endif
+                    #endif
                     tempResult.HyperVolume = totalVolume;
                     tempResult.type = Result::Hypervolume;
-                    //IterationCallback(outerIteratorValue * numberOfObjectives + jj + 1, numberOfObjectives * numberOfObjectives, &tempResult);
+                    IterationCallback(outerIteratorValue * numberOfObjectives + jj + 1, numberOfObjectives * numberOfObjectives, &tempResult);
                 }
-#endif
+                #endif
             }
 
             //for (auto& task : tasks) {
@@ -278,6 +287,8 @@ namespace moda {
             return (totalVolume);
             //0.520691
         }
+
+
 
         
     }

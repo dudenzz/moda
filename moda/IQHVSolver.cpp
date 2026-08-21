@@ -37,6 +37,7 @@ namespace moda {
 
     DType IQHVSolver::initAndSolveIQHV(Point& idealPoint, Point& nadirPoint, int numberOfSolutions,  bool callbacks)
     {
+        
         int reserve_size = 4 * numberOfSolutions * pow(2, currentSettings->NumberOfObjectives / 2);
         //int reserve_size = 20000000;
         //int reserve_size = 5000;
@@ -54,7 +55,8 @@ namespace moda {
         maxIndexUsed = numberOfSolutions - 1;
         context->maxIndexUsed = maxIndexUsed;
         context->maxIndexUsedOverall = maxIndexUsed;
-        double result = backend::IQHV(0, numberOfSolutions - 1, contextId, idealPoint, nadirPoint, 0, currentSettings->NumberOfObjectives, 0, numberOfSolutions, true);
+		
+        double result = backend::IQHV(0, numberOfSolutions - 1, contextId, idealPoint, nadirPoint, 0, currentSettings->NumberOfObjectives, 0, numberOfSolutions, true, it0, IterationCallback);
         //std::cout << currentSettings->name << "\t" << currentSettings->NumberOfObjectives << "\t" << currentSettings->nPoints << "\t" <<memoryManager->maxIndexUsedNumbers[contextId]  << "\t" << memoryManager->maxMaxIndexUsedNumbers[contextId];
         pool->releaseContext(contextId);
         pool->cleanMemory();

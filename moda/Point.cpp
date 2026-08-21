@@ -12,6 +12,13 @@ namespace moda {
         this->NumberOfObjectives = NumberOfObjectives;
         //ObjectiveValues = new DType[NumberOfObjectives];
     }
+    Point::Point(std::vector<DType> ObjectiveValues)
+    {
+		this->NumberOfObjectives = ObjectiveValues.size();
+		//ObjectiveValues = new DType[NumberOfObjectives];
+		for (int i = 0; i < NumberOfObjectives; i++)
+			this->ObjectiveValues[i] = ObjectiveValues[i];
+    }
     //
     Point Point::ones(int NumberOfObjectives)
     {
