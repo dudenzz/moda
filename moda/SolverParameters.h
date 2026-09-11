@@ -125,6 +125,18 @@ namespace moda {
             QEHCParameters::SearchSubjectOption minimalContribution = QEHCParameters::SearchSubjectOption::MinimumContribution, bool shuffle = true, int offset = 2);
     };
 
+
+    class FNDParameters : public SolverParameters {
+    public:
+        enum Decomposition {
+            QHV,
+            IQHV
+        };
+		Decomposition decomposition = Decomposition::QHV;
+        FNDParameters(ReferencePointCalculationStyle worseReferencePointCalculationStyle = ReferencePointCalculationStyle::epsilon, ReferencePointCalculationStyle betterReferencePointCalculationStyle = ReferencePointCalculationStyle::epsilon,
+            Decomposition decomposition = Decomposition::QHV, bool callbacks = true);
+    };
+
     class HSSParameters : public SolverParameters {
     public:
         enum StoppingCriteriaType {

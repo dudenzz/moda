@@ -50,6 +50,11 @@ namespace moda
 		this->offset = offset;
 	}
 
+	FNDParameters::FNDParameters(ReferencePointCalculationStyle worseReferencePointCalculationStyle, ReferencePointCalculationStyle betterReferencePointCalculationStyle,
+		FNDParameters::Decomposition decomposition, bool callbacks) : SolverParameters(worseReferencePointCalculationStyle, betterReferencePointCalculationStyle, MaxEstimationTime, callbacks)  {
+		this->decomposition = decomposition;
+	}
+
 	Point* SolverParameters::GetBetterReferencePoint(DataSet *dataset)
 	{
 		Point* ide;

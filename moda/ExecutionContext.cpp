@@ -26,6 +26,13 @@ namespace moda {
             type = ExecutionContext::ExecutionContextType::IQHVContext;
         }
 
+        FDPExecutionContext::FDPExecutionContext(int reserveSize, int initialSize, int numberOfObjectives, bool shallow) : ExecutionContext(reserveSize, initialSize, numberOfObjectives, shallow)
+        {
+            type = ExecutionContext::ExecutionContextType::IQHVContext;
+			pointStatus = std::vector(reserveSize, 0);
+			for (int i = 0; i < reserveSize; i++) localIndexToGlobalIndex[i] = i;
+        }
+
         QEHCExecutionContext::QEHCExecutionContext(int reserveSize, int initialSize, int numberOfObjectives, bool shallow) : ExecutionContext(reserveSize, initialSize, numberOfObjectives, shallow)
         {
             process = std::make_shared<moda::ProcessData>(10);

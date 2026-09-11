@@ -30,6 +30,21 @@ namespace moda
 		Point& operator-(DType value);
 		Point& operator-();
 		Point& operator+(DType value);
+		bool operator>(const Point point) const;
+		bool operator<(const Point point) const;
+		bool operator>>(const Point point) const;
+		bool operator<<(const Point point) const;
+		bool operator>(std::vector<Point*> point) const;
+		bool operator>>(std::vector<Point*> point);
+		inline DType contribution(moda::Point& idealPoint, moda::Point& nadirPoint) {
+			DType contribution = 1.0;
+			for (int i = 0; i < this->NumberOfObjectives; i++) {
+				DType max = std::max(this->ObjectiveValues[i], idealPoint.ObjectiveValues[i]);
+				DType min = std::min(this->ObjectiveValues[i], nadirPoint.ObjectiveValues[i]);
+				contribution *= max - min;
+			}
+			return contribution;
+		}
 		/** Comparator */
 		
 		ComparisonResult Compare(Point& point, bool maximization);

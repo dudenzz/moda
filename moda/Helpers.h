@@ -70,5 +70,6 @@ namespace moda {
 		return ltrim(rtrim(s, t), t);
 	}
 
+
 	DType logarithm(DType param, DType base);
 }

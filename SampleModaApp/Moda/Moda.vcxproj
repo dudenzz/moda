@@ -28,6 +28,9 @@
     <ClInclude Include="..\..\moda\ExecutionContext.h" />
     <ClInclude Include="..\..\moda\ExecutionPool.h" />
     <ClInclude Include="..\..\moda\ExecutionService.h" />
+    <ClInclude Include="..\..\moda\FDP.h" />
+    <ClInclude Include="..\..\moda\FilterNonDominated.h" />
+    <ClInclude Include="..\..\moda\FNDSolver.h" />
     <ClInclude Include="..\..\moda\Helpers.h" />
     <ClInclude Include="..\..\moda\HSS.h" />
     <ClInclude Include="..\..\moda\HSSSolver.h" />
@@ -73,6 +76,8 @@
     <ClCompile Include="..\..\moda\ExecutionContext.cpp" />
     <ClCompile Include="..\..\moda\ExecutionPool.cpp" />
     <ClCompile Include="..\..\moda\ExecutionService.cpp" />
+    <ClCompile Include="..\..\moda\FilterNonDominated.cpp" />
+    <ClCompile Include="..\..\moda\FNDSolver.cpp" />
     <ClCompile Include="..\..\moda\Helpers.cpp" />
     <ClCompile Include="..\..\moda\HSS.cpp" />
     <ClCompile Include="..\..\moda\HSSSolver.cpp" />

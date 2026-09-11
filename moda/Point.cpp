@@ -140,6 +140,76 @@ namespace moda {
     }
 
 
+	bool Point::operator>(const Point point) const
+	{
+		for (int i = 0; i < NumberOfObjectives; i++)
+		{
+			if (this->ObjectiveValues[i] < point.ObjectiveValues[i])
+				return true;
+		}
+        return false;
+	}
+
+    bool Point::operator<(const Point point) const
+    {
+        for (int i = 0; i < NumberOfObjectives; i++)
+        {
+            if (this->ObjectiveValues[i] > point.ObjectiveValues[i])
+                return true;
+        }
+        return false;
+    }
+
+
+	bool Point::operator>>(const Point point) const
+	{
+		bool strongDominance = true;
+        for (int i = 0; i < NumberOfObjectives; i++)
+        {
+            if (this->ObjectiveValues[i] < point.ObjectiveValues[i])
+				strongDominance = false;
+        }
+        return strongDominance;
+	}
+
+    bool Point::operator<<(const Point point) const
+    {
+        bool strongDominance = true;
+        for (int i = 0; i < NumberOfObjectives; i++)
+        {
+            if (this->ObjectiveValues[i] > point.ObjectiveValues[i])
+                strongDominance = false;
+        }
+        return strongDominance;
+    }
+
+    bool Point::operator>(std::vector<Point*> points) const
+    {
+        for (const Point* p : points)
+        {
+            //if this does not weakly dominate any point in the set
+            if (!(*this > *p))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    bool Point::operator>>(std::vector<Point*> points) 
+    {
+        for (const Point* p : points)
+        {
+            //if this does not strongly dominate any point in the set
+            if (!(*this >> *p))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /** Reads the point from the stream */
     std::istream& Point::Load(std::istream& Stream)
     {

@@ -25,6 +25,9 @@ namespace moda {
 				case moda::backend::ExecutionContext::QEHCContext:
 					context = new QEHCExecutionContext(reserveSize, initialSize, numberOfObjectives, shallow);
 					break;
+				case moda::backend::ExecutionContext::FDPContext:
+					context = new FDPExecutionContext(reserveSize, initialSize, numberOfObjectives, shallow);
+					break;
 				default:
 					break;
 				}

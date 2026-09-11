@@ -37,17 +37,28 @@ namespace moda {
         float Hypervolume;
     };
 
-    //TODO: wywo�ywanie z callbackami/bez to nie to samo co liczenie qhv w ka�dym stepie
     class HSSResult : public Result {
     public:
         /// <summary>
-        /// Selected set of points with 
+        /// Selected set of points with optimal estimated Hypervolume
         /// </summary> 
         std::vector<int> selectedPoints;
         int chosenPointIndex;
         float HyperVolume;
 
         
+    };
+
+    class FNDResult : public Result {
+    public:
+        /// <summary>
+        /// Selected set of dominated points 
+        /// </summary> 
+        std::vector<int> dominatedPoints;
+        /// <summary>
+        /// Selected set of first pareto front 
+        /// </summary> 
+        std::vector<int> paretoFront;
     };
 
     class BoundedResult : public Result {

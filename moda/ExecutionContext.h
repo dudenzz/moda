@@ -4,7 +4,8 @@
 #include "ProcessData.h"
 #include "SubproblemsPool.h"
 #include "SubProblem.h"
-#define UNDERLYING_TYPE 2
+#include <map>
+#define UNDERLYING_TYPE 4
 namespace moda {
     namespace backend {
         class ExecutionContext
@@ -12,7 +13,8 @@ namespace moda {
         public:
             enum ExecutionContextType {
                 IQHVContext,
-                QEHCContext
+                QEHCContext,
+				FDPContext
             };
 
             ExecutionContextType type;
@@ -37,7 +39,7 @@ namespace moda {
             virtual ~ExecutionContext() {
                 
                     if (points != nullptr && !shallow) {
-                        points->deleteContainedPoints(initialSize); 
+                        //points->deleteContainedPoints(initialSize); 
                     }
                     delete points;
 
@@ -58,6 +60,24 @@ namespace moda {
             explicit IQHVExecutionContext(int reserveSize, int initialSize, int numberOfObjectives, bool shallow = false);
             int maxIndexUsed = 0;
             int maxIndexUsedOverall = 0;
+            Point* idealPoint = nullptr;
+            Point* nadirPoint = nullptr;
+        };
+
+        class FDPExecutionContext : public ExecutionContext
+        {
+        public:
+            ~FDPExecutionContext() {
+                delete idealPoint;
+                delete nadirPoint;
+                //delete points; //points are deleted in base destructor
+                objectivesOrder.clear();
+            }
+            explicit FDPExecutionContext(int reserveSize, int initialSize, int numberOfObjectives, bool shallow = false);
+            int maxIndexUsed = 0;
+            int maxIndexUsedOverall = 0;
+			std::vector<int> pointStatus;
+			std::map<int, int> localIndexToGlobalIndex;
             Point* idealPoint = nullptr;
             Point* nadirPoint = nullptr;
         };
