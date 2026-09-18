@@ -39,9 +39,8 @@ namespace moda
 		inline DType contribution(moda::Point& idealPoint, moda::Point& nadirPoint) {
 			DType contribution = 1.0;
 			for (int i = 0; i < this->NumberOfObjectives; i++) {
-				DType max = std::max(this->ObjectiveValues[i], idealPoint.ObjectiveValues[i]);
-				DType min = std::min(this->ObjectiveValues[i], nadirPoint.ObjectiveValues[i]);
-				contribution *= max - min;
+				DType normalized = (this->ObjectiveValues[i] - nadirPoint.ObjectiveValues[i]) / ( idealPoint.ObjectiveValues[i] - nadirPoint.ObjectiveValues[i]);
+				contribution *= normalized;
 			}
 			return contribution;
 		}

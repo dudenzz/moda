@@ -26,16 +26,16 @@ namespace moda {
 
 		it0 = clock();
 
-		FNDResult r = solveFND(currentlySolvedProblem->points, currentSettings->nPoints, worsePoint, betterPoint);
+		FNDResult* r = new FNDResult(solveFND(currentlySolvedProblem->points, currentSettings->nPoints, worsePoint, betterPoint));
 
-		r.type = Result::ResultType::SubsetSelection;
-        r.ElapsedTime = clock() - it0;
-        r.FinalResult = true;
+		r->type = Result::ResultType::SubsetSelection;
+        r->ElapsedTime = clock() - it0;
+        r->FinalResult = true;
         //call the closing callback
-        EndCallback(*currentSettings, &r);
+        EndCallback(*currentSettings, r);
 		delete currentlySolvedProblem;
         //return the result
-        return &r;
+        return r;
     }
 
 
@@ -51,15 +51,17 @@ namespace moda {
 		int contextId = pool->reserveContext(reserve_size, currentSettings->nPoints, currentSettings->NumberOfObjectives, backend::ExecutionContext::ExecutionContextType::FDPContext, false);
 		backend::FDPExecutionContext* context = (backend::FDPExecutionContext*)pool->getContext(contextId);
 		std::vector potentiallyDominated = std::vector<int>();
+		std::vector insideBox = std::vector<int>();
 		unsigned int i; for (i = 0; i < numberOfSolutions; i++) {
 			if ((currentlySolvedProblem->points)[i] == NULL) {
 				continue;
 			}
 			(*context->points)[i] = new Point(*currentlySolvedProblem->points[i]);
+			insideBox.push_back(i);
 
 		}
 		context->maxIndexUsed = numberOfSolutions - 1;
-		FNDResult result = backend::FilterNonDominated(0,maxIndexUsed, potentiallyDominated, contextId, *better, *worse,0,currentSettings->NumberOfObjectives,true,it0,IterationCallback);
+		FNDResult result = backend::FilterNonDominated(insideBox, potentiallyDominated, contextId, *better, *worse,0,currentSettings->NumberOfObjectives,true,it0,IterationCallback);
 		pool->releaseContext(contextId);
 		return result;
 	};
